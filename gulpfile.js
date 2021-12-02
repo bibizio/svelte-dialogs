@@ -99,7 +99,7 @@ gulp.task(
         },
         plugins: [
           nodeResolve({
-            browser: true,
+            mainFields: ['svelte', 'module', 'main'],
             dedupe: ["svelte"],
           }),
           svelte({

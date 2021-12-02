@@ -1,5 +1,6 @@
 <script>
   import dialogs from "svelte-dialogs";
+  import ContentComponent from './ContentComponent.svelte'
 
   async function persistent() {
     let confirm;
@@ -16,8 +17,13 @@
 </script>
 
 <h1>Svelte dialogs</h1>
+
 <button on:click={() => dialogs.modal("<p>modal string</p>").then(console.log)}
   >modal string</button
+>
+
+<button on:click={() => dialogs.modal(ContentComponent).then(console.log)}
+  >modal component</button
 >
 
 <button
