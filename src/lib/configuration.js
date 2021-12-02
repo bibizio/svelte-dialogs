@@ -6,11 +6,11 @@ export const config = (options) => {
   customConfig = options;
 };
 
-const getOpts = (defaults) => (options = {}) => {
+const getOpts = (defaults, custom, options = {}) => {
   const opts = {
     ...defaults,
     ...customConfig.global,
-    ...customConfig.alert,
+    ...custom,
     ...options,
   };
   const { title, text } = opts;
@@ -18,8 +18,11 @@ const getOpts = (defaults) => (options = {}) => {
   return opts;
 };
 
-export const getModalOptions = getOpts(defaultDialogConfigOptionts.global);
+export const getModalOptions = (options) =>
+  getOpts(defaultDialogConfigOptionts.global, customConfig.global, options);
 
-export const getAlertOptions = getOpts(defaultDialogConfigOptionts.alert);
+export const getAlertOptions = (options) =>
+  getOpts(defaultDialogConfigOptionts.alert, customConfig.alert, options);
 
-export const getConfirmOptions = getOpts(defaultDialogConfigOptionts.confirm);
+export const getConfirmOptions = (options) =>
+  getOpts(defaultDialogConfigOptionts.confirm, customConfig.confirm, options);

@@ -3,7 +3,7 @@ import {
   getConfirmOptions,
   getModalOptions,
 } from "./configuration";
-import { createDialog, isTitleTextContent } from "./utils";
+import { createDialog } from "./utils";
 
 export const modal = (options) => {
   let opts;

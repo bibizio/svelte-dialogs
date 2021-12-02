@@ -12,7 +12,7 @@
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
-  "browser": "dist/index.js",
+  "browser": "dist/index.mjs",
   "scripts": {
     "dev": "gulp dev --skip-tests",
     "build": "gulp build",
