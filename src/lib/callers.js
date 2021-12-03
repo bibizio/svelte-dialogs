@@ -25,9 +25,7 @@ export const modal = (options, props) => {
 export const alert = (options) => {
   let opts;
 
-  if (!options) {
-    opts = getAlertOptions();
-  } else if (typeof options === "string") {
+  if (typeof options === "string") {
     opts = getAlertOptions();
     opts.text = options;
   } else {
@@ -38,9 +36,8 @@ export const alert = (options) => {
 };
 export const confirm = (options) => {
   let opts;
-  if (!options) {
-    opts = getConfirmOptions();
-  } else if (typeof options === "string") {
+
+  if (typeof options === "string") {
     opts = getConfirmOptions();
     opts.text = options;
   } else {
