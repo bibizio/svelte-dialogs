@@ -18,7 +18,7 @@ export const modal = (options, props) => {
   if (props) {
     opts.props = props;
   }
-  
+
   return createDialog(opts);
 };
 
@@ -29,7 +29,7 @@ export const alert = (options) => {
     opts = getAlertOptions();
   } else if (typeof options === "string") {
     opts = getAlertOptions();
-    opts.content.text = options;
+    opts.text = options;
   } else {
     opts = getAlertOptions(options);
   }
@@ -42,7 +42,7 @@ export const confirm = (options) => {
     opts = getConfirmOptions();
   } else if (typeof options === "string") {
     opts = getConfirmOptions();
-    opts.content.text = options;
+    opts.text = options;
   } else {
     opts = getConfirmOptions(options);
   }
