@@ -11,6 +11,12 @@ const getOpts = (defaults, custom, options = {}) => ({
   ...customConfig.global,
   ...custom,
   ...options,
+  transitions: {
+    ...defaults.transitions,
+    ...customConfig.global?.transitions,
+    ...custom?.transitions,
+    ...options.transitions,
+  }
 });
 
 export const getModalOptions = (options) =>

@@ -105,7 +105,7 @@ So for example:
 <button on:click={() => dialogs.modal(MyComponent, { name: "world" })}>click me</button>
 ```
 
-### Promis-based
+### Promise-based
 
 All methods described return a promise that resolve on close:
 
