@@ -1,27 +1,51 @@
 <script>
   import { dialogs } from "svelte-dialogs";
-  import ContentComponent from "./ContentComponent.svelte";
+  import Example from "./Example.svelte";
   import CustomContent from "./CustomContent.svelte";
+  import { fade } from "svelte/transition";
 
   async function persistent() {
     let confirm;
-    let count = [];
+    let times = "";
     do {
-      confirm = await dialogs.confirm(
-        "are you " + count.map((_) => "really").join(", ") + " sure?"
-      );
-      count.push(null);
+      confirm = await dialogs.confirm("are you" + times + " sure?");
+      times += " really";
     } while (confirm);
 
     dialogs.alert("well done......");
   }
+
+  const htmlString = ` 
+  <div>
+    <h1 id="my-title-id" class="my-title">all the html you want</h1>
+    <div class="body">
+      <p>now in text!</p>
+    </div>
+  </div>
+  `;
+
+  const opts = {
+    title: "a title",
+    text: "the text",
+    titleClass: "my-button-class",
+    closeButton: true,
+    closeOnBg: true,
+    transitions: {
+      in: {
+        transition: fade,
+        props: {
+          duration: 2000,
+        },
+      },
+    },
+  };
 </script>
+
+<Example />
 
 <h1>Svelte dialogs</h1>
 
-<button on:click={() => dialogs.modal("<p>modal string</p>").then(console.log)}
-  >modal string</button
->
+<button on:click={() => dialogs.modal(opts)}>click me</button>
 
 <button on:click={() => dialogs.modal(CustomContent).then(console.log)}
   >modal component</button

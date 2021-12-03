@@ -1,8 +1,6 @@
 <script>
   import { DialogContent, getOptions, getClose } from "svelte-dialogs";
 
-  console.log(getOptions());
-  console.log(getClose());
   const close = getClose();
 
   export let name = "pippo";
