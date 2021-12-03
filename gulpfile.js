@@ -111,7 +111,10 @@ gulp.task(
           livereload("stage/public"),
         ],
       })
-      .on("event", ({ result }) => {
+      .on("event", ({code, error, result}) => {
+        if(code === 'ERROR'){
+          console.error(error)
+        }
         if (result) {
           result.close();
         }
