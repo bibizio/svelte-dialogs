@@ -1,7 +1,7 @@
 <script>
-  import dialogs from "svelte-dialogs";
-  import ContentComponent from './ContentComponent.svelte'
-  import CustomContent from './CustomContent.svelte'
+  import { dialogs } from "svelte-dialogs";
+  import ContentComponent from "./ContentComponent.svelte";
+  import CustomContent from "./CustomContent.svelte";
 
   async function persistent() {
     let confirm;
@@ -27,7 +27,9 @@
   >modal component</button
 >
 
-<button on:click={() => dialogs.modal(CustomContent, {name: 'carlo'}).then(console.log)}
+<button
+  on:click={() =>
+    dialogs.modal(CustomContent, { name: "carlo" }).then(console.log)}
   >modal component with props</button
 >
 
@@ -66,5 +68,4 @@
       .then(console.log)}>confirm options</button
 >
 
-<button on:click={() => persistent()}>persistent dialog</button>
 <button on:click={() => persistent()}>persistent dialog</button>

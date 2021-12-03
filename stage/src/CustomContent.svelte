@@ -1,17 +1,15 @@
 <script>
-  import DialogContent from "svelte-dialogs/src/components/DialogContent.svelte";
+  import { DialogContent, getOptions, getClose } from "svelte-dialogs";
 
-  import dialogs from "svelte-dialogs";
-
-  console.log(dialogs.getOptions());
-  console.log(dialogs.getClose());
+  console.log(getOptions());
+  console.log(getClose());
+  const close = getClose();
 
   export let name = "pippo";
 
   function click() {
-    console.log(document.querySelector(".dialog__container"));
-    // console.log(dialogs.options)
-    console.log(dialogs.getOptions());
+    close();
+    console.log(getOptions());
   }
 </script>
 

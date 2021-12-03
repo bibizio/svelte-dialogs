@@ -1,5 +1,5 @@
 import { check_outros, group_outros, transition_out } from "svelte/internal";
-import { default as Dialog } from "../components/Dialog.svelte";
+import { Dialog } from "../components";
 
 export const isTitleTextContent = (_) =>
   Object.keys(_).length == 2 && _.title && _.text;
