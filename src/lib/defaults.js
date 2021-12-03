@@ -5,7 +5,7 @@ import { default as DialogContent } from "../components/DialogContent.svelte";
 
 export const defaultDialogOptions = {
   component: DialogContent,
-  content: null,
+  props: {},
   //
   closeButton: true,
   closeOnBg: true,
@@ -48,7 +48,7 @@ export const defaultDialogOptions = {
 
 export const defaultAlertOptions = {
   component: Alert,
-  content: null,
+  props: {},
   //
   closeButton: false,
   closeOnBg: false,
@@ -94,7 +94,7 @@ export const defaultAlertOptions = {
 
 export const defaultConfirmOptionts = {
   component: Confirm,
-  content: null,
+  props: {},
   //
   closeButton: false,
   closeOnBg: false,

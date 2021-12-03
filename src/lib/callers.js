@@ -5,7 +5,7 @@ import {
 } from "./configuration";
 import { createDialog } from "./utils";
 
-export const modal = (options) => {
+export const modal = (options, props) => {
   let opts;
 
   if (typeof options === "string" || typeof options === "function") {
@@ -15,6 +15,10 @@ export const modal = (options) => {
     opts = getModalOptions(options);
   }
 
+  if (props) {
+    opts.props = props;
+  }
+  
   return createDialog(opts);
 };
 

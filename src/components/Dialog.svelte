@@ -85,7 +85,7 @@
     {#if typeof opts.component === "string"}
       {@html opts.component}
     {:else}
-      <svelte:component this={opts.component} />
+      <svelte:component this={opts.component} {...opts.props} />
     {/if}
   </div>
 </div>

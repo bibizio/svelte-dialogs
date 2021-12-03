@@ -6,17 +6,12 @@ export const config = (options) => {
   customConfig = options;
 };
 
-const getOpts = (defaults, custom, options = {}) => {
-  const opts = {
-    ...defaults,
-    ...customConfig.global,
-    ...custom,
-    ...options,
-  };
-  const { title, text } = opts;
-  opts.content = { title, text };
-  return opts;
-};
+const getOpts = (defaults, custom, options = {}) => ({
+  ...defaults,
+  ...customConfig.global,
+  ...custom,
+  ...options,
+});
 
 export const getModalOptions = (options) =>
   getOpts(defaultDialogConfigOptionts.global, customConfig.global, options);
