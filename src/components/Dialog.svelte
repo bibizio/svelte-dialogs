@@ -1,14 +1,15 @@
 <script>
-  import { createEventDispatcher, setContext } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import focusTrap from "../lib/focus-trap";
+  import { setClose, setOptions } from "../lib/ctx-manager";
 
   export let close;
   export let opts;
 
   console.log("@Modal opts", opts);
 
-  setContext("close", close);
-  setContext("opts", opts);
+  setClose(close);
+  setOptions(opts);
 
   const dispatch = createEventDispatcher();
 
@@ -44,6 +45,11 @@
       close();
     }
   }
+
+  function handleDialogClick(event) {
+    event.stopPropagation();
+  }
+  
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -65,6 +71,7 @@
     on:introend={() => dispatch("shown")}
     on:outrostart={() => dispatch("hide")}
     on:outroend={() => dispatch("hidden")}
+    on:click={handleDialogClick}
     use:focusTrap
   >
     {#if opts.closeButton}

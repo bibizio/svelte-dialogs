@@ -1,9 +1,9 @@
 <script>
-  import { getContext } from "svelte";
   import { default as DialogContent } from "./DialogContent.svelte";
+  import { getClose, getOptions } from "../lib/ctx-manager";
 
-  const close = getContext("close");
-  const opts = getContext("opts");
+  const close = getClose();
+  const opts = getOptions();
 </script>
 
 <DialogContent>

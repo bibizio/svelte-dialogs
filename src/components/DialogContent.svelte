@@ -1,7 +1,7 @@
 <script>
-  import { getContext } from "svelte";
+  import { getOptions } from "../lib/ctx-manager";
 
-  const opts = getContext("opts");
+  const opts = getOptions();
 </script>
 
 <header class={opts.headerClass}>
