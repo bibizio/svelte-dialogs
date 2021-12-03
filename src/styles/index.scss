@@ -59,7 +59,6 @@
 
 .dialog__header {
   text-align: center;
-  border-bottom: 2px solid grey;
 }
 
 .dialog__title {
@@ -71,12 +70,12 @@
 
 .dialog__body {
   text-align: center;
-  margin: 1rem 0;
+  padding-top: 1rem;
   min-height: 10vh;
   max-height: 80vh;
   overflow-y: auto;
+  border-top: 2px solid grey;
   // border-bottom: 2px solid grey;
-  // border-top: 2px solid grey;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -96,6 +95,7 @@
 }
 
 .dialog__footer {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-evenly;
 }

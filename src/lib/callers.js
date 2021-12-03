@@ -7,7 +7,7 @@ import { createDialog } from "./utils";
 
 export const modal = (options, props) => {
   let opts;
-
+  
   if (typeof options === "string" || typeof options === "function") {
     opts = getModalOptions();
     opts.content = options;
@@ -26,7 +26,7 @@ export const alert = (options) => {
 
   if (typeof options === "string") {
     opts = getAlertOptions();
-    opts.text = options;
+    opts.title = options;
   } else {
     opts = getAlertOptions(options);
   }
@@ -38,7 +38,7 @@ export const confirm = (options) => {
 
   if (typeof options === "string") {
     opts = getConfirmOptions();
-    opts.text = options;
+    opts.title = options;
   } else {
     opts = getConfirmOptions(options);
   }

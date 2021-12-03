@@ -47,7 +47,6 @@
   function handleDialogClick(event) {
     event.stopPropagation();
   }
-  
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -62,7 +61,7 @@
     class={opts.dialogClass}
     role="dialog"
     aria-modal="true"
-    aria-labelledby="dialog__title"
+    aria-labelledby={opts.titleId}
     in:dialogIn
     out:dialogOut
     on:introstart={() => dispatch("show")}
@@ -76,8 +75,8 @@
       <button
         class={opts.closeButtonClass}
         aria-label="Close dialog"
-        on:click={() => close()}
-      >{@html opts.closeButtonText}</button>
+        on:click={() => close()}>{@html opts.closeButtonText}</button
+      >
     {/if}
 
     {#if typeof opts.content === "string"}

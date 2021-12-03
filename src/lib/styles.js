@@ -49,7 +49,6 @@
 "\n" +
 ".dialog__header {\n" +
 "  text-align: center;\n" +
-"  border-bottom: 2px solid grey;\n" +
 "}\n" +
 "\n" +
 ".dialog__title {\n" +
@@ -61,10 +60,11 @@
 "\n" +
 ".dialog__body {\n" +
 "  text-align: center;\n" +
-"  margin: 1rem 0;\n" +
+"  padding-top: 1rem;\n" +
 "  min-height: 10vh;\n" +
 "  max-height: 80vh;\n" +
 "  overflow-y: auto;\n" +
+"  border-top: 2px solid grey;\n" +
 "}\n" +
 ".dialog__body::-webkit-scrollbar {\n" +
 "  width: 5px;\n" +
@@ -79,6 +79,7 @@
 "}\n" +
 "\n" +
 ".dialog__footer {\n" +
+"  margin-top: 1rem;\n" +
 "  display: flex;\n" +
 "  justify-content: space-evenly;\n" +
 "}\n" +

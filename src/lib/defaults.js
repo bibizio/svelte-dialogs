@@ -39,6 +39,7 @@ export const defaultDialogOptions = {
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",
+  titleId: "dialog-title-id",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer",
   title: "",
@@ -83,9 +84,10 @@ export const defaultAlertOptions = {
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",
+  titleId: "dialog-title-id",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer",
-  title: "WARNING!",
+  title: "",
   text: "",
   //
   dismissButtonText: "ok",
@@ -130,10 +132,11 @@ export const defaultConfirmOptionts = {
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",
+  titleId: "dialog-title-id",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer",
-  title: "WARNING!",
-  text: "are you sure you want to continue?",
+  title: "are you sure you want to continue?",
+  text: "",
   //
   confirmButtonText: "yes",
   declineButtonText: "no",
