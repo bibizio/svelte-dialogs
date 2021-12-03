@@ -6,8 +6,6 @@
   export let close;
   export let opts;
 
-  console.log("@Modal opts", opts);
-
   setClose(close);
   setOptions(opts);
 
@@ -23,12 +21,12 @@
     return transition(node, props);
   }
 
-  function modalIn(node, _) {
+  function dialogIn(node, _) {
     const { transition, props } = opts.transitions.in;
     return transition(node, props);
   }
 
-  function modalOut(node, _) {
+  function dialogOut(node, _) {
     const { transition, props } = opts.transitions.out;
     return transition(node, props);
   }
@@ -65,8 +63,8 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="dialog__title"
-    in:modalIn
-    out:modalOut
+    in:dialogIn
+    out:dialogOut
     on:introstart={() => dispatch("show")}
     on:introend={() => dispatch("shown")}
     on:outrostart={() => dispatch("hide")}
@@ -79,13 +77,13 @@
         class={opts.closeButtonClass}
         aria-label="Close dialog"
         on:click={() => close()}
-      />
+      >{@html opts.closeButtonText}</button>
     {/if}
 
-    {#if typeof opts.component === "string"}
-      {@html opts.component}
+    {#if typeof opts.content === "string"}
+      {@html opts.content}
     {:else}
-      <svelte:component this={opts.component} {...opts.props} />
+      <svelte:component this={opts.content} {...opts.props} />
     {/if}
   </div>
 </div>

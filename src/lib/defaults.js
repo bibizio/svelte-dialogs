@@ -2,7 +2,7 @@ import { fade, fly } from "svelte/transition";
 import { DialogContent, Confirm, Alert } from "../components";
 
 export const defaultDialogOptions = {
-  component: DialogContent,
+  content: DialogContent,
   props: {},
   //
   closeButton: true,
@@ -35,6 +35,7 @@ export const defaultDialogOptions = {
   overlayClass: "dialog__overlay",
   dialogClass: "dialog__container",
   closeButtonClass: "dialog__close-button",
+  closeButtonText: "",
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",
@@ -45,7 +46,7 @@ export const defaultDialogOptions = {
 };
 
 export const defaultAlertOptions = {
-  component: Alert,
+  content: Alert,
   props: {},
   //
   closeButton: false,
@@ -78,6 +79,7 @@ export const defaultAlertOptions = {
   overlayClass: "dialog__overlay",
   dialogClass: "dialog__container",
   closeButtonClass: "dialog__close-button",
+  closeButtonText: "",
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",
@@ -91,7 +93,7 @@ export const defaultAlertOptions = {
 };
 
 export const defaultConfirmOptionts = {
-  component: Confirm,
+  content: Confirm,
   props: {},
   //
   closeButton: false,
@@ -124,6 +126,7 @@ export const defaultConfirmOptionts = {
   overlayClass: "dialog__overlay",
   dialogClass: "dialog__container",
   closeButtonClass: "dialog__close-button",
+  closeButtonText: "",
   //
   headerClass: "dialog__header",
   titleClass: "dialog__title",

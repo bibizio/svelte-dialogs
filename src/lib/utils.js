@@ -6,7 +6,6 @@ export const isTitleTextContent = (_) =>
 
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
 const outroAndDestroy = (instance) => {
-  console.log("@outroAndDestroy", instance);
   if (instance.$$.fragment && instance.$$.fragment.o) {
     group_outros();
     transition_out(instance.$$.fragment, 0, 0, () => {

@@ -10,13 +10,12 @@ export const modal = (options, props) => {
 
   if (typeof options === "string" || typeof options === "function") {
     opts = getModalOptions();
-    opts.component = options;
+    opts.content = options;
+    if (props) {
+      opts.props = props;
+    }
   } else {
     opts = getModalOptions(options);
-  }
-
-  if (props) {
-    opts.props = props;
   }
 
   return createDialog(opts);
