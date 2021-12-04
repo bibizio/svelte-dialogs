@@ -55,7 +55,7 @@ You can use options with all the methods (reference below) like so:
   const opts = {
     title: "a title",
     text: "the text",
-    titleClass: "my-button-class",
+    titleClass: "my-title-class",
     closeButton: false,
     closeOnBg: true,
     transitions: {

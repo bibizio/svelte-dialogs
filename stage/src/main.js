@@ -1,6 +1,5 @@
 import App from "./App.svelte";
-import { dialogs } from "svelte-dialogs";
-
+// import { dialogs } from "svelte-dialogs";
 // dialogs.config({
 //   global: {
 //     overlayClass: "some-other-class",
