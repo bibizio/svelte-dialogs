@@ -1,5 +1,7 @@
 import { fade, fly } from "svelte/transition";
-import { DialogContent, Confirm, Alert } from "../components";
+import { default as DialogContent } from "../components/DialogContent.svelte";
+import { default as Alert } from "../components/Alert.svelte";
+import { default as Confirm } from "../components/Confirm.svelte";
 
 export const defaultDialogOptions = {
   content: DialogContent,

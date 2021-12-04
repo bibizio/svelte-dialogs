@@ -47,8 +47,6 @@
   function handleDialogClick(event) {
     event.stopPropagation();
   }
-
-  console.log("@DialogCore slots", $$slots);
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

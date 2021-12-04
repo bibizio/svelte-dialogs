@@ -1,7 +1,7 @@
 <script>
   import { dialogs } from "svelte-dialogs";
   import Example from "./Example.svelte";
-  import TemplateBased from "./TemplateBased.svelte";
+  import EventsBased from "./EventsBased.svelte";
   import CustomContent from "./CustomContent.svelte";
   import { fade } from "svelte/transition";
 
@@ -42,11 +42,11 @@
   };
 </script>
 
-<TemplateBased />
+<h1>Svelte dialogs</h1>
+
+<EventsBased />
 
 <Example />
-
-<h1>Svelte dialogs</h1>
 
 <button on:click={() => dialogs.modal(opts)}>click me</button>
 

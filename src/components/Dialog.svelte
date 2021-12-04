@@ -1,30 +1,32 @@
 <script>
   import DialogCore from "./DialogCore.svelte";
   import { getModalOptions } from "../lib/configuration";
+  import { createEventDispatcher } from "svelte";
 
-  $: close = () => {};
-  let visible = false;
-
+  const emit = createEventDispatcher();
   export let options = {};
+  let visible = false;
+  let _data = null;
 
   $: opts = { ...getModalOptions(), ...options };
 
-  export function show() {
-    console.log(this);
-    const promise = new Promise((resolve, _) => {
-      close = resolve;
-    });
+  export function open(data) {
+    _data = data;
     visible = true;
-    return promise.finally(() => {
-      visible = false;
-    });
   }
 
-  console.log("@Dialog slots", $$slots);
+  export function close(data) {
+    emit("hide", data);
+    visible = false;
+  }
+
+  export function data() {
+    return _data;
+  }
 </script>
 
 {#if visible}
-  <DialogCore {close} {opts} on:show on:shown on:hide on:hidden>
+  <DialogCore {close} {opts} on:show on:shown on:hidden>
     <slot />
   </DialogCore>
 {/if}
