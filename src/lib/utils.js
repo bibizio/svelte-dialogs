@@ -1,5 +1,5 @@
 import { check_outros, group_outros, transition_out } from "svelte/internal";
-import { Dialog } from "../components";
+import { DialogCore } from "../components";
 
 export const isTitleTextContent = (_) =>
   Object.keys(_).length == 2 && _.title && _.text;
@@ -22,7 +22,7 @@ export const createDialog = (opts) => {
   const promise = new Promise((res, rej) => {
     close = res;
   });
-  const dialog = new Dialog({
+  const dialog = new DialogCore({
     target: document.body,
     intro: true,
     props: {
