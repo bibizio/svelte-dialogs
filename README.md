@@ -6,7 +6,7 @@ handy dialogs in/for svelte
 
 ### Basics
 
-the easiest way to use svelte dialog is
+the easiest way to use *svelte-dialog* is
 
 ```
 <script>
@@ -136,7 +136,7 @@ so you can do something like this:
 
 ```
 
-To resolve in custom components, _svelte-dialogs_ export a `getClose` function to be called at initialization to retrieve the close function from the context
+To resolve in custom components, _svelte-dialogs_ export a `getClose()` function to be called at initialization to retrieve the close function from the context
 
 ```
 <script>
@@ -150,7 +150,7 @@ To resolve in custom components, _svelte-dialogs_ export a `getClose` function t
 
 ## Configure
 
-You can configure the defaults with _svelte-dialogs_ export `config`, for example in the entry point of you application or in you main component, like so:
+You can configure the defaults with _svelte-dialogs_ export `config()`, for example in the entry point of you application or in you main component, like so:
 
 ```
 // main.js
@@ -235,4 +235,4 @@ It can obviously get confusing, but the order of importance for the options is:
 
 ## Contributing
 
-this prokect is still a WIP, please don't open any issue yet
+this prokect is still in dev, please don't open any issue yet
