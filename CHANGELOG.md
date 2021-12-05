@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.3.0
+
+### New Feature
+
+- prompt()
+
 ## 0.2.0
 
 ### New Feature
