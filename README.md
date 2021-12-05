@@ -16,13 +16,14 @@ the easiest way to use _svelte-dialog_ is
 <button on:click={() => dialogs.alert('this is an alert')}>click me</button>
 ```
 
-`dialogs` has (as for now....) three methods for rendering a dialog:
+`dialogs` has (as for now....) four methods for rendering a dialog:
 
 - `alert()` shows a dialog with a dismiss button
 - `confirm()` shows a dialog with a confirm and decline button
+- `prompt()` shows a dialog with inputs, a cancel, submit and an optional reset button
 - `modal()` shows a modal with..... well, everything you want in it (or nothing, if called empty)
 
-All of them can be called with an options parameter (see below) or with a string parameter (rendered as html).
+`alert()`, `confirm()` and `modal()` can be called with an options parameter (see below) or with a string parameter (rendered as html).
 
 `alert()` and `confirm()` will use that as a title, while `modal()` will use it as the whole content.
 
@@ -42,6 +43,20 @@ const htmlString =
 </script>
 
 <button on:click={() => dialogs.modal(htmlString)}>click me</button>
+```
+
+`prompt()` accepts two parameters:
+
+- a string or array of string parameter, used as labels for the inputs
+- an options parameter (optional)
+
+```
+<script>
+  import { dialogs } from "svelte-dialogs";
+</script>
+
+<button on:click={() => dialogs.prompt("an input")}>click me</button>
+<button on:click={() => dialogs.prompt(["input", "another input"])}>click me</button>
 ```
 
 ### With options
@@ -70,6 +85,7 @@ You can use options with all the methods (reference below) like so:
 </script>
 
 <button on:click={() => dialogs.modal(opts)}>click me</button>
+<button on:click={() => dialogs.prompt("an input", opts)}>click me</button>
 ```
 
 ### User component
@@ -105,12 +121,54 @@ So for example:
 <button on:click={() => dialogs.modal(MyComponent, { name: "world" })}>click me</button>
 ```
 
+`prompt()` accepts as first parameter, an object, or objects array, in the shape of `{component: SvelteComponent, props: object}`
+
+```
+// MyInput.svelte
+<script>
+  export let value = '';
+  export let placeholder;
+  export let label;
+  export let name;
+  export let id;
+</script>
+
+<label for={id}>{label}</label>
+<input bind:value {placeholder} {id} {name} type="text" />
+
+
+
+// another component
+<script>
+  import { dialogs } from "svelte-dialogs";
+  import MyInput from "./MyInput.svelte";
+
+  const myInputProps = {
+    placeholder: "a placeholder",
+    label: "my input",
+    name: "my-input",
+    id: "my-input-id",
+  };
+</script>
+
+
+<button
+  on:click={() =>
+    dialogs.prompt({
+      component: MyInput,
+      props: myInputProps,
+    })}
+>click me</button>
+
+```
+
 ### Promise-based
 
 All methods described return a promise that resolve on close:
 
 - `alert()` resolve `undefined` on dismiss
 - `confirm()` resolve `true` on confirm, `false` on decline and `undefined` on dismiss
+- `prompt()` resolve `undefined` on dismiss, while on submit resolves with an array of the inputs values
 
 so you can do something like this:
 
@@ -219,7 +277,7 @@ export default app;
 
 ```
 
-config accept an object with the following properties: `global`, `alert` and `confirm` to fine-tuning the defaults at the beginning and then forget about it.
+config accept an object with the following properties: `global`, `alert`, `confirm` and `prompt` to fine-tuning the defaults at the beginning and then forget about it.
 
 Every property is a config object as the one below.
 
@@ -269,6 +327,18 @@ It can obviously get confusing, but the order of importance for the options is:
   declineButtonText?: string | htmlString;
   confirmButtonClass?: string;
   declineButtonClass?: string;
+  // specific to prompt() with default component
+  resetButton?: boolean;
+  formClass?: string;
+  formElementClass?: string;
+  formLabelClass?: string;
+  formInputClass?: string;
+  submitButtonText?: string | htmlString;
+  cancelButtonText?: string | htmlString;
+  resetButtonText?: string | htmlString;
+  submitButtonClass?: string;
+  cancelButtonClass?: string;
+  resetButtonClass?: string;
 }
 
 ```

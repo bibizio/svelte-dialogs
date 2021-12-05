@@ -30,9 +30,9 @@
 >
 <button on:click={() => dialogs.modal(htmlString)}>html string modal</button>
 
-<button on:click={() => dialogs.prompt("ciao").then(printSubmit)}
+<button on:click={() => dialogs.prompt("an input").then(printSubmit)}
   >string prompt</button
 >
-<button on:click={() => dialogs.prompt(["ciao", "ciao"]).then(printSubmit)}
+<button on:click={() => dialogs.prompt(["input", "another input"]).then(printSubmit)}
   >string array prompt</button
 >
