@@ -97,7 +97,38 @@
 .dialog__footer {
   margin-top: 1rem;
   display: flex;
+}
+
+.dialog__footer--space-evenly {
   justify-content: space-evenly;
+}
+
+.dialog__footer--space-between {
+  justify-content: space-between;
+}
+
+// .dialog__form {
+// }
+// .dialog__form-element {
+// }
+.dialog__form-label {
+  width: fit-content;
+  margin-left: 1rem;
+  text-align: left;
+  position: relative;
+  top: 8px;
+  padding: 0 5px;
+  background: #fff;
+}
+.dialog__form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+
+  &:focus {
+    border: 2px solid #333;
+  }
 }
 
 .dialog_button {
@@ -132,6 +163,10 @@
     background-color: rgba(204, 204, 204, 0.8);
   }
 
+  &:not(:disabled):active {
+    background-color: rgba(204, 204, 204, 1);
+  }
+
   &:focus {
     box-shadow: 0 0 0 3px rgba(204, 204, 204, 0.5);
   }
@@ -143,6 +178,10 @@
 
   &:hover {
     background-color: rgba(202, 47, 63, 0.8);
+  }
+
+  &:not(:disabled):active {
+    background-color: rgba(202, 47, 63, 1);
   }
 
   &:focus {

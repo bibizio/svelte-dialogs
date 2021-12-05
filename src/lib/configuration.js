@@ -27,3 +27,6 @@ export const getAlertOptions = (options) =>
 
 export const getConfirmOptions = (options) =>
   getOpts(defaultDialogConfigOptionts.confirm, customConfig.confirm, options);
+
+export const getPromptOptions = (options) =>
+  getOpts(defaultDialogConfigOptionts.prompt, customConfig.prompt, options);

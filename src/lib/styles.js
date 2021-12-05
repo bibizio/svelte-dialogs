@@ -81,7 +81,36 @@
 ".dialog__footer {\n" +
 "  margin-top: 1rem;\n" +
 "  display: flex;\n" +
+"}\n" +
+"\n" +
+".dialog__footer--space-evenly {\n" +
 "  justify-content: space-evenly;\n" +
+"}\n" +
+"\n" +
+".dialog__footer--space-between {\n" +
+"  justify-content: space-between;\n" +
+"}\n" +
+"\n" +
+".dialog__form-label {\n" +
+"  width: -webkit-fit-content;\n" +
+"  width: -moz-fit-content;\n" +
+"  width: fit-content;\n" +
+"  margin-left: 1rem;\n" +
+"  text-align: left;\n" +
+"  position: relative;\n" +
+"  top: 8px;\n" +
+"  padding: 0 5px;\n" +
+"  background: #fff;\n" +
+"}\n" +
+"\n" +
+".dialog__form-input {\n" +
+"  width: 100%;\n" +
+"  padding: 1rem;\n" +
+"  border: 2px solid #ccc;\n" +
+"  border-radius: 1rem;\n" +
+"}\n" +
+".dialog__form-input:focus {\n" +
+"  border: 2px solid #333;\n" +
 "}\n" +
 "\n" +
 ".dialog_button {\n" +
@@ -115,6 +144,9 @@
 ".dialog_button--primary:hover {\n" +
 "  background-color: rgba(204, 204, 204, 0.8);\n" +
 "}\n" +
+".dialog_button--primary:not(:disabled):active {\n" +
+"  background-color: #cccccc;\n" +
+"}\n" +
 ".dialog_button--primary:focus {\n" +
 "  box-shadow: 0 0 0 3px rgba(204, 204, 204, 0.5);\n" +
 "}\n" +
@@ -125,6 +157,9 @@
 "}\n" +
 ".dialog_button--decline:hover {\n" +
 "  background-color: rgba(202, 47, 63, 0.8);\n" +
+"}\n" +
+".dialog_button--decline:not(:disabled):active {\n" +
+"  background-color: #ca2f3f;\n" +
 "}\n" +
 ".dialog_button--decline:focus {\n" +
 "  box-shadow: 0 0 0 3px rgba(202, 47, 63, 0.5);\n" +

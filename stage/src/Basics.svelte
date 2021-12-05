@@ -9,6 +9,11 @@
     </div>
   </div>
   `;
+
+  function printSubmit(submitArray) {
+    const text = "<p>" + submitArray.join("</p><p>") + "</p>";
+    dialogs.alert({ title: "Your responses", text });
+  }
 </script>
 
 <h2>Basics</h2>
@@ -24,3 +29,10 @@
   >confirm html string</button
 >
 <button on:click={() => dialogs.modal(htmlString)}>html string modal</button>
+
+<button on:click={() => dialogs.prompt("ciao").then(printSubmit)}
+  >string prompt</button
+>
+<button on:click={() => dialogs.prompt(["ciao", "ciao"]).then(printSubmit)}
+  >string array prompt</button
+>
