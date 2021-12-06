@@ -52,6 +52,7 @@
 <svelte:window on:keydown={handleKeydown} />
 <div
   class={opts.overlayClass}
+  data-testid="dialog-core__overlay"
   tabindex="-1"
   in:bgIn
   out:bgOut
@@ -62,6 +63,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby={opts.titleId}
+    data-testid="dialog-core__dialog"
     in:dialogIn
     out:dialogOut
     on:introstart={() => dispatch("show")}
@@ -75,6 +77,7 @@
       <button
         class={opts.closeButtonClass}
         aria-label="Close dialog"
+        data-testid="dialog-core__close-button"
         on:click={() => close()}>{@html opts.closeButtonText}</button
       >
     {/if}

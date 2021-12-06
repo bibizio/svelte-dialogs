@@ -11,6 +11,7 @@
     <button
       class={opts.dismissButtonClass}
       aria-label="Dismiss alert"
+      data-testid="alert__dismiss-button"
       on:click={() => close()}>{@html opts.dismissButtonText}</button
     >
   </svelte:fragment>

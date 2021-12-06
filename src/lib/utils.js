@@ -5,7 +5,7 @@ export const isTitleTextContent = (_) =>
   Object.keys(_).length == 2 && _.title && _.text;
 
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
-const outroAndDestroy = (instance) => {
+export const outroAndDestroy = (instance) => {
   if (instance.$$.fragment && instance.$$.fragment.o) {
     group_outros();
     transition_out(instance.$$.fragment, 0, 0, () => {

@@ -11,11 +11,13 @@
     <button
       class={opts.declineButtonClass}
       aria-label="Decline"
+      data-testid="confirm__decline-button"
       on:click={() => close(false)}>{@html opts.declineButtonText}</button
     >
     <button
       class={opts.confirmButtonClass}
       aria-label="Confirm"
+      data-testid="confirm__confirm-button"
       on:click={() => close(true)}>{@html opts.confirmButtonText}</button
     >
   </svelte:fragment>

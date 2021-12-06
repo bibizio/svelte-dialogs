@@ -3,7 +3,7 @@
   import { getModalOptions } from "../lib/configuration";
   import { createEventDispatcher } from "svelte";
 
-  const emit = createEventDispatcher();
+  const dispatch = createEventDispatcher();
   export let options = {};
   let visible = false;
   let _data = null;
@@ -16,7 +16,7 @@
   }
 
   export function close(data) {
-    emit("hide", data);
+    dispatch("hide", data);
     visible = false;
   }
 
