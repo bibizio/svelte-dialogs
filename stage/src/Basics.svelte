@@ -11,8 +11,10 @@
   `;
 
   function printSubmit(submitArray) {
-    const text = "<p>" + submitArray.join("</p><p>") + "</p>";
-    dialogs.alert({ title: "Your responses", text });
+    if (submitArray) {
+      const text = "<p>" + submitArray.join("</p><p>") + "</p>";
+      dialogs.alert({ title: "Your responses", text });
+    }
   }
 </script>
 
@@ -33,6 +35,7 @@
 <button on:click={() => dialogs.prompt("an input").then(printSubmit)}
   >string prompt</button
 >
-<button on:click={() => dialogs.prompt(["input", "another input"]).then(printSubmit)}
+<button
+  on:click={() => dialogs.prompt(["input", "another input"]).then(printSubmit)}
   >string array prompt</button
 >

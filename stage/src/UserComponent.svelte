@@ -4,8 +4,10 @@
   import MyInput from "./MyInput.svelte";
 
   function printSubmit(submitArray) {
-    const text = "<p>" + submitArray.join("</p><p>") + "</p>";
-    dialogs.alert({ title: "Your responses", text });
+    if (submitArray) {
+      const text = "<p>" + submitArray.join("</p><p>") + "</p>";
+      dialogs.alert({ title: "Your responses", text });
+    }
   }
 </script>
 

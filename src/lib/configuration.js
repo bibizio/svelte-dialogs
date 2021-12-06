@@ -1,4 +1,4 @@
-import { defaultDialogConfigOptionts } from "./defaults";
+import { defaultDialogConfigOptions } from "./defaults";
 
 let customConfig = {};
 
@@ -20,13 +20,13 @@ const getOpts = (defaults, custom, options = {}) => ({
 });
 
 export const getModalOptions = (options) =>
-  getOpts(defaultDialogConfigOptionts.global, customConfig.global, options);
+  getOpts(defaultDialogConfigOptions.global, customConfig.global, options);
 
 export const getAlertOptions = (options) =>
-  getOpts(defaultDialogConfigOptionts.alert, customConfig.alert, options);
+  getOpts(defaultDialogConfigOptions.alert, customConfig.alert, options);
 
 export const getConfirmOptions = (options) =>
-  getOpts(defaultDialogConfigOptionts.confirm, customConfig.confirm, options);
+  getOpts(defaultDialogConfigOptions.confirm, customConfig.confirm, options);
 
 export const getPromptOptions = (options) =>
-  getOpts(defaultDialogConfigOptionts.prompt, customConfig.prompt, options);
+  getOpts(defaultDialogConfigOptions.prompt, customConfig.prompt, options);

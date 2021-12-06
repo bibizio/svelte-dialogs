@@ -1,3 +1,4 @@
+// https://gist.github.com/JulienPradet/20dbb7ca06cbd9e2ec499bb2206aab55
 let trapFocusList = [];
 
 const focusableSelector =

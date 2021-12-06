@@ -97,7 +97,7 @@ export const defaultAlertOptions = {
   dismissButtonClass: "dialog_button dialog_button--primary",
 };
 
-export const defaultConfirmOptionts = {
+export const defaultConfirmOptions = {
   content: Confirm,
   props: {},
   //
@@ -147,7 +147,7 @@ export const defaultConfirmOptionts = {
   declineButtonClass: "dialog_button dialog_button--decline",
 };
 
-export const defaultPromptOptionts = {
+export const defaultPromptOptions = {
   content: Prompt,
   props: {},
   //
@@ -204,9 +204,9 @@ export const defaultPromptOptionts = {
   resetButtonClass: "dialog_button dialog_button--primary",
 };
 
-export const defaultDialogConfigOptionts = {
+export const defaultDialogConfigOptions = {
   global: defaultDialogOptions,
   alert: defaultAlertOptions,
-  confirm: defaultConfirmOptionts,
-  prompt: defaultPromptOptionts,
+  confirm: defaultConfirmOptions,
+  prompt: defaultPromptOptions,
 };
