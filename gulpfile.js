@@ -5,6 +5,8 @@ const autoprefixer = require("gulp-autoprefixer");
 const css2js = require("gulp-css2js");
 const rollup = require("rollup");
 const svelte = require("rollup-plugin-svelte");
+const commonjs = require("@rollup/plugin-commonjs");
+const { babel } = require("@rollup/plugin-babel");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const { terser } = require("rollup-plugin-terser");
 const serve = require("rollup-plugin-serve");
@@ -25,6 +27,29 @@ const banner = `/*!
 
 const skipTests = process.argv.includes("--skip-tests");
 
+const babelConfig = {
+  extensions: [".js", ".mjs", ".html", ".svelte"],
+  babelHelpers: "runtime",
+  exclude: ["node_modules/@babel/**"],
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: "> 0.25%, not dead",
+      },
+    ],
+  ],
+  plugins: [
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        useESModules: true,
+      },
+    ],
+  ],
+};
+
 gulp.task("build:styles", () => {
   return gulp
     .src("src/styles/index.scss")
@@ -39,7 +64,12 @@ gulp.task("build:styles", () => {
 gulp.task("build:rollup", async () => {
   const bundle = await rollup.rollup({
     input: "src/index.js",
-    plugins: [nodeResolve(), svelte()],
+    plugins: [
+      nodeResolve(),
+      svelte(),
+      commonjs(),
+      babel(babelConfig)
+    ],
   });
 
   await bundle.write({ file: pkg.module, format: "es", banner });
@@ -74,7 +104,7 @@ gulp.task(
 
 gulp.task("dev:stage", () => {
   return gulp
-    .src(["package.json", "src/**/*", "dist/**/*",], {
+    .src(["package.json", "src/**/*", "dist/**/*"], {
       base: "./",
     })
     .pipe(gulp.dest("stage/node_modules/" + pkg.name));
@@ -99,7 +129,7 @@ gulp.task(
         },
         plugins: [
           nodeResolve({
-            mainFields: ['svelte', 'module', 'main'],
+            mainFields: ["svelte", "module", "main"],
             dedupe: ["svelte"],
           }),
           svelte({
@@ -107,13 +137,15 @@ gulp.task(
               dev: true,
             },
           }),
+          commonjs(),
+          babel(babelConfig),
           serve("stage/public"),
           livereload("stage/public"),
         ],
       })
-      .on("event", ({code, error, result}) => {
-        if(code === 'ERROR'){
-          console.error(error)
+      .on("event", ({ code, error, result }) => {
+        if (code === "ERROR") {
+          console.error(error);
         }
         if (result) {
           result.close();
