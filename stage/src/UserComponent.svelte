@@ -12,9 +12,7 @@
 </script>
 
 <h2>User component</h2>
-<button
-  on:click={() =>
-    dialogs.modal(MyComponent, { name: "world" }).then(dialogs.alert)}
+<button on:click={() => dialogs.modal(MyComponent, { name: "world" }).then(dialogs.alert)}
   >component modal</button
 >
 
@@ -24,13 +22,10 @@
       .prompt({
         component: MyInput,
         props: {
-          component: MyInput,
-          props: {
-            placeholder: "a placeholder",
-            label: "my input",
-            name: "my-input",
-            id: "my-input-id",
-          },
+          placeholder: "a placeholder",
+          label: "my input",
+          name: "my-input",
+          id: "my-input-id",
         },
       })
       .then(printSubmit)}>component prompt</button
