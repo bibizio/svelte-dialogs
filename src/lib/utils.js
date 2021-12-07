@@ -1,8 +1,7 @@
 import { check_outros, group_outros, transition_out } from "svelte/internal";
 import { DialogCore } from "../components";
 
-export const isTitleTextContent = (_) =>
-  Object.keys(_).length == 2 && _.title && _.text;
+export const isTitleTextContent = (_) => Object.keys(_).length == 2 && _.title && _.text;
 
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
 export const outroAndDestroy = (instance) => {
@@ -19,8 +18,8 @@ export const outroAndDestroy = (instance) => {
 
 export const createDialog = (opts) => {
   let close;
-  const promise = new Promise((res, rej) => {
-    close = res;
+  const promise = new Promise((resolve) => {
+    close = resolve;
   });
   const dialog = new DialogCore({
     target: document.body,

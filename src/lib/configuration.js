@@ -6,7 +6,7 @@ export const config = (options) => {
   customConfig = options;
 };
 
-const getOpts = (defaults, custom, options = {}) => ({
+export const getOpts = (defaults, custom, options = {}) => ({
   ...defaults,
   ...customConfig.global,
   ...custom,
