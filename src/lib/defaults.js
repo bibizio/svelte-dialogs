@@ -188,7 +188,7 @@ export const defaultPromptOptions = {
   titleId: "dialog-title-id",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer dialog__footer--space-between",
-  title: "are you sure you want to continue?",
+  title: "please fill the form",
   text: "",
   //
   resetButton: true,
