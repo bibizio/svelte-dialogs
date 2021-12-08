@@ -27,6 +27,6 @@
 
 {#if visible}
   <DialogCore {close} {opts} on:show on:shown on:hidden>
-    <slot />
+    <slot {close} data={_data} />
   </DialogCore>
 {/if}

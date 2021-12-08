@@ -17,8 +17,10 @@
   on:shown={handler}
   on:hide={handler}
   on:hidden={handler}
+  let:data
+  let:close
 >
   <p>template based dialog</p>
-  <p>{dialog.data()}</p>
-  <button on:click={() => dialog.close(dialog.data())}>close</button>
+  <p>{data}</p>
+  <button on:click={() => close(data)}>close</button>
 </Dialog>
