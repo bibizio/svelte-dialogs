@@ -13,6 +13,7 @@
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "browser": "dist/index.mjs",
+  "types": "types",
   "scripts": {
     "dev": "gulp dev --skip-tests",
     "build": "gulp build",
@@ -35,6 +36,7 @@
     "@testing-library/svelte": "^3.0.3",
     "@testing-library/user-event": "^13.5.0",
     "babel-jest": "^27.4.2",
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
     "gulp-concat": "^2.6.1",
@@ -58,6 +60,7 @@
   ],
   "files": [
     "src",
-    "dist"
+    "dist",
+    "types"
   ]
 }

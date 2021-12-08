@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const concat = require("gulp-concat");
+const del = require("del");
 const sass = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
 const css2js = require("gulp-css2js");
@@ -50,6 +51,10 @@ const babelConfig = {
   ],
 };
 
+gulp.task("build:clean", () => {
+  return del(["dist/**", "!dist"]);
+});
+
 gulp.task("build:styles", () => {
   return gulp
     .src("src/styles/index.scss")
@@ -64,12 +69,7 @@ gulp.task("build:styles", () => {
 gulp.task("build:rollup", async () => {
   const bundle = await rollup.rollup({
     input: "src/index.js",
-    plugins: [
-      nodeResolve(),
-      svelte(),
-      commonjs(),
-      babel(babelConfig)
-    ],
+    plugins: [nodeResolve(), svelte(), commonjs(), babel(babelConfig)],
   });
 
   await bundle.write({ file: pkg.module, format: "es", banner });
@@ -97,14 +97,18 @@ gulp.task(
   "build",
   gulp.series(
     skipTests
-      ? ["build:styles", "build:rollup"]
-      : ["build:styles", "build:test", "build:rollup"]
+      ? ["build:clean", "build:styles", "build:rollup"]
+      : ["build:clean", "build:styles", "build:test", "build:rollup"]
   )
 );
 
+gulp.task("dev:clean", () => {
+  return del(["stage/node_modules/" + pkg.name + "/**", "!stage/node_modules/" + pkg.name]);
+});
+
 gulp.task("dev:stage", () => {
   return gulp
-    .src(["package.json", "src/**/*", "dist/**/*"], {
+    .src(["package.json", "src/**/*", "dist/**/*", "types/**/*"], {
       base: "./",
     })
     .pipe(gulp.dest("stage/node_modules/" + pkg.name));
@@ -112,9 +116,9 @@ gulp.task("dev:stage", () => {
 
 gulp.task(
   "dev",
-  gulp.series("build", "dev:stage", async function watch() {
-    gulp.watch(["src/**/*"], gulp.series("build:rollup", "dev:stage"));
-    gulp.watch(["src/styles/*"], gulp.series("build", "dev:stage"));
+  gulp.series("build", "dev:clean", "dev:stage", async function watch() {
+    gulp.watch(["src/**/*"], gulp.series("build:rollup", "dev:clean", "dev:stage"));
+    gulp.watch(["src/styles/*"], gulp.series("build", "dev:clean", "dev:stage"));
     rollup
       .watch({
         watch: {
