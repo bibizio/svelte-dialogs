@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 0.3.1
+
+### Improvements
+
+- babel preset env `> 0.25%, not dead`
+- types
+
+### Design change
+
+- slot `close` and `data` props in `Dialog`
+
 ## 0.3.0
 
 ### New Feature

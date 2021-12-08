@@ -215,10 +215,11 @@ It's possible to define and use modals in-component using the `Dialog` component
 - `hide` on out-transition start
 - `hidden` on out-transition end
 
-The component also exports `open()`, `close()` and `data()` methods:
+The component exports `open()` that accepts data to be passed to the modal.
 
-- `open()` can be called with a parameter that sets data to be retrieved with the `data()` method
-- `close()` accept a parameter that will be emitted by `on:hide`
+`close` function and `data` passed on `open()` are passed to slot as props. `close` accept a parameter that will be emitted by `on:hide`
+
+The component also exports `close()` and `data()` methods to close and retrieve modal data outside the modal
 
 ```
 <script>
@@ -239,10 +240,12 @@ The component also exports `open()`, `close()` and `data()` methods:
   on:shown={handler}
   on:hide={handler}
   on:hidden={handler}
+  let:data
+  let:close
 >
   <p>In-component events-based dialog</p>
-  <p>{dialog.data()}</p>
-  <button on:click={() => dialog.close(dialog.data())}>close</button>
+  <p>{data}</p>
+  <button on:click={() => close(data)}>close</button>
 </Dialog>
 ```
 
