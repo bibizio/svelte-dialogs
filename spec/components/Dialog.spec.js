@@ -1,7 +1,8 @@
-import { render } from "@testing-library/svelte";
+import { render, fireEvent } from "@testing-library/svelte";
 import Dialog from "src/components/Dialog.svelte";
 import { defaultDialogOptions } from "src/lib/defaults";
 import { tick } from "svelte";
+import DialogSlotFixture from "spec/__fixtures__/DialogSlotFixture.svelte";
 
 describe("Dialog", () => {
   const testData = "test data";
@@ -60,14 +61,38 @@ describe("Dialog", () => {
     expect(component).toHaveFiredEventsInOrder(["show", "shown", "hide", "hidden"]);
   });
 
-  it("should open with given data, and expose them", async () => {
+  it("should open with given data, and expose them to slot", async () => {
+    const { component, queryByTestId } = render(DialogSlotFixture);
+
+    component.open(testData);
+    await tick();
+
+    const dataParagraph = queryByTestId("dialog-slot-fixture__data-paragraph");
+    expect(dataParagraph).toHaveTextContent(testData);
+  });
+
+  it("should emit close data on hide", async () => {
+    const { component, queryByTestId } = render(DialogSlotFixture);
+    listen(component, "hide");
+
+    component.open(testData);
+    await tick();
+
+    const closeButton = queryByTestId("dialog-slot-fixture__close-button");
+    await fireEvent.click(closeButton);
+
+    expect(component).toHaveFiredEventTimes("hide", 1);
+    expect(component).toHaveFiredEventWith("hide", testData);
+  });
+
+  it("should open with given data, and expose them with data()", async () => {
     const { component } = render(Dialog);
     component.open(testData);
 
     expect(component.data()).toBe(testData);
   });
 
-  it("should emit close data on hide", async () => {
+  it("should get closed from outside emitting data on hide", async () => {
     const { component } = render(Dialog);
     listen(component, "hide");
 
