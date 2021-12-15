@@ -47,8 +47,11 @@ const htmlString =
 
 `prompt()` accepts two parameters:
 
-- a string or array of string parameter, used as labels for the inputs
+- a string/SvelteComponent/object or array of string/SvelteComponent/object parameter
 - an options parameter (optional)
+
+Using strings in first parameter, will result in inputs with that string as labels. Using objects, you can specify component and props to use as input.
+If you pass only props, the default input is used.
 
 ```
 <script>
@@ -56,7 +59,7 @@ const htmlString =
 </script>
 
 <button on:click={() => dialogs.prompt("an input")}>click me</button>
-<button on:click={() => dialogs.prompt(["input", "another input"])}>click me</button>
+<button on:click={() => dialogs.prompt(["an input", { label: "a required password input", type: "password", required: true }])}>click me</button>
 ```
 
 ### With options
@@ -121,7 +124,7 @@ So for example:
 <button on:click={() => dialogs.modal(MyComponent, { name: "world" })}>click me</button>
 ```
 
-`prompt()` accepts as first parameter, an object, or objects array, in the shape of `{component: SvelteComponent, props: object}`
+`prompt()` accepts as first parameter, an object, or objects array, in the shape of `{component: SvelteComponent, props: object}`.
 
 ```
 // MyInput.svelte
@@ -161,6 +164,8 @@ So for example:
 >click me</button>
 
 ```
+
+If no prop is required, you can just pass the component as in `prompt(MyInput)`
 
 ### Promise-based
 
@@ -345,7 +350,3 @@ It can obviously get confusing, but the order of importance for the options is:
 }
 
 ```
-
-## Contributing
-
-this prokect is still in dev, please don't open any issue yet

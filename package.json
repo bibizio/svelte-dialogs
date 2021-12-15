@@ -1,6 +1,6 @@
 {
   "name": "svelte-dialogs",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "author": "Fabrizio Giovinazzi (https://bibizio.github.io/cv/)",
   "description": "handy dialogs in/for svelte",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "dev": "gulp dev --skip-tests",
     "build": "gulp build",
     "prepublishOnly": "npm run build",
-    "test": "jest test spec",
+    "test": "jest test spec --coverage",
     "test:watch": "npm test -- --watch"
   },
   "peerDependencies": {

@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## 1.0.0
+
+### New Feature
+
+- `prompt()` now accepts props for default input
+- prompt form validation
+
+### Design change
+
+- added `DialogInput`
+
+- default options:
+
+  - added `dividerClass`
+
+- prompt options:
+  - `title` default to empy string
+  - added `inputComponent`
+  - added `inputProps`
+  - `formLabelClass` => `inputLabelClass`
+  - `formInputClass` => `inputClass`
+
 ## 0.3.1
 
 ### Improvements
@@ -15,7 +37,7 @@
 
 ### New Feature
 
-- prompt()
+- `prompt()`
 
 ## 0.2.0
 
