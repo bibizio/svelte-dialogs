@@ -157,3 +157,27 @@ gulp.task(
       });
   })
 );
+
+gulp.task("site:rollup", async () => {
+  const bundle = await rollup.rollup({
+    input: "stage/src/main.js",
+    plugins: [
+      nodeResolve({
+        mainFields: ["svelte", "module", "main"],
+        dedupe: ["svelte"],
+      }),
+      svelte(),
+      commonjs(),
+      babel(babelConfig),
+    ],
+  });
+
+  await bundle.write({
+    sourcemap: true,
+    format: "iife",
+    name: "app",
+    file: "stage/public/bundle/bundle.js",
+  });
+});
+
+gulp.task("site", gulp.series("build", "dev:clean", "dev:stage", "site:rollup"));

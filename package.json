@@ -19,7 +19,8 @@
     "build": "gulp build",
     "prepublishOnly": "npm run build",
     "test": "jest test spec --coverage",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "site": "gulp site"
   },
   "peerDependencies": {
     "svelte": "^3.5.0"
