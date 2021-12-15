@@ -28,6 +28,7 @@
 }
 
 .dialog__close-button {
+  box-sizing: border-box;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -73,6 +74,7 @@
 }
 
 .dialog__body {
+  box-sizing: border-box;
   text-align: center;
   padding-top: 1rem;
   min-height: 10vh;
@@ -124,6 +126,7 @@
 // .dialog__form-element {
 // }
 .dialog__input-label {
+  display: block;
   width: fit-content;
   margin-left: 1rem;
   text-align: left;
@@ -132,7 +135,11 @@
   padding: 0 5px;
   background: #fff;
 }
+
 .dialog__input {
+  box-sizing: border-box;
+  margin: 0;
+
   &:not([type="checkbox"]) {
     width: 100%;
     padding: 1rem;
@@ -144,7 +151,7 @@
   &[type="checkbox"] {
     width: auto;
     display: block;
-    margin-top: -6px;
+    margin-top: -7px;
     text-align: left;
   }
 
@@ -162,6 +169,7 @@
 }
 
 .dialog_button {
+  box-sizing: border-box;
   display: inline-block;
   cursor: pointer;
   font-size: 1rem;

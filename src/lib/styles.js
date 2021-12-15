@@ -24,6 +24,7 @@
 "}\n" +
 "\n" +
 ".dialog__close-button {\n" +
+"  box-sizing: border-box;\n" +
 "  position: absolute;\n" +
 "  top: 0.5rem;\n" +
 "  right: 0.5rem;\n" +
@@ -63,6 +64,7 @@
 "}\n" +
 "\n" +
 ".dialog__body {\n" +
+"  box-sizing: border-box;\n" +
 "  text-align: center;\n" +
 "  padding-top: 1rem;\n" +
 "  min-height: 10vh;\n" +
@@ -104,6 +106,7 @@
 "}\n" +
 "\n" +
 ".dialog__input-label {\n" +
+"  display: block;\n" +
 "  width: -webkit-fit-content;\n" +
 "  width: -moz-fit-content;\n" +
 "  width: fit-content;\n" +
@@ -115,6 +118,10 @@
 "  background: #fff;\n" +
 "}\n" +
 "\n" +
+".dialog__input {\n" +
+"  box-sizing: border-box;\n" +
+"  margin: 0;\n" +
+"}\n" +
 ".dialog__input:not([type=checkbox]) {\n" +
 "  width: 100%;\n" +
 "  padding: 1rem;\n" +
@@ -125,7 +132,7 @@
 ".dialog__input[type=checkbox] {\n" +
 "  width: auto;\n" +
 "  display: block;\n" +
-"  margin-top: -6px;\n" +
+"  margin-top: -7px;\n" +
 "  text-align: left;\n" +
 "}\n" +
 ".dialog__input[type=color] {\n" +
@@ -142,6 +149,7 @@
 "}\n" +
 "\n" +
 ".dialog_button {\n" +
+"  box-sizing: border-box;\n" +
 "  display: inline-block;\n" +
 "  cursor: pointer;\n" +
 "  font-size: 1rem;\n" +
