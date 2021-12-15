@@ -34,6 +34,7 @@ interface DialogOptions {
   headerClass?: string;
   titleClass?: string;
   titleId?: string;
+  dividerClass?: string;
   bodyClass?: string;
   footerClass?: string;
   title?: string;
@@ -53,11 +54,13 @@ interface ConfirmOptions extends DialogOptions {
 }
 
 interface PromptOptions extends DialogOptions {
+  inputComponent?: SvelteComponent;
+  inputProps?: {};
   resetButton?: boolean;
   formClass?: string;
   formElementClass?: string;
-  formLabelClass?: string;
-  formInputClass?: string;
+  inputLabelClass?: string;
+  inputClass?: string;
   submitButtonText?: string;
   cancelButtonText?: string;
   resetButtonText?: string;
@@ -114,7 +117,11 @@ declare namespace dialogs {
   function alert(options: string | AlertOptions): Promise<undefined>;
   function confirm(options: string | ConfirmOptions): Promise<undefined | boolean>;
   function prompt(
-    input: string | SvelteComponent | Array<string | SvelteComponent>,
+    input:
+      | string
+      | { component: SvelteComponent; props: {} }
+      | {}
+      | Array<string | { component: SvelteComponent; props: {} } | {}>,
     options: PromptOptions
   ): Promise<null | undefined | Array<any>>;
 }

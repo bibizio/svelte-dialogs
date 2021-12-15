@@ -4,65 +4,56 @@
   import { writable, get } from "svelte/store";
 
   export let inputs = [];
+  let touched = false;
   const close = getClose();
   const opts = getOptions();
   const form$ = writable(new Array(inputs.length));
-  const ids = inputs.map(() => crypto.randomUUID());
+
+  function handleSubmit() {
+    close(get(form$));
+  }
+
+  function handleReset() {
+    form$.set(new Array(inputs.length));
+    touched = false;
+  }
 </script>
 
-<DialogContent>
-  <form class={opts.formClass} data-testid="prompt__form" slot="body">
-    {#each inputs as input, idx}
-      {#if typeof input === "string"}
-        <div
-          class={opts.formElementClass}
-          data-testid={"prompt__form-element-" + idx}
-        >
-          <label
-            class={opts.formLabelClass}
-            data-testid={"prompt__form-label-" + idx}
-            for={ids[idx]}>{input}</label
-          >
-          <input
-            class={opts.formInputClass}
-            data-testid={"prompt__form-input-" + idx}
-            id={ids[idx]}
-            type="text"
-            bind:value={$form$[idx]}
-          />
-        </div>
-      {:else}
-        <svelte:component
-          this={input.component}
-          {...input.props}
-          bind:value={$form$[idx]}
-        />
-      {/if}
-    {/each}
-  </form>
-  <svelte:fragment slot="footer">
-    <span>
-      <button
-        class={opts.cancelButtonClass}
-        aria-label="Cancel"
-        data-testid={"prompt__cancel-button"}
-        on:click={() => close(null)}>{@html opts.cancelButtonText}</button
-      >
-      {#if opts.resetButton}
+<form data-testid="prompt__form" class={opts.formClass} on:submit|preventDefault={handleSubmit} class:touched>
+  <DialogContent>
+    <svelte:fragment slot="body">
+      {#each inputs as input, idx}
+        <svelte:component this={input.component} {...input.props} bind:value={$form$[idx]} />
+      {/each}
+    </svelte:fragment>
+    <svelte:fragment slot="footer">
+      <span>
         <button
-          class={opts.resetButtonClass}
-          aria-label="Reset form"
-          data-testid={"prompt__reset-button"}
-          on:click={() => form$.set(new Array(inputs.length))}
-          >{@html opts.resetButtonText}</button
+          type="button"
+          class={opts.cancelButtonClass}
+          aria-label="Cancel"
+          data-testid={"prompt__cancel-button"}
+          on:click={() => close(null)}>{@html opts.cancelButtonText}</button
         >
-      {/if}</span
-    >
-    <button
-      class={opts.submitButtonClass}
-      aria-label="Submit"
-      data-testid={"prompt__submit-button"}
-      on:click={() => close(get(form$))}>{@html opts.submitButtonText}</button
-    >
-  </svelte:fragment>
-</DialogContent>
+        {#if opts.resetButton}
+          <button
+            type="button"
+            class={opts.resetButtonClass}
+            aria-label="Reset form"
+            data-testid={"prompt__reset-button"}
+            on:click={handleReset}>{@html opts.resetButtonText}</button
+          >
+        {/if}</span
+      >
+      <button
+        type="submit"
+        class={opts.submitButtonClass}
+        aria-label="Submit"
+        data-testid={"prompt__submit-button"}
+        on:click={() => {
+          touched = true;
+        }}>{@html opts.submitButtonText}</button
+      >
+    </svelte:fragment>
+  </DialogContent>
+</form>

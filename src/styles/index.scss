@@ -68,14 +68,16 @@
   margin: 0;
 }
 
+.dialog-content__divider {
+  border: 1px solid grey;
+}
+
 .dialog__body {
   text-align: center;
   padding-top: 1rem;
   min-height: 10vh;
   max-height: 80vh;
   overflow-y: auto;
-  border-top: 2px solid grey;
-  // border-bottom: 2px solid grey;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -107,11 +109,21 @@
   justify-content: space-between;
 }
 
-// .dialog__form {
-// }
+.dialog__form {
+  &.touched .dialog__input:invalid {
+    border: 2px solid rgba(202, 47, 63, 0.5);
+    outline: 0;
+
+    &:focus,
+    &:focus-visible {
+      border: 2px solid rgba(202, 47, 63, 1);
+      outline: 0;
+    }
+  }
+}
 // .dialog__form-element {
 // }
-.dialog__form-label {
+.dialog__input-label {
   width: fit-content;
   margin-left: 1rem;
   text-align: left;
@@ -120,13 +132,31 @@
   padding: 0 5px;
   background: #fff;
 }
-.dialog__form-input {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 1rem;
+.dialog__input {
+  &:not([type="checkbox"]) {
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 1rem;
+  }
 
-  &:focus {
+  &[type="checkbox"] {
+    width: auto;
+    display: block;
+    margin-top: -6px;
+    text-align: left;
+  }
+
+  &[type="color"] {
+    min-height: 3.5rem;
+  }
+
+  &[type="file"]::file-selector-button {
+    display: none;
+  }
+
+  &:focus:not(:invalid) {
     border: 2px solid #333;
   }
 }

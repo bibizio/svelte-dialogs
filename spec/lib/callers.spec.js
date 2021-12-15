@@ -1,10 +1,12 @@
-import { createDialog } from "src/lib/utils";
-import { alert, confirm, modal, prompt } from "src/lib/callers";
 import MockedComponent from "spec/__mocks__/MockedComponent.svelte";
+import { DialogInput } from "src/components";
+import { alert, confirm, modal, prompt } from "src/lib/callers";
+import { createDialog } from "src/lib/utils";
 
 jest.mock("src/lib/utils", () => ({
   __esModule: true,
   createDialog: jest.fn(),
+  mapInput: jest.requireActual("src/lib/utils").mapInput,
 }));
 
 describe("callers", () => {
@@ -83,16 +85,38 @@ describe("callers", () => {
       prompt("test string");
       expect(createDialog).toHaveBeenCalledTimes(1);
       expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({ props: { inputs: ["test string"] } })
+        expect.objectContaining({
+          props: { inputs: [{ component: DialogInput, props: { label: "test string" } }] },
+        })
+      );
+    });
+
+    it("should set props with props input", () => {
+      prompt({ label: "test string" });
+      expect(createDialog).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith(
+        expect.objectContaining({
+          props: { inputs: [{ component: DialogInput, props: { label: "test string" } }] },
+        })
       );
     });
 
     it("should set props with SvelteComponent input", () => {
-      prompt({ component: MockedComponent, props: { string: "test string" } });
+      prompt(MockedComponent);
       expect(createDialog).toHaveBeenCalledTimes(1);
       expect(createDialog).toHaveBeenCalledWith(
         expect.objectContaining({
-          props: { inputs: [{ component: MockedComponent, props: { string: "test string" } }] },
+          props: { inputs: [{ component: MockedComponent, props: {} }] },
+        })
+      );
+    });
+
+    it("should set props with SvelteComponent and props input", () => {
+      prompt({ component: MockedComponent, props: { label: "test string" } });
+      expect(createDialog).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith(
+        expect.objectContaining({
+          props: { inputs: [{ component: MockedComponent, props: { label: "test string" } }] },
         })
       );
     });
@@ -100,7 +124,7 @@ describe("callers", () => {
     it("should set props with string and SvelteComponent with props input array", () => {
       prompt([
         "test string",
-        { component: MockedComponent, props: { string: "test string" } },
+        { component: MockedComponent, props: { label: "test string" } },
         "test string",
       ]);
       expect(createDialog).toHaveBeenCalledTimes(1);
@@ -108,9 +132,9 @@ describe("callers", () => {
         expect.objectContaining({
           props: {
             inputs: [
-              "test string",
-              { component: MockedComponent, props: { string: "test string" } },
-              "test string",
+              { component: DialogInput, props: { label: "test string" } },
+              { component: MockedComponent, props: { label: "test string" } },
+              { component: DialogInput, props: { label: "test string" } },
             ],
           },
         })
@@ -121,7 +145,7 @@ describe("callers", () => {
       prompt(
         [
           "test string",
-          { component: MockedComponent, props: { string: "test string" } },
+          { component: MockedComponent, props: { label: "test string" } },
           "test string",
         ],
         { title: "test title" }
@@ -132,9 +156,9 @@ describe("callers", () => {
           title: "test title",
           props: {
             inputs: [
-              "test string",
-              { component: MockedComponent, props: { string: "test string" } },
-              "test string",
+              { component: DialogInput, props: { label: "test string" } },
+              { component: MockedComponent, props: { label: "test string" } },
+              { component: DialogInput, props: { label: "test string" } },
             ],
           },
         })

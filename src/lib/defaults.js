@@ -1,7 +1,8 @@
 import { fade, fly } from "svelte/transition";
-import { default as DialogContent } from "../components/DialogContent.svelte";
 import { default as Alert } from "../components/Alert.svelte";
 import { default as Confirm } from "../components/Confirm.svelte";
+import { default as DialogContent } from "../components/DialogContent.svelte";
+import { default as DialogInput } from "../components/DialogInput.svelte";
 import { default as Prompt } from "../components/Prompt.svelte";
 
 export const defaultDialogOptions = {
@@ -43,6 +44,7 @@ export const defaultDialogOptions = {
   headerClass: "dialog__header",
   titleClass: "dialog__title",
   titleId: "dialog-title-id",
+  dividerClass: "dialog-content__divider",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer dialog__footer--space-evenly",
   title: "",
@@ -188,14 +190,16 @@ export const defaultPromptOptions = {
   titleId: "dialog-title-id",
   bodyClass: "dialog__body",
   footerClass: "dialog__footer dialog__footer--space-between",
-  title: "please fill the form",
+  title: "",
   text: "",
   //
+  inputComponent: DialogInput,
+  inputProps: null,
   resetButton: true,
   formClass: "dialog__form",
   formElementClass: "dialog__form-element",
-  formLabelClass: "dialog__form-label",
-  formInputClass: "dialog__form-input",
+  inputLabelClass: "dialog__input-label",
+  inputClass: "dialog__input",
   submitButtonText: "submit",
   cancelButtonText: "cancel",
   resetButtonText: "reset",

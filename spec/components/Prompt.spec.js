@@ -1,9 +1,10 @@
 import { fireEvent, render } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import MockedInput from "spec/__mocks__/MockedInput.svelte";
-import Prompt from "src/components/Prompt.svelte";
+import { Prompt, DialogInput } from "src/components";
 import { getClose, getOptions } from "src/lib/ctx-manager";
 import { defaultPromptOptions } from "src/lib/defaults";
+import { tick } from "svelte";
 
 jest.mock("src/lib/ctx-manager", () => ({
   __esModule: true,
@@ -12,30 +13,34 @@ jest.mock("src/lib/ctx-manager", () => ({
 }));
 
 describe("Prompt", () => {
-  const title = "test title";
-
   afterEach(() => {
     jest.resetAllMocks();
   });
 
   it("should render with right options", async () => {
-    const inputs = ["test input 1", "test input 2"];
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
-    const { queryByTestId } = render(Prompt, { inputs });
+    const inputs = [
+      { component: DialogInput, props: { label: "test input 1" } },
+      { component: DialogInput, props: { label: "test input 2" } },
+    ];
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryByTestId, queryAllByTestId } = render(Prompt, { inputs });
 
+    await tick();
     const form = queryByTestId("prompt__form");
     expect(form).toHaveClass(defaultPromptOptions.formClass);
 
-    inputs.forEach((inputText, idx) => {
-      const formElement = queryByTestId("prompt__form-element-" + idx);
-      expect(formElement).toHaveClass(defaultPromptOptions.formElementClass);
+    const formElements = queryAllByTestId("dialog-input__form-element");
+    const labels = queryAllByTestId("dialog-input__label");
+    const inputElements = queryAllByTestId("dialog-input__input");
 
-      const label = queryByTestId("prompt__form-label-" + idx);
-      expect(label).toHaveClass(defaultPromptOptions.formLabelClass);
-      expect(label).toHaveTextContent(inputText);
+    console.log(formElements);
+    inputs.forEach((input, idx) => {
+      expect(formElements[idx]).toHaveClass(defaultPromptOptions.formElementClass);
 
-      const input = queryByTestId("prompt__form-input-" + idx);
-      expect(input).toHaveClass(defaultPromptOptions.formInputClass);
+      expect(labels[idx]).toHaveClass(defaultPromptOptions.inputLabelClass);
+      expect(labels[idx]).toHaveTextContent(input.props.label);
+
+      expect(inputElements[idx]).toHaveClass(defaultPromptOptions.inputClass);
     });
 
     const cancelButton = queryByTestId("prompt__cancel-button");
@@ -52,7 +57,7 @@ describe("Prompt", () => {
   });
 
   it("should not render reset button when resetButton: false", async () => {
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title, resetButton: false });
+    getOptions.mockReturnValue({ ...defaultPromptOptions, resetButton: false });
     const { queryByTestId } = render(Prompt);
 
     const resetButton = queryByTestId("prompt__reset-button");
@@ -60,14 +65,18 @@ describe("Prompt", () => {
   });
 
   it("should have labels for right inputs ", async () => {
-    const inputs = ["test input 1", "test input 2"];
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
-    const { queryByTestId } = render(Prompt, { inputs });
+    const inputs = [
+      { component: DialogInput, props: { label: "" } },
+      { component: DialogInput, props: { label: "" } },
+    ];
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryAllByTestId } = render(Prompt, { inputs });
+
+    const labels = queryAllByTestId("dialog-input__label");
+    const inputElements = queryAllByTestId("dialog-input__input");
 
     inputs.forEach((_, idx) => {
-      const label = queryByTestId("prompt__form-label-" + idx);
-      const input = queryByTestId("prompt__form-input-" + idx);
-      expect(label.getAttribute("for")).toBe(input.getAttribute("id"));
+      expect(labels[idx].getAttribute("for")).toBe(inputElements[idx].getAttribute("id"));
     });
   });
 
@@ -77,7 +86,6 @@ describe("Prompt", () => {
     const submitButtonText = '<p data-testid="test-submit-button-text">test string</p>';
     getOptions.mockReturnValue({
       ...defaultPromptOptions,
-      title,
       cancelButtonText,
       resetButtonText,
       submitButtonText,
@@ -94,13 +102,13 @@ describe("Prompt", () => {
 
   it("should render custom and default inputs", () => {
     const inputs = [
-      "default input",
+      { component: DialogInput, props: { label: "test input 1" } },
       { component: MockedInput, props: { label: "custom input", id: "custom-input-id" } },
     ];
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
+    getOptions.mockReturnValue(defaultPromptOptions);
     const { queryByTestId } = render(Prompt, { inputs });
 
-    const defaultInput = queryByTestId("prompt__form-input-0");
+    const defaultInput = queryByTestId("dialog-input__input");
     expect(defaultInput).toBeInTheDocument();
 
     const customInput = queryByTestId("mocked-input__input");
@@ -111,7 +119,7 @@ describe("Prompt", () => {
 
   it("should call close with null on cancel", async () => {
     const closeMock = jest.fn();
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
+    getOptions.mockReturnValue(defaultPromptOptions);
     getClose.mockReturnValue(closeMock);
     const { queryByTestId } = render(Prompt);
 
@@ -124,19 +132,19 @@ describe("Prompt", () => {
 
   it("should reset inputs on reset", async () => {
     const inputs = [
-      "default input",
-      "default input",
+      { component: DialogInput, props: { label: "test input 1" } },
+      { component: DialogInput, props: { label: "test input 2" } },
       { component: MockedInput, props: { label: "custom input", id: "custom-input-id" } },
     ];
     const closeMock = jest.fn();
     getClose.mockReturnValue(closeMock);
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
-    const { queryByTestId } = render(Prompt, { inputs });
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryByTestId, queryAllByTestId } = render(Prompt, { inputs });
 
-    const defaultInput = queryByTestId("prompt__form-input-0");
+    const defaultInputs = queryAllByTestId("dialog-input__input");
     const customInput = queryByTestId("mocked-input__input");
 
-    userEvent.type(defaultInput, "test default input text");
+    userEvent.type(defaultInputs[0], "test default input text");
     userEvent.type(customInput, "test custom input text");
 
     const resetButton = queryByTestId("prompt__reset-button");
@@ -151,19 +159,19 @@ describe("Prompt", () => {
 
   it("should call close with inputs values array on submit", async () => {
     const inputs = [
-      "default input",
-      "default input",
+      { component: DialogInput, props: { label: "test input 1" } },
+      { component: DialogInput, props: { label: "test input 2" } },
       { component: MockedInput, props: { label: "custom input", id: "custom-input-id" } },
     ];
     const closeMock = jest.fn();
     getClose.mockReturnValue(closeMock);
-    getOptions.mockReturnValue({ ...defaultPromptOptions, title });
-    const { queryByTestId } = render(Prompt, { inputs });
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryByTestId, queryAllByTestId } = render(Prompt, { inputs });
 
-    const defaultInput = queryByTestId("prompt__form-input-0");
+    const defaultInputs = queryAllByTestId("dialog-input__input");
     const customInput = queryByTestId("mocked-input__input");
 
-    userEvent.type(defaultInput, "test default input text");
+    userEvent.type(defaultInputs[0], "test default input text");
     userEvent.type(customInput, "test custom input text");
 
     const submitButton = queryByTestId("prompt__submit-button");
@@ -175,5 +183,42 @@ describe("Prompt", () => {
       undefined,
       "test custom input text",
     ]);
+  });
+
+  /** skipped due to a jsdom bug
+   * https://github.com/jsdom/jsdom/issues/2898
+   */
+  it.skip("should not submit when invalids and have touched class after", async () => {
+    const inputs = [{ component: DialogInput, props: { label: "test input 1", required: true } }];
+    const closeMock = jest.fn();
+    getClose.mockReturnValue(closeMock);
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryByTestId } = render(Prompt, { inputs });
+
+    const submitButton = queryByTestId("prompt__submit-button");
+    await fireEvent.click(submitButton);
+
+    expect(closeMock).not.toHaveBeenCalled();
+  });
+
+  it("should handle touched form class", async () => {
+    const inputs = [{ component: DialogInput, props: { label: "test input 1", required: true } }];
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const closeMock = jest.fn();
+    getClose.mockReturnValue(closeMock);
+    const { queryByTestId } = render(Prompt, { inputs });
+
+    const form = queryByTestId("prompt__form");
+    expect(form).not.toHaveClass("touched");
+
+    const submitButton = queryByTestId("prompt__submit-button");
+    await fireEvent.click(submitButton);
+
+    expect(form).toHaveClass("touched");
+
+    const resetButton = queryByTestId("prompt__reset-button");
+    await fireEvent.click(resetButton);
+
+    expect(form).not.toHaveClass("touched");
   });
 });

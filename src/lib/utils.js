@@ -1,8 +1,6 @@
 import { check_outros, group_outros, transition_out } from "svelte/internal";
 import { DialogCore } from "../components";
 
-export const isTitleTextContent = (_) => Object.keys(_).length == 2 && _.title && _.text;
-
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
 export const outroAndDestroy = (instance) => {
   if (instance.$$.fragment && instance.$$.fragment.o) {
@@ -32,4 +30,16 @@ export const createDialog = (opts) => {
   return promise.finally(() => {
     outroAndDestroy(dialog);
   });
+};
+
+export const mapInput = (input) => {
+  if (typeof input === "string") {
+    return { props: { label: input } };
+  } else if (typeof input === "function") {
+    return { component: input, props: {} };
+  } else if (!input.props && !input.component) {
+    return { props: input };
+  } else {
+    return input;
+  }
 };

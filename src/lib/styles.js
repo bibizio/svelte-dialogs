@@ -58,13 +58,16 @@
 "  margin: 0;\n" +
 "}\n" +
 "\n" +
+".dialog-content__divider {\n" +
+"  border: 1px solid grey;\n" +
+"}\n" +
+"\n" +
 ".dialog__body {\n" +
 "  text-align: center;\n" +
 "  padding-top: 1rem;\n" +
 "  min-height: 10vh;\n" +
 "  max-height: 80vh;\n" +
 "  overflow-y: auto;\n" +
-"  border-top: 2px solid grey;\n" +
 "}\n" +
 ".dialog__body::-webkit-scrollbar {\n" +
 "  width: 5px;\n" +
@@ -91,7 +94,16 @@
 "  justify-content: space-between;\n" +
 "}\n" +
 "\n" +
-".dialog__form-label {\n" +
+".dialog__form.touched .dialog__input:invalid {\n" +
+"  border: 2px solid rgba(202, 47, 63, 0.5);\n" +
+"  outline: 0;\n" +
+"}\n" +
+".dialog__form.touched .dialog__input:invalid:focus, .dialog__form.touched .dialog__input:invalid:focus-visible {\n" +
+"  border: 2px solid #ca2f3f;\n" +
+"  outline: 0;\n" +
+"}\n" +
+"\n" +
+".dialog__input-label {\n" +
 "  width: -webkit-fit-content;\n" +
 "  width: -moz-fit-content;\n" +
 "  width: fit-content;\n" +
@@ -103,13 +115,29 @@
 "  background: #fff;\n" +
 "}\n" +
 "\n" +
-".dialog__form-input {\n" +
+".dialog__input:not([type=checkbox]) {\n" +
 "  width: 100%;\n" +
 "  padding: 1rem;\n" +
+"  background-color: #fff;\n" +
 "  border: 2px solid #ccc;\n" +
 "  border-radius: 1rem;\n" +
 "}\n" +
-".dialog__form-input:focus {\n" +
+".dialog__input[type=checkbox] {\n" +
+"  width: auto;\n" +
+"  display: block;\n" +
+"  margin-top: -6px;\n" +
+"  text-align: left;\n" +
+"}\n" +
+".dialog__input[type=color] {\n" +
+"  min-height: 3.5rem;\n" +
+"}\n" +
+".dialog__input[type=file]::-webkit-file-upload-button {\n" +
+"  display: none;\n" +
+"}\n" +
+".dialog__input[type=file]::file-selector-button {\n" +
+"  display: none;\n" +
+"}\n" +
+".dialog__input:focus:not(:invalid) {\n" +
 "  border: 2px solid #333;\n" +
 "}\n" +
 "\n" +

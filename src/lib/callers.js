@@ -4,7 +4,7 @@ import {
   getModalOptions,
   getPromptOptions,
 } from "./configuration";
-import { createDialog } from "./utils";
+import { createDialog, mapInput } from "./utils";
 
 export const modal = (options, props) => {
   let opts;
@@ -49,13 +49,10 @@ export const confirm = (options) => {
 };
 
 export const prompt = (input, options) => {
-  const opts = getPromptOptions(options);
 
-  if (Array.isArray(input)) {
-    opts.props = { inputs: input };
-  } else {
-    opts.props = { inputs: [input] };
-  }
+  const inputs = (Array.isArray(input) ? input : [input]).map(mapInput);
 
+  const opts = getPromptOptions(inputs, options);
+  
   return createDialog(opts);
 };
