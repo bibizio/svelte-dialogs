@@ -99,4 +99,22 @@ describe("DialogContent", () => {
     expect(customFooter).toBeInTheDocument();
     expect(customFooter).toHaveTextContent("test footer");
   });
+
+  it("should show divider only if both body and title are present", async () => {
+    getOptions.mockReturnValue({ ...defaultDialogOptions, title: "title", text: "text" });
+    const { queryByTestId } = render(DialogContent);
+
+    const divider = queryByTestId("dialog-content__divider");
+
+    expect(divider).toBeInTheDocument();
+  });
+
+  it("should not show divider if body or title are missing", async () => {
+    getOptions.mockReturnValue(defaultDialogOptions);
+    const { queryByTestId } = render(DialogContent);
+
+    const divider = queryByTestId("dialog-content__divider");
+
+    expect(divider).not.toBeInTheDocument();
+  });
 });
