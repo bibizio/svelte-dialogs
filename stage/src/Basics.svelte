@@ -19,15 +19,13 @@
 </script>
 
 <h2>Basics</h2>
-<button on:click={() => dialogs.alert()}>emtpy alert</button>
 <button on:click={() => dialogs.alert("this is an alert")}>alert string</button>
-<button on:click={() => dialogs.alert("<p>this is an alert</p>")}
+<button on:click={() => dialogs.alert("<p style='color: red;'>this is an alert</p>")}
   >alert html string</button
 >
-<button on:click={() => dialogs.confirm()}>emtpy confirm</button>
 <button on:click={() => dialogs.confirm("are you sure?")}>confirm string</button
 >
-<button on:click={() => dialogs.confirm("<p>are you sure?</p>")}
+<button on:click={() => dialogs.confirm("<p style='color: blue;'>are you sure?</p>")}
   >confirm html string</button
 >
 <button on:click={() => dialogs.modal(htmlString)}>html string modal</button>
