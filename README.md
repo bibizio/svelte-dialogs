@@ -324,7 +324,8 @@ It can obviously get confusing, but the order of importance for the options is:
   text?: string | htmlString;
   headerClass?: string;
   titleClass?: string;
-  titleId: string;
+  titleId?: string;
+  dividerClass?: string;
   bodyClass?: string;
   footerClass?: string;
   // specific to alert() with default component
@@ -336,11 +337,13 @@ It can obviously get confusing, but the order of importance for the options is:
   confirmButtonClass?: string;
   declineButtonClass?: string;
   // specific to prompt() with default component
+  inputComponent?: SvelteComponent;
+  inputProps?: object;
   resetButton?: boolean;
   formClass?: string;
   formElementClass?: string;
-  formLabelClass?: string;
-  formInputClass?: string;
+  inputLabelClass?: string;
+  inputClass?: string;
   submitButtonText?: string | htmlString;
   cancelButtonText?: string | htmlString;
   resetButtonText?: string | htmlString;
