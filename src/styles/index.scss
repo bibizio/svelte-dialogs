@@ -1,0 +1,220 @@
+.dialog__overlay {
+  z-index: 1000;
+  background: rgb(128, 128, 128, 0.5);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog__container {
+  z-index: 1010;
+  position: fixed;
+
+  min-width: 25vw;
+  max-width: 50vw;
+  max-height: 100vh;
+
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+.dialog__close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  height: 1.5rem;
+  width: 1.5rem;
+
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 1rem;
+  background: rgba(204, 204, 204, 1);
+
+  &:after {
+    // content: "\274c";
+    color: white;
+    content: "\2715";
+  }
+
+  &:hover {
+    background: rgba(202, 47, 63, 0.8);
+  }
+
+  &:focus {
+    background: rgba(202, 47, 63, 0.8);
+  }
+}
+
+.dialog__header {
+  text-align: center;
+}
+
+.dialog__title {
+  font-size: large;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dialog-content__divider {
+  border: 1px solid grey;
+}
+
+.dialog__body {
+  text-align: center;
+  padding-top: 1rem;
+  min-height: 10vh;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(204, 204, 204, 0.8);
+    box-shadow: inset 0 0 5px rgba(204, 204, 204, 0.8);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(204, 204, 204, 1);
+    box-shadow: inset 0 0 5px rgba(204, 204, 204, 1);
+  }
+}
+
+.dialog__footer {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.dialog__footer--space-evenly {
+  justify-content: space-evenly;
+}
+
+.dialog__footer--space-between {
+  justify-content: space-between;
+}
+
+.dialog__form {
+  &.touched .dialog__input:invalid {
+    border: 2px solid rgba(202, 47, 63, 0.5);
+    outline: 0;
+
+    &:focus,
+    &:focus-visible {
+      border: 2px solid rgba(202, 47, 63, 1);
+      outline: 0;
+    }
+  }
+}
+// .dialog__form-element {
+// }
+.dialog__input-label {
+  width: fit-content;
+  margin-left: 1rem;
+  text-align: left;
+  position: relative;
+  top: 8px;
+  padding: 0 5px;
+  background: #fff;
+}
+.dialog__input {
+  &:not([type="checkbox"]) {
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 1rem;
+  }
+
+  &[type="checkbox"] {
+    width: auto;
+    display: block;
+    margin-top: -6px;
+    text-align: left;
+  }
+
+  &[type="color"] {
+    min-height: 3.5rem;
+  }
+
+  &[type="file"]::file-selector-button {
+    display: none;
+  }
+
+  &:focus:not(:invalid) {
+    border: 2px solid #333;
+  }
+}
+
+.dialog_button {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  min-width: 6rem;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:focus {
+    border: 0.1rem solid transparent;
+  }
+}
+
+.dialog_button--primary {
+  // color: #fff;
+  background-color: rgba(204, 204, 204, 1);
+
+  &:hover {
+    background-color: rgba(204, 204, 204, 0.8);
+  }
+
+  &:not(:disabled):active {
+    background-color: rgba(204, 204, 204, 1);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(204, 204, 204, 0.5);
+  }
+}
+
+.dialog_button--decline {
+  color: #fff;
+  background-color: rgba(202, 47, 63, 1);
+
+  &:hover {
+    background-color: rgba(202, 47, 63, 0.8);
+  }
+
+  &:not(:disabled):active {
+    background-color: rgba(202, 47, 63, 1);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(202, 47, 63, 0.5);
+  }
+}
