@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.1
+
+### Bug fix
+
+- styles fix
+
 ## 1.0.0
 
 ### New Feature
