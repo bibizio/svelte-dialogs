@@ -10,19 +10,31 @@ interface DialogOptions {
   closeOnEsc?: boolean;
   transitions?: {
     bgIn?: {
-      transition: (node: Element, params: any) => TransitionConfig;
+      transition: (
+        node: Element,
+        params: any
+      ) => TransitionConfig | "fade" | "blur" | "fly" | "slide" | "scale" | "draw" | "crossfade";
       props?: TransitionConfig;
     };
     bgOut?: {
-      transition: (node: Element, params: any) => TransitionConfig;
+      transition: (
+        node: Element,
+        params: any
+      ) => TransitionConfig | "fade" | "blur" | "fly" | "slide" | "scale" | "draw" | "crossfade";
       props?: TransitionConfig;
     };
     in?: {
-      transition: (node: Element, params: any) => TransitionConfig;
+      transition: (
+        node: Element,
+        params: any
+      ) => TransitionConfig | "fade" | "blur" | "fly" | "slide" | "scale" | "draw" | "crossfade";
       props?: TransitionConfig;
     };
     out?: {
-      transition: (node: Element, params: any) => TransitionConfig;
+      transition: (
+        node: Element,
+        params: any
+      ) => TransitionConfig | "fade" | "blur" | "fly" | "slide" | "scale" | "draw" | "crossfade";
       props?: TransitionConfig;
     };
   };

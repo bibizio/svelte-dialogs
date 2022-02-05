@@ -1,3 +1,4 @@
+import { fade, blur, fly, slide, scale, draw, crossfade } from "svelte/transition";
 import { defaultDialogConfigOptions } from "./defaults";
 
 let customConfig = {};
@@ -11,12 +12,12 @@ export const getOpts = (defaults, custom, options = {}) => ({
   ...customConfig.global,
   ...custom,
   ...options,
-  transitions: {
+  transitions: resolveTransitions({
     ...defaults.transitions,
     ...customConfig.global?.transitions,
     ...custom?.transitions,
     ...options.transitions,
-  },
+  }),
 });
 
 export const getModalOptions = (options) =>
@@ -47,4 +48,38 @@ export const getPromptOptions = (inputs, options) => {
   }));
 
   return opts;
+};
+
+
+export const resolveTransitions = (transitions) => {
+  for (const key in transitions) {
+    const { transition } = transitions[key];
+    transitions[key].transition = resolveTransition(transition);
+  }
+  return transitions;
+};
+
+const resolveTransition = (transition) => {
+  if (typeof transition !== "string") {
+    return transition;
+  }
+
+  switch (transition) {
+    case "fade":
+      return fade;
+    case "blur":
+      return blur;
+    case "fly":
+      return fly;
+    case "slide":
+      return slide;
+    case "scale":
+      return scale;
+    case "draw":
+      return draw;
+    case "crossfade":
+      return crossfade;
+    default:
+      throw new Error(`${transition} not an existing svelte transition`);
+  }
 };

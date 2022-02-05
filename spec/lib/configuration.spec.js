@@ -1,11 +1,12 @@
 import { config, getOpts } from "src/lib/configuration";
+import { fade, blur, fly, slide, scale, draw, crossfade } from "svelte/transition";
 
 config({
   global: {
     text: "custom global title",
     transitions: {
       out: {
-        transition: "custom global out",
+        transition: scale,
         props: { prop: "custom global out prop" },
       },
     },
@@ -16,7 +17,7 @@ const custom = {
   overlayClass: "custom overlay class",
   transitions: {
     in: {
-      transition: "custom in",
+      transition: draw,
       props: { prop: "custom in prop" },
     },
   },
@@ -26,7 +27,7 @@ const options = {
   dialogClass: "options dialog class",
   transitions: {
     bgOut: {
-      transition: "options bgOut",
+      transition: crossfade,
       props: { prop: "options bgOut prop" },
     },
   },
@@ -39,21 +40,21 @@ const defaults = {
   dialogClass: "default dialog class",
   transitions: {
     bgIn: {
-      transition: "default bgIn",
+      transition: blur,
       props: {
         prop: "default bgIn prop",
       },
     },
     bgOut: {
-      transition: "default bgOut",
+      transition: "fly",
       props: { prop: "default bgOut prop" },
     },
     in: {
-      transition: "default in",
+      transition: "slide",
       props: { prop: "default in prop" },
     },
     out: {
-      transition: "default out",
+      transition: fade,
       props: { prop: "default out prop" },
     },
   },
@@ -69,21 +70,21 @@ describe("configuration", () => {
       dialogClass: "default dialog class",
       transitions: {
         bgIn: {
-          transition: "default bgIn",
+          transition: blur,
           props: {
             prop: "default bgIn prop",
           },
         },
         bgOut: {
-          transition: "default bgOut",
+          transition: fly,
           props: { prop: "default bgOut prop" },
         },
         in: {
-          transition: "default in",
+          transition: slide,
           props: { prop: "default in prop" },
         },
         out: {
-          transition: "custom global out",
+          transition: scale,
           props: { prop: "custom global out prop" },
         },
       },
@@ -99,21 +100,21 @@ describe("configuration", () => {
       dialogClass: "default dialog class",
       transitions: {
         bgIn: {
-          transition: "default bgIn",
+          transition: blur,
           props: {
             prop: "default bgIn prop",
           },
         },
         bgOut: {
-          transition: "default bgOut",
+          transition: fly,
           props: { prop: "default bgOut prop" },
         },
         in: {
-          transition: "custom in",
+          transition: draw,
           props: { prop: "custom in prop" },
         },
         out: {
-          transition: "custom global out",
+          transition: scale,
           props: { prop: "custom global out prop" },
         },
       },
@@ -129,24 +130,39 @@ describe("configuration", () => {
       dialogClass: "options dialog class",
       transitions: {
         bgIn: {
-          transition: "default bgIn",
+          transition: blur,
           props: {
             prop: "default bgIn prop",
           },
         },
         bgOut: {
-          transition: "options bgOut",
+          transition: crossfade,
           props: { prop: "options bgOut prop" },
         },
         in: {
-          transition: "custom in",
+          transition: draw,
           props: { prop: "custom in prop" },
         },
         out: {
-          transition: "custom global out",
+          transition: scale,
           props: { prop: "custom global out prop" },
         },
       },
     });
+  });
+
+  it("options should throw when can't resolve transactions", () => {
+    const brokenConfig = {
+      transitions: {
+        in: {
+          transition: "not a transaction",
+          props: { prop: "prop" },
+        },
+      },
+    };
+
+    expect(() => {
+      getOpts(defaults, brokenConfig, {});
+    }).toThrow("not a transaction not an existing svelte transition");
   });
 });
