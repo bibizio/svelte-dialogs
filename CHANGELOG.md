@@ -1,19 +1,30 @@
 # CHANGELOG
 
+## 1.1.0
+
+### Improvements
+
+- svelte transitions in options can be passed as strings
+
+### New Features
+
+- event-handlers can be defined in options
+- use script tag with `SvelteDialogs` global object
+
 ## 1.0.1
 
-### Bug fix
+### Bug fixes
 
 - styles fix
 
 ## 1.0.0
 
-### New Feature
+### New Features
 
 - `prompt()` now accepts props for default input
 - prompt form validation
 
-### Design change
+### Design changes
 
 - added `DialogInput`
 
@@ -35,31 +46,31 @@
 - babel preset env `> 0.25%, not dead`
 - types
 
-### Design change
+### Design changes
 
 - slot `close` and `data` props in `Dialog`
 
 ## 0.3.0
 
-### New Feature
+### New Features
 
 - `prompt()`
 
 ## 0.2.0
 
-### New Feature
+### New Features
 
 - In-template Event-based dialog
 
 ## 0.1.2
 
-### Bug fix
+### Bug fixes
 
 - transitions config fix
 
 ## 0.1.1
 
-### Design change
+### Design changes
 
 - renamed content to props
 - renamed component to content

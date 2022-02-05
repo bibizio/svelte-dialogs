@@ -2,13 +2,27 @@
 
 handy dialogs in/for svelte
 
+## Install
+
+You can install via _npm_
+
+`npm i svelte-dialogs`
+
+or use [jsdelivr CDN](https://www.jsdelivr.com/package/npm/svelte-dialogs) and add the script tag
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/svelte-dialogs"></script>
+```
+
+If so, follow the [CDN script tag](#cdn-script-tag) usage.
+
 ## Usage
 
 ### Basics
 
 the easiest way to use _svelte-dialog_ is
 
-```
+```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
 </script>
@@ -27,7 +41,7 @@ the easiest way to use _svelte-dialog_ is
 
 `alert()` and `confirm()` will use that as a title, while `modal()` will use it as the whole content.
 
-```
+```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
 
@@ -53,7 +67,7 @@ const htmlString =
 Using strings in first parameter, will result in inputs with that string as labels. Using objects, you can specify component and props to use as input.
 If you pass only props, the default input is used.
 
-```
+```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
 </script>
@@ -66,7 +80,7 @@ If you pass only props, the default input is used.
 
 You can use options with all the methods (reference below) like so:
 
-```
+```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
 
@@ -76,6 +90,10 @@ You can use options with all the methods (reference below) like so:
     titleClass: "my-title-class",
     closeButton: false,
     closeOnBg: true,
+    onShow: () => {
+      doSomething();
+      doSomethingElse();
+    }
     transitions: {
       in: {
         transition: fade,
@@ -99,7 +117,7 @@ _svelte-dialogs_ also exports a `DialogContent` component with three styled opti
 
 So for example:
 
-```
+```svelte
 // MyComponent.svelte
 <script>
   import { DialogContent } from "svelte-dialogs";
@@ -126,7 +144,7 @@ So for example:
 
 `prompt()` accepts as first parameter, an object, or objects array, in the shape of `{component: SvelteComponent, props: object}`.
 
-```
+```svelte
 // MyInput.svelte
 <script>
   export let value = '';
@@ -177,7 +195,7 @@ All methods described return a promise that resolve on close:
 
 so you can do something like this:
 
-```
+```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
 
@@ -201,7 +219,7 @@ so you can do something like this:
 
 To resolve in custom components, _svelte-dialogs_ export a `getClose()` function to be called at initialization to retrieve the close function from the context
 
-```
+```svelte
 <script>
   import { getClose } from "svelte-dialogs";
 
@@ -226,7 +244,7 @@ The component exports `open()` that accepts data to be passed to the modal.
 
 The component also exports `close()` and `data()` methods to close and retrieve modal data outside the modal
 
-```
+```svelte
 <script>
   import { Dialog } from "svelte-dialogs";
 
@@ -254,11 +272,32 @@ The component also exports `close()` and `data()` methods to close and retrieve 
 </Dialog>
 ```
 
+### CDN script tag
+
+If you install _svelte-dialogs_ via the script tag in a non-svelte project, the script adds the `SvelteDialogs` global object which includes the same functions of the `dialogs` export of the es module. You can use it like so:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My App Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/svelte-dialogs"></script>
+  </head>
+
+  <body>
+    <button id="btn" onclick="SvelteDialogs.alert('This dialog is imported via script tag')">
+      click me
+    </button>
+  </body>
+</html>
+```
+
 ## Configure
 
 You can configure the defaults with _svelte-dialogs_ export `config()`, for example in the entry point of you application or in you main component, like so:
 
-```
+```javascript
 // main.js
 import App from "./App.svelte";
 import { dialogs } from "svelte-dialogs";
@@ -282,7 +321,6 @@ const app = new App({
 });
 
 export default app;
-
 ```
 
 config accept an object with the following properties: `global`, `alert`, `confirm` and `prompt` to fine-tuning the defaults at the beginning and then forget about it.
@@ -297,7 +335,7 @@ It can obviously get confusing, but the order of importance for the options is:
 
 ## Options
 
-```
+```typescript
 {
   // sets the content of the dialog,
   // overwriting the default component (that is DialogDontent)
@@ -309,11 +347,15 @@ It can obviously get confusing, but the order of importance for the options is:
   closeOnBg?: boolean;
   closeOnEsc?: boolean;
   transitions?: {
-    bgIn?: { transition: transition; props: object };
-    bgOut?: { transition: transition; props: object };
-    in?: { transition: transition; props: object };
-    out?: { transition: transition; props: object };
+    bgIn?: { transition: transition | string; props: object };
+    bgOut?: { transition: transition | string; props: object };
+    in?: { transition: transition | string; props: object };
+    out?: { transition: transition | string; props: object };
   };
+  onHide: () => void;
+  onHidden: () => void;
+  onShow: () => void;
+  onShown: () => void;
   overlayClass?: string;
   dialogClass?: string;
   closeButtonClass?: string;
@@ -351,5 +393,19 @@ It can obviously get confusing, but the order of importance for the options is:
   cancelButtonClass?: string;
   resetButtonClass?: string;
 }
+```
 
+### `transitions` option
+
+The `transitions` object defines in/out transitions for the background overlay and the dialog with their props. You can use custom transitions functions or the ones in the [svelte/tansitions](https://svelte.dev/docs#run-time-svelte-transition) package. If you're using _svelte-dialogs_ in a non-svelte project, you can pass these transitions as string, for example:
+
+```javascript
+transitions: {
+  in: {
+    transition: 'slide',
+    props: {
+      duration: 2000,
+    },
+  },
+}
 ```
