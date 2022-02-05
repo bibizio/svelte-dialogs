@@ -31,6 +31,26 @@
     return transition(node, props);
   }
 
+  function show() {
+    opts.onShow();
+    dispatch("show");
+  }
+
+  function shown() {
+    opts.onShown();
+    dispatch("shown");
+  }
+
+  function hide() {
+    opts.onHide();
+    dispatch("hide");
+  }
+
+  function hidden() {
+    opts.onHidden();
+    dispatch("hidden");
+  }
+
   function handleKeydown(event) {
     if (opts.closeOnEsc && event.key === "Escape") {
       event.preventDefault();
@@ -66,10 +86,10 @@
     data-testid="dialog-core__dialog"
     in:dialogIn
     out:dialogOut
-    on:introstart={() => dispatch("show")}
-    on:introend={() => dispatch("shown")}
-    on:outrostart={() => dispatch("hide")}
-    on:outroend={() => dispatch("hidden")}
+    on:introstart={show}
+    on:introend={shown}
+    on:outrostart={hide}
+    on:outroend={hidden}
     on:click={handleDialogClick}
     use:focusTrap
   >

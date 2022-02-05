@@ -38,6 +38,10 @@ interface DialogOptions {
       props?: TransitionConfig;
     };
   };
+  onHide: () => void;
+  onHidden: () => void;
+  onShow: () => void;
+  onShown: () => void;
   overlayClass?: string;
   dialogClass?: string;
   closeButtonClass?: string;

@@ -122,6 +122,39 @@ describe("DialogCore", () => {
     expect(component).toHaveFiredEventsInOrder(["shown", "hide", "hidden"]);
   });
 
+  it("should call event handlers defined in options", async () => {
+
+    const onShowSpy = jest.fn();
+    const onShownSpy = jest.fn();
+    const onHideSpy = jest.fn();
+    const onHiddenSpy = jest.fn();
+
+    const opts = {
+      ...defaultDialogOptions,
+      onShow: onShowSpy,
+      onShown: onShownSpy,
+      onHide: onHideSpy,
+      onHidden: onHiddenSpy,
+    }
+
+    const { component } = render(DialogCore, {
+      intro: true,
+      props: { opts, close },
+    });
+
+    await tick();
+    await testutils.wait(600);
+    outroAndDestroy(component);
+    await tick();
+    await testutils.wait(600);
+    await tick();
+
+    expect(onShowSpy).toHaveBeenCalledTimes(1);
+    expect(onShownSpy).toHaveBeenCalledTimes(1);
+    expect(onHideSpy).toHaveBeenCalledTimes(1);
+    expect(onHiddenSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("should trap focus", async () => {
     const { getByTestId } = render(FocusTrapFixture);
 
