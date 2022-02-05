@@ -47,4 +47,5 @@ Thumbs.db
 
 # project related
 /stage/public/bundle
+/stage/public/script-import/index.min.js
 /stage/node_modules

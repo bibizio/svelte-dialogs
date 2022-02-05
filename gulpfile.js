@@ -17,7 +17,6 @@ const jest = require("jest");
 const pkg = require("./package.json");
 
 const name = pkg.name
-  .replace(/^(@\S+\/)?(svelte-)?(\S+)/, "$3")
   .replace(/^\w/, (m) => m.toUpperCase())
   .replace(/-\w/g, (m) => m[1].toUpperCase());
 
@@ -66,22 +65,39 @@ gulp.task("build:styles", () => {
     .pipe(gulp.dest("src/lib/"));
 });
 
-gulp.task("build:rollup", async () => {
+gulp.task("rollup:es", async () => {
   const bundle = await rollup.rollup({
     input: "src/index.js",
     plugins: [nodeResolve(), svelte(), commonjs(), babel(babelConfig)],
   });
 
   await bundle.write({ file: pkg.module, format: "es", banner });
-  await bundle.write({ file: pkg.main, format: "umd", name, banner });
   await bundle.write({
-    file: pkg.main.replace(".js", ".min.js"),
-    format: "iife",
+    file: pkg.module.replace(".", ".min."),
+    format: "es",
+    banner,
+    plugins: [terser()],
+  });
+});
+
+gulp.task("rollup:umd", async () => {
+  const bundle = await rollup.rollup({
+    input: "src/index.umd.js",
+    plugins: [nodeResolve(), svelte(), commonjs(), babel(babelConfig)],
+  });
+
+  await bundle.write({ file: pkg.main, format: "umd", exports: "named", name, banner });
+  await bundle.write({
+    file: pkg.main.replace(".", ".min."),
+    format: "umd",
+    exports: "named",
     name,
     banner,
     plugins: [terser()],
   });
 });
+
+gulp.task("build:rollup", gulp.parallel("rollup:es", "rollup:umd"));
 
 gulp.task("build:test", async () => {
   const {
@@ -98,7 +114,7 @@ gulp.task(
   gulp.series(
     skipTests
       ? ["build:clean", "build:styles", "build:rollup"]
-      : ["build:clean", "build:styles", "build:test", "build:rollup"]
+      : ["build:test", "build:clean", "build:styles", "build:rollup"]
   )
 );
 
@@ -114,49 +130,48 @@ gulp.task("dev:stage", () => {
     .pipe(gulp.dest("stage/node_modules/" + pkg.name));
 });
 
-gulp.task(
-  "dev",
-  gulp.series("build", "dev:clean", "dev:stage", async function watch() {
-    gulp.watch(["src/**/*"], gulp.series("build:rollup", "dev:clean", "dev:stage"));
-    gulp.watch(["src/styles/*"], gulp.series("build", "dev:clean", "dev:stage"));
-    rollup
-      .watch({
-        watch: {
-          include: "stage/**/*",
-        },
-        input: "stage/src/main.js",
-        output: {
-          sourcemap: true,
-          format: "iife",
-          name: "app",
-          file: "stage/public/bundle/bundle.js",
-        },
-        plugins: [
-          nodeResolve({
-            mainFields: ["svelte", "module", "main"],
-            dedupe: ["svelte"],
-          }),
-          svelte({
-            compilerOptions: {
-              dev: true,
-            },
-          }),
-          commonjs(),
-          babel(babelConfig),
-          serve("stage/public"),
-          livereload("stage/public"),
-        ],
-      })
-      .on("event", ({ code, error, result }) => {
-        if (code === "ERROR") {
-          console.error(error);
-        }
-        if (result) {
-          result.close();
-        }
-      });
-  })
-);
+gulp.task("dev:watch", async () => {
+  gulp.watch(["src/**/*"], gulp.series("build:rollup", "dev:clean", "dev:stage"));
+  gulp.watch(["src/styles/*"], gulp.series("build", "dev:clean", "dev:stage"));
+  rollup
+    .watch({
+      watch: {
+        include: "stage/**/*",
+      },
+      input: "stage/src/main.js",
+      output: {
+        sourcemap: true,
+        format: "iife",
+        name: "app",
+        file: "stage/public/bundle/bundle.js",
+      },
+      plugins: [
+        nodeResolve({
+          mainFields: ["svelte", "module", "main"],
+          dedupe: ["svelte"],
+        }),
+        svelte({
+          compilerOptions: {
+            dev: true,
+          },
+        }),
+        commonjs(),
+        babel(babelConfig),
+        serve("stage/public"),
+        livereload("stage/public"),
+      ],
+    })
+    .on("event", ({ code, error, result }) => {
+      if (code === "ERROR") {
+        console.error(error);
+      }
+      if (result) {
+        result.close();
+      }
+    });
+});
+
+gulp.task("dev", gulp.series("build", "dev:clean", "dev:stage", "dev:watch"));
 
 gulp.task("site:rollup", async () => {
   const bundle = await rollup.rollup({

@@ -10,9 +10,9 @@
     "url": "https://github.com/bibizio/svelte-dialogs.git"
   },
   "svelte": "src/index.js",
-  "module": "dist/index.mjs",
-  "main": "dist/index.js",
-  "browser": "dist/index.mjs",
+  "module": "dist/svelte-dialogs.mjs",
+  "main": "dist/svelte-dialogs.js",
+  "browser": "dist/svelte-dialogs.js",
   "types": "types",
   "scripts": {
     "dev": "gulp dev --skip-tests",
