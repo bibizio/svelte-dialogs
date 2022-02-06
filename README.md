@@ -11,7 +11,7 @@ You can install via _npm_
 or use [jsdelivr CDN](https://www.jsdelivr.com/package/npm/svelte-dialogs) and add the script tag
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/svelte-dialogs"></script>
+<script src="https://cdn.jsdelivr.net/npm/svelte-dialogs@latest"></script>
 ```
 
 If so, follow the [CDN script tag](#cdn-script-tag) usage.
