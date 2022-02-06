@@ -1186,9 +1186,68 @@ var app = (function () {
     return obj;
   }
 
+  function cubicInOut(t) {
+    return t < 0.5 ? 4.0 * t * t * t : 0.5 * Math.pow(2.0 * t - 2.0, 3.0) + 1.0;
+  }
+
   function cubicOut(t) {
     var f = t - 1.0;
     return f * f * f + 1.0;
+  }
+
+  /*! *****************************************************************************
+  Copyright (c) Microsoft Corporation.
+
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+  ***************************************************************************** */
+
+  function __rest(s, e) {
+    var t = {};
+
+    for (var p in s) {
+      if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+    }
+
+    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+    }
+    return t;
+  }
+
+  function blur(node) {
+    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref$delay = _ref.delay,
+        delay = _ref$delay === void 0 ? 0 : _ref$delay,
+        _ref$duration = _ref.duration,
+        duration = _ref$duration === void 0 ? 400 : _ref$duration,
+        _ref$easing = _ref.easing,
+        easing = _ref$easing === void 0 ? cubicInOut : _ref$easing,
+        _ref$amount = _ref.amount,
+        amount = _ref$amount === void 0 ? 5 : _ref$amount,
+        _ref$opacity = _ref.opacity,
+        opacity = _ref$opacity === void 0 ? 0 : _ref$opacity;
+
+    var style = getComputedStyle(node);
+    var target_opacity = +style.opacity;
+    var f = style.filter === 'none' ? '' : style.filter;
+    var od = target_opacity * (1 - opacity);
+    return {
+      delay: delay,
+      duration: duration,
+      easing: easing,
+      css: function css(_t, u) {
+        return "opacity: ".concat(target_opacity - od * u, "; filter: ").concat(f, " blur(").concat(u * amount, "px);");
+      }
+    };
   }
 
   function fade(node) {
@@ -1238,6 +1297,161 @@ var app = (function () {
         return "\n\t\t\ttransform: ".concat(transform, " translate(").concat((1 - t) * x, "px, ").concat((1 - t) * y, "px);\n\t\t\topacity: ").concat(target_opacity - od * u);
       }
     };
+  }
+
+  function slide(node) {
+    var _ref4 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref4$delay = _ref4.delay,
+        delay = _ref4$delay === void 0 ? 0 : _ref4$delay,
+        _ref4$duration = _ref4.duration,
+        duration = _ref4$duration === void 0 ? 400 : _ref4$duration,
+        _ref4$easing = _ref4.easing,
+        easing = _ref4$easing === void 0 ? cubicOut : _ref4$easing;
+
+    var style = getComputedStyle(node);
+    var opacity = +style.opacity;
+    var height = parseFloat(style.height);
+    var padding_top = parseFloat(style.paddingTop);
+    var padding_bottom = parseFloat(style.paddingBottom);
+    var margin_top = parseFloat(style.marginTop);
+    var margin_bottom = parseFloat(style.marginBottom);
+    var border_top_width = parseFloat(style.borderTopWidth);
+    var border_bottom_width = parseFloat(style.borderBottomWidth);
+    return {
+      delay: delay,
+      duration: duration,
+      easing: easing,
+      css: function css(t) {
+        return 'overflow: hidden;' + "opacity: ".concat(Math.min(t * 20, 1) * opacity, ";") + "height: ".concat(t * height, "px;") + "padding-top: ".concat(t * padding_top, "px;") + "padding-bottom: ".concat(t * padding_bottom, "px;") + "margin-top: ".concat(t * margin_top, "px;") + "margin-bottom: ".concat(t * margin_bottom, "px;") + "border-top-width: ".concat(t * border_top_width, "px;") + "border-bottom-width: ".concat(t * border_bottom_width, "px;");
+      }
+    };
+  }
+
+  function scale(node) {
+    var _ref5 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref5$delay = _ref5.delay,
+        delay = _ref5$delay === void 0 ? 0 : _ref5$delay,
+        _ref5$duration = _ref5.duration,
+        duration = _ref5$duration === void 0 ? 400 : _ref5$duration,
+        _ref5$easing = _ref5.easing,
+        easing = _ref5$easing === void 0 ? cubicOut : _ref5$easing,
+        _ref5$start = _ref5.start,
+        start = _ref5$start === void 0 ? 0 : _ref5$start,
+        _ref5$opacity = _ref5.opacity,
+        opacity = _ref5$opacity === void 0 ? 0 : _ref5$opacity;
+
+    var style = getComputedStyle(node);
+    var target_opacity = +style.opacity;
+    var transform = style.transform === 'none' ? '' : style.transform;
+    var sd = 1 - start;
+    var od = target_opacity * (1 - opacity);
+    return {
+      delay: delay,
+      duration: duration,
+      easing: easing,
+      css: function css(_t, u) {
+        return "\n\t\t\ttransform: ".concat(transform, " scale(").concat(1 - sd * u, ");\n\t\t\topacity: ").concat(target_opacity - od * u, "\n\t\t");
+      }
+    };
+  }
+
+  function draw(node) {
+    var _ref6 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref6$delay = _ref6.delay,
+        delay = _ref6$delay === void 0 ? 0 : _ref6$delay,
+        speed = _ref6.speed,
+        duration = _ref6.duration,
+        _ref6$easing = _ref6.easing,
+        easing = _ref6$easing === void 0 ? cubicInOut : _ref6$easing;
+
+    var len = node.getTotalLength();
+    var style = getComputedStyle(node);
+
+    if (style.strokeLinecap !== 'butt') {
+      len += parseInt(style.strokeWidth);
+    }
+
+    if (duration === undefined) {
+      if (speed === undefined) {
+        duration = 800;
+      } else {
+        duration = len / speed;
+      }
+    } else if (typeof duration === 'function') {
+      duration = duration(len);
+    }
+
+    return {
+      delay: delay,
+      duration: duration,
+      easing: easing,
+      css: function css(t, u) {
+        return "stroke-dasharray: ".concat(t * len, " ").concat(u * len);
+      }
+    };
+  }
+
+  function crossfade(_a) {
+    var fallback = _a.fallback,
+        defaults = __rest(_a, ["fallback"]);
+
+    var to_receive = new Map();
+    var to_send = new Map();
+
+    function crossfade(from, node, params) {
+      var _assign = assign(assign({}, defaults), params),
+          _assign$delay = _assign.delay,
+          delay = _assign$delay === void 0 ? 0 : _assign$delay,
+          _assign$duration = _assign.duration,
+          duration = _assign$duration === void 0 ? function (d) {
+        return Math.sqrt(d) * 30;
+      } : _assign$duration,
+          _assign$easing = _assign.easing,
+          easing = _assign$easing === void 0 ? cubicOut : _assign$easing;
+
+      var to = node.getBoundingClientRect();
+      var dx = from.left - to.left;
+      var dy = from.top - to.top;
+      var dw = from.width / to.width;
+      var dh = from.height / to.height;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      var style = getComputedStyle(node);
+      var transform = style.transform === 'none' ? '' : style.transform;
+      var opacity = +style.opacity;
+      return {
+        delay: delay,
+        duration: is_function(duration) ? duration(d) : duration,
+        easing: easing,
+        css: function css(t, u) {
+          return "\n\t\t\t\topacity: ".concat(t * opacity, ";\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ").concat(transform, " translate(").concat(u * dx, "px,").concat(u * dy, "px) scale(").concat(t + (1 - t) * dw, ", ").concat(t + (1 - t) * dh, ");\n\t\t\t");
+        }
+      };
+    }
+
+    function transition(items, counterparts, intro) {
+      return function (node, params) {
+        items.set(params.key, {
+          rect: node.getBoundingClientRect()
+        });
+        return function () {
+          if (counterparts.has(params.key)) {
+            var _counterparts$get = counterparts.get(params.key),
+                rect = _counterparts$get.rect;
+
+            counterparts.delete(params.key);
+            return crossfade(rect, node, params);
+          } // if the node is disappearing altogether
+          // (i.e. wasn't claimed by the other list)
+          // then we need to supply an outro
+
+
+          items.delete(params.key);
+          return fallback && fallback(node, params, intro);
+        };
+      };
+    }
+
+    return [transition(to_send, to_receive, false), transition(to_receive, to_send, true)];
   }
 
   function _arrayWithHoles(arr) {
@@ -2869,13 +3083,12 @@ var app = (function () {
     return Prompt;
   }(SvelteComponent);
 
-  var defaultDialogOptions = {
-    content: DialogContent,
+  function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+  function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys$3(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+  var commonDefaultOptions = {
     props: {},
     //
-    closeButton: true,
-    closeOnBg: true,
-    closeOnEsc: true,
     transitions: {
       bgIn: {
         transition: fade,
@@ -2900,6 +3113,12 @@ var app = (function () {
         }
       }
     },
+    //
+    onShow: noop,
+    onShown: noop,
+    onHide: noop,
+    onHidden: noop,
+    //
     overlayClass: "dialog__overlay",
     dialogClass: "dialog__container",
     closeButtonClass: "dialog__close-button",
@@ -2914,145 +3133,47 @@ var app = (function () {
     title: "",
     text: ""
   };
-  var defaultAlertOptions = {
+  var defaultDialogOptions = _objectSpread$3(_objectSpread$3({}, commonDefaultOptions), {}, {
+    //
+    content: DialogContent,
+    //
+    closeButton: true,
+    closeOnBg: true,
+    closeOnEsc: true
+  });
+  var defaultAlertOptions = _objectSpread$3(_objectSpread$3({}, commonDefaultOptions), {}, {
+    //
     content: Alert,
-    props: {},
     //
     closeButton: false,
     closeOnBg: false,
     closeOnEsc: false,
-    transitions: {
-      bgIn: {
-        transition: fade,
-        props: {}
-      },
-      bgOut: {
-        transition: fade,
-        props: {}
-      },
-      in: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      },
-      out: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      }
-    },
-    overlayClass: "dialog__overlay",
-    dialogClass: "dialog__container",
-    closeButtonClass: "dialog__close-button",
-    closeButtonText: "",
-    //
-    headerClass: "dialog__header",
-    titleClass: "dialog__title",
-    titleId: "dialog-title-id",
-    bodyClass: "dialog__body",
-    footerClass: "dialog__footer dialog__footer--space-evenly",
-    title: "",
-    text: "",
     //
     dismissButtonText: "ok",
     dismissButtonClass: "dialog_button dialog_button--primary"
-  };
-  var defaultConfirmOptions = {
+  });
+  var defaultConfirmOptions = _objectSpread$3(_objectSpread$3({}, commonDefaultOptions), {}, {
+    //
     content: Confirm,
-    props: {},
     //
     closeButton: false,
     closeOnBg: false,
     closeOnEsc: false,
-    transitions: {
-      bgIn: {
-        transition: fade,
-        props: {}
-      },
-      bgOut: {
-        transition: fade,
-        props: {}
-      },
-      in: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      },
-      out: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      }
-    },
-    overlayClass: "dialog__overlay",
-    dialogClass: "dialog__container",
-    closeButtonClass: "dialog__close-button",
-    closeButtonText: "",
-    //
-    headerClass: "dialog__header",
-    titleClass: "dialog__title",
-    titleId: "dialog-title-id",
-    bodyClass: "dialog__body",
-    footerClass: "dialog__footer dialog__footer--space-evenly",
     title: "are you sure you want to continue?",
-    text: "",
     //
     confirmButtonText: "yes",
     declineButtonText: "no",
     confirmButtonClass: "dialog_button dialog_button--primary",
     declineButtonClass: "dialog_button dialog_button--decline"
-  };
-  var defaultPromptOptions = {
+  });
+  var defaultPromptOptions = _objectSpread$3(_objectSpread$3({}, commonDefaultOptions), {}, {
+    //
     content: Prompt,
-    props: {},
     //
     closeButton: false,
     closeOnBg: false,
     closeOnEsc: false,
-    transitions: {
-      bgIn: {
-        transition: fade,
-        props: {}
-      },
-      bgOut: {
-        transition: fade,
-        props: {}
-      },
-      in: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      },
-      out: {
-        transition: fly,
-        props: {
-          y: 200,
-          duration: 500
-        }
-      }
-    },
-    overlayClass: "dialog__overlay",
-    dialogClass: "dialog__container",
-    closeButtonClass: "dialog__close-button",
-    closeButtonText: "",
-    //
-    headerClass: "dialog__header",
-    titleClass: "dialog__title",
-    titleId: "dialog-title-id",
-    bodyClass: "dialog__body",
     footerClass: "dialog__footer dialog__footer--space-between",
-    title: "",
-    text: "",
     //
     inputComponent: DialogInput,
     inputProps: null,
@@ -3067,7 +3188,7 @@ var app = (function () {
     submitButtonClass: "dialog_button dialog_button--primary",
     cancelButtonClass: "dialog_button dialog_button--decline",
     resetButtonClass: "dialog_button dialog_button--primary"
-  };
+  });
   var defaultDialogConfigOptions = {
     global: defaultDialogOptions,
     alert: defaultAlertOptions,
@@ -3087,7 +3208,7 @@ var app = (function () {
 
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     return _objectSpread$2(_objectSpread$2(_objectSpread$2(_objectSpread$2(_objectSpread$2({}, defaults), customConfig.global), custom), options), {}, {
-      transitions: _objectSpread$2(_objectSpread$2(_objectSpread$2(_objectSpread$2({}, defaults.transitions), (_customConfig$global = customConfig.global) === null || _customConfig$global === void 0 ? void 0 : _customConfig$global.transitions), custom === null || custom === void 0 ? void 0 : custom.transitions), options.transitions)
+      transitions: resolveTransitions(_objectSpread$2(_objectSpread$2(_objectSpread$2(_objectSpread$2({}, defaults.transitions), (_customConfig$global = customConfig.global) === null || _customConfig$global === void 0 ? void 0 : _customConfig$global.transitions), custom === null || custom === void 0 ? void 0 : custom.transitions), options.transitions))
     });
   };
   var getModalOptions = function getModalOptions(options) {
@@ -3114,6 +3235,46 @@ var app = (function () {
       return _objectSpread$2(_objectSpread$2({}, defaltInput), input);
     });
     return opts;
+  };
+  var resolveTransitions = function resolveTransitions(transitions) {
+    for (var key in transitions) {
+      var transition = transitions[key].transition;
+      transitions[key].transition = resolveTransition(transition);
+    }
+
+    return transitions;
+  };
+
+  var resolveTransition = function resolveTransition(transition) {
+    if (typeof transition !== "string") {
+      return transition;
+    }
+
+    switch (transition) {
+      case "fade":
+        return fade;
+
+      case "blur":
+        return blur;
+
+      case "fly":
+        return fly;
+
+      case "slide":
+        return slide;
+
+      case "scale":
+        return scale;
+
+      case "draw":
+        return draw;
+
+      case "crossfade":
+        return crossfade;
+
+      default:
+        throw new Error("".concat(transition, " not an existing svelte transition"));
+    }
   };
 
   // https://gist.github.com/JulienPradet/20dbb7ca06cbd9e2ec499bb2206aab55
@@ -3202,7 +3363,7 @@ var app = (function () {
         if (!mounted) {
           dispose = listen(button, "click",
           /*click_handler*/
-          ctx[12]);
+          ctx[15]);
           mounted = true;
         }
       },
@@ -3227,7 +3388,7 @@ var app = (function () {
         dispose();
       }
     };
-  } // (89:4) {:else}
+  } // (109:4) {:else}
 
 
   function create_else_block(ctx) {
@@ -3315,7 +3476,7 @@ var app = (function () {
         if (switch_instance) destroy_component(switch_instance, detaching);
       }
     };
-  } // (87:47) 
+  } // (107:47) 
 
 
   function create_if_block_1(ctx) {
@@ -3348,17 +3509,17 @@ var app = (function () {
         if (detaching) html_tag.d();
       }
     };
-  } // (85:4) {#if $$slots.default}
+  } // (105:4) {#if $$slots.default}
 
 
   function create_if_block$1(ctx) {
     var current;
     var default_slot_template =
     /*#slots*/
-    ctx[11].default;
+    ctx[14].default;
     var default_slot = create_slot(default_slot_template, ctx,
     /*$$scope*/
-    ctx[10], null);
+    ctx[13], null);
     return {
       c: function c() {
         if (default_slot) default_slot.c();
@@ -3374,14 +3535,14 @@ var app = (function () {
         if (default_slot) {
           if (default_slot.p && (!current || dirty &
           /*$$scope*/
-          1024)) {
+          8192)) {
             update_slot_base(default_slot, default_slot_template, ctx,
             /*$$scope*/
-            ctx[10], !current ? get_all_dirty_from_scope(
+            ctx[13], !current ? get_all_dirty_from_scope(
             /*$$scope*/
-            ctx[10]) : get_slot_changes(default_slot_template,
+            ctx[13]) : get_slot_changes(default_slot_template,
             /*$$scope*/
-            ctx[10], dirty, null), null);
+            ctx[13], dirty, null), null);
           }
         }
       },
@@ -3425,7 +3586,7 @@ var app = (function () {
     function select_block_type(ctx, dirty) {
       if (
       /*$$slots*/
-      ctx[9].default) return 0;
+      ctx[12].default) return 0;
       if (typeof
       /*opts*/
       ctx[1].content === "string") return 1;
@@ -3467,17 +3628,17 @@ var app = (function () {
         if (!mounted) {
           dispose = [listen(window, "keydown",
           /*handleKeydown*/
-          ctx[7]), listen(div0, "introstart",
-          /*introstart_handler*/
-          ctx[13]), listen(div0, "introend",
-          /*introend_handler*/
-          ctx[14]), listen(div0, "outrostart",
-          /*outrostart_handler*/
-          ctx[15]), listen(div0, "outroend",
-          /*outroend_handler*/
-          ctx[16]), listen(div0, "click", handleDialogClick), action_destroyer(focusTrap.call(null, div0)), listen(div1, "click",
+          ctx[10]), listen(div0, "introstart",
+          /*show*/
+          ctx[6]), listen(div0, "introend",
+          /*shown*/
+          ctx[7]), listen(div0, "outrostart",
+          /*hide*/
+          ctx[8]), listen(div0, "outroend",
+          /*hidden*/
+          ctx[9]), listen(div0, "click", handleDialogClick), action_destroyer(focusTrap.call(null, div0)), listen(div1, "click",
           /*handleBgClick*/
-          ctx[8])];
+          ctx[11])];
           mounted = true;
         }
       },
@@ -3555,14 +3716,14 @@ var app = (function () {
           if (div0_outro) div0_outro.end(1);
           div0_intro = create_in_transition(div0,
           /*dialogIn*/
-          ctx[5], {});
+          ctx[4], {});
           div0_intro.start();
         });
         add_render_callback(function () {
           if (div1_outro) div1_outro.end(1);
           div1_intro = create_in_transition(div1,
           /*bgIn*/
-          ctx[3], {});
+          ctx[2], {});
           div1_intro.start();
         });
         current = true;
@@ -3572,11 +3733,11 @@ var app = (function () {
         if (div0_intro) div0_intro.invalidate();
         div0_outro = create_out_transition(div0,
         /*dialogOut*/
-        ctx[6], {});
+        ctx[5], {});
         if (div1_intro) div1_intro.invalidate();
         div1_outro = create_out_transition(div1,
         /*bgOut*/
-        ctx[4], {});
+        ctx[3], {});
         current = false;
       },
       d: function d(detaching) {
@@ -3634,6 +3795,26 @@ var app = (function () {
       return transition(node, props);
     }
 
+    function show() {
+      opts.onShow();
+      dispatch("show");
+    }
+
+    function shown() {
+      opts.onShown();
+      dispatch("shown");
+    }
+
+    function hide() {
+      opts.onHide();
+      dispatch("hide");
+    }
+
+    function hidden() {
+      opts.onHidden();
+      dispatch("hidden");
+    }
+
     function handleKeydown(event) {
       if (opts.closeOnEsc && event.key === "Escape") {
         event.preventDefault();
@@ -3651,29 +3832,13 @@ var app = (function () {
       return close();
     };
 
-    var introstart_handler = function introstart_handler() {
-      return dispatch("show");
-    };
-
-    var introend_handler = function introend_handler() {
-      return dispatch("shown");
-    };
-
-    var outrostart_handler = function outrostart_handler() {
-      return dispatch("hide");
-    };
-
-    var outroend_handler = function outroend_handler() {
-      return dispatch("hidden");
-    };
-
     $$self.$$set = function ($$props) {
       if ('close' in $$props) $$invalidate(0, close = $$props.close);
       if ('opts' in $$props) $$invalidate(1, opts = $$props.opts);
-      if ('$$scope' in $$props) $$invalidate(10, $$scope = $$props.$$scope);
+      if ('$$scope' in $$props) $$invalidate(13, $$scope = $$props.$$scope);
     };
 
-    return [close, opts, dispatch, bgIn, bgOut, dialogIn, dialogOut, handleKeydown, handleBgClick, $$slots, $$scope, slots, click_handler, introstart_handler, introend_handler, outrostart_handler, outroend_handler];
+    return [close, opts, bgIn, bgOut, dialogIn, dialogOut, show, shown, hide, hidden, handleKeydown, handleBgClick, $$slots, $$scope, slots, click_handler];
   }
 
   var DialogCore = /*#__PURE__*/function (_SvelteComponent) {
