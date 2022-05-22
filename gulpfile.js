@@ -10,6 +10,7 @@ const commonjs = require("@rollup/plugin-commonjs");
 const { babel } = require("@rollup/plugin-babel");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const { terser } = require("rollup-plugin-terser");
+const css = require("rollup-plugin-css-only");
 const serve = require("rollup-plugin-serve");
 const livereload = require("rollup-plugin-livereload");
 const jest = require("jest");
@@ -196,3 +197,43 @@ gulp.task("site:rollup", async () => {
 });
 
 gulp.task("site", gulp.series("build", "dev:clean", "dev:stage", "site:rollup"));
+
+
+gulp.task("site:watch", async () => {
+  rollup
+    .watch({
+      watch: {
+        include: "site/src/**/*",
+      },
+      input: "site/src/main.js",
+      output: {
+        sourcemap: true,
+        format: "es",
+        dir: "site/public/build/",
+      },
+      plugins: [
+        nodeResolve({
+          mainFields: ["svelte", "module", "main"],
+          dedupe: ["svelte"],
+        }),
+        svelte({
+          compilerOptions: {
+            dev: true,
+          },
+        }),
+        css({ output: "bundle.css" }),
+        commonjs(),
+        babel(babelConfig),
+        serve("site/public"),
+        livereload("site/public"),
+      ],
+    })
+    .on("event", ({ code, error, result }) => {
+      if (code === "ERROR") {
+        console.error(error);
+      }
+      if (result) {
+        result.close();
+      }
+    });
+});
