@@ -49,4 +49,4 @@ Thumbs.db
 /stage/public/bundle
 /stage/public/script-import/index.min.js
 /stage/node_modules
-/site/public/build
+/site/public/bundle

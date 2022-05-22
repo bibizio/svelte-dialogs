@@ -209,7 +209,7 @@ gulp.task("site:watch", async () => {
       output: {
         sourcemap: true,
         format: "es",
-        dir: "site/public/build/",
+        dir: "site/public/bundle/",
       },
       plugins: [
         nodeResolve({
