@@ -38,11 +38,11 @@
     dialogs.prompt(
       [
         { label: "password", type: "password", required: true },
-        { label: "email", type: "email" },
+        { label: "email", type: "email", value: "a@b.c" },
         { label: "checkbox", type: "checkbox" },
         { label: "date", type: "date" },
         { label: "textarea", type: "textarea" },
-        { label: "number", type: "number" },
+        { label: "number", type: "number", value: 10 },
         { label: "color", type: "color" },
         { label: "file", type: "file" },
         { label: "range", type: "range" },

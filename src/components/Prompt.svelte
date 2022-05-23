@@ -3,23 +3,35 @@
   import { getClose, getOptions } from "../lib/ctx-manager";
   import { writable, get } from "svelte/store";
 
+  const mapInitialValue = ({ props }) => {
+    const { type, value } = props;
+    if (value) return value;
+    if (type === "checkbox") return false;
+    return undefined;
+  };
+
   export let inputs = [];
   let touched = false;
   const close = getClose();
   const opts = getOptions();
-  const form$ = writable(new Array(inputs.length));
+  const form$ = writable(inputs.map(mapInitialValue));
 
   function handleSubmit() {
     close(get(form$));
   }
 
   function handleReset() {
-    form$.set(new Array(inputs.length));
+    form$.set(inputs.map(mapInitialValue));
     touched = false;
   }
 </script>
 
-<form data-testid="prompt__form" class={opts.formClass} on:submit|preventDefault={handleSubmit} class:touched>
+<form
+  data-testid="prompt__form"
+  class={opts.formClass}
+  on:submit|preventDefault={handleSubmit}
+  class:touched
+>
   <DialogContent>
     <svelte:fragment slot="body">
       {#each inputs as input, idx}
