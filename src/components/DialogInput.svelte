@@ -20,6 +20,10 @@
       bind:value
       {...$$restProps}
     />
+  {:else if $$restProps.type === "checkbox"}
+    <input type="checkbox" class={inputClass} data-testid="dialog-input__input" {id} bind:checked={value} {...$$restProps} />
+  {:else if $$restProps.type === "file"}
+    <input type="file" class={inputClass} data-testid="dialog-input__input" {id} bind:files={value} {...$$restProps} />
   {:else}
     <input class={inputClass} data-testid="dialog-input__input" {id} bind:value {...$$restProps} />
   {/if}

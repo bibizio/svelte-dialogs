@@ -12,6 +12,12 @@ export const getOpts = (defaults, custom, options = {}) => ({
   ...customConfig.global,
   ...custom,
   ...options,
+  props: {
+    ...defaults.props,
+    ...customConfig.global?.props,
+    ...custom?.props,
+    ...options.props,
+  },
   transitions: resolveTransitions({
     ...defaults.transitions,
     ...customConfig.global?.transitions,
