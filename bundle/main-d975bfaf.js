@@ -3553,7 +3553,7 @@ function instance$m($$self, $$props, $$invalidate) {
               }
 
               _context.next = 3;
-              return import('./codemirror-38fa63f7.js');
+              return import('./codemirror-56336b8d.js');
 
             case 3:
               mod = _context.sent;
@@ -17203,7 +17203,7 @@ function create_fragment(ctx) {
     ctx[2],
     fixed: "false",
     relaxed: true,
-    workersUrl: "/workers"
+    workersUrl: "workers"
   };
   repl_1 = new Repl({
     props: repl_1_props
@@ -17354,4 +17354,4 @@ var app = new App({
 });
 
 export { _typeof$1 as _, app as a };
-//# sourceMappingURL=main-e75dad59.js.map
+//# sourceMappingURL=main-d975bfaf.js.map
