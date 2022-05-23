@@ -28,7 +28,7 @@
     {svelteUrl}
     fixed="false"
     relaxed
-    workersUrl="/workers"
+    workersUrl="workers"
   />
 </main>
 
