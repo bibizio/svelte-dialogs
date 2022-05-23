@@ -115,13 +115,16 @@ You can use options with all the methods (reference below) like so:
 
 _svelte-dialogs_ also exports a `DialogContent` component with three styled optional slots (_header_, _body_ and _footer_).
 
+To resolve in custom components, _svelte-dialogs_ export a `getClose()` function to be called at initialization to retrieve the close function from the context.
+
 So for example:
 
 ```svelte
 // MyComponent.svelte
 <script>
-  import { DialogContent } from "svelte-dialogs";
+  import { DialogContent, getClose } from "svelte-dialogs";
 
+  const close = getClose();
   export let name = "";
 </script>
 
@@ -129,6 +132,9 @@ So for example:
   <h1 slot="header">MY COMPONENT</h1>
   <svelte:fragment slot="body">
     <p>hello {name}</p>
+  </svelte:fragment>
+  <svelte:fragment slot="footer">
+    <button on:click={() => close('!')}>close me</button>
   </svelte:fragment>
 </DialogContent>
 
@@ -139,7 +145,7 @@ So for example:
   import MyComponent from "./MyComponent.svelte";
 </script>
 
-<button on:click={() => dialogs.modal(MyComponent, { name: "world" })}>click me</button>
+<button on:click={() => dialogs.modal(MyComponent, { name: "world" }).then(dialogs.alert)}>click me</button>
 ```
 
 `prompt()` accepts as first parameter, an object, or objects array, in the shape of `{component: SvelteComponent, props: object}`.
@@ -215,18 +221,6 @@ so you can do something like this:
 
 <button on:click={() => persistent()}>persistent dialog</button>
 
-```
-
-To resolve in custom components, _svelte-dialogs_ export a `getClose()` function to be called at initialization to retrieve the close function from the context
-
-```svelte
-<script>
-  import { getClose } from "svelte-dialogs";
-
-  const close = getClose();
-</script>
-
-<button on:click={() => close('see you on the other side....')}>click me</button>
 ```
 
 ### In-component events-based
