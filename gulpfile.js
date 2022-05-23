@@ -174,30 +174,9 @@ gulp.task("dev:watch", async () => {
 
 gulp.task("dev", gulp.series("build", "dev:clean", "dev:stage", "dev:watch"));
 
-gulp.task("site:rollup", async () => {
-  const bundle = await rollup.rollup({
-    input: "stage/src/main.js",
-    plugins: [
-      nodeResolve({
-        mainFields: ["svelte", "module", "main"],
-        dedupe: ["svelte"],
-      }),
-      svelte(),
-      commonjs(),
-      babel(babelConfig),
-    ],
-  });
-
-  await bundle.write({
-    sourcemap: true,
-    format: "iife",
-    name: "app",
-    file: "stage/public/bundle/bundle.js",
-  });
+gulp.task("site:clean", () => {
+  return del(["site/public/bundle/**"]);
 });
-
-gulp.task("site", gulp.series("build", "dev:clean", "dev:stage", "site:rollup"));
-
 
 gulp.task("site:watch", async () => {
   rollup
@@ -236,4 +215,29 @@ gulp.task("site:watch", async () => {
         result.close();
       }
     });
+});
+
+gulp.task("site-dev", gulp.series("site:clean", "site:watch"));
+
+gulp.task("site", async () => {
+  const bundle = await rollup.rollup({
+    input: "site/src/main.js",
+    plugins: [
+      nodeResolve({
+        mainFields: ["svelte", "module", "main"],
+        dedupe: ["svelte"],
+      }),
+      svelte(),
+      css({ output: "bundle.css" }),
+      commonjs(),
+      babel(babelConfig),
+    ],
+  });
+
+  await bundle.write({
+    sourcemap: true,
+    format: "es",
+    name: "svelte-dialgs",
+    dir: "site/public/bundle/",
+  });
 });

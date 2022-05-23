@@ -21,7 +21,7 @@
     "test": "jest test spec --coverage",
     "test:watch": "npm test -- --watch",
     "site": "gulp site",
-    "site:watch": "gulp site:watch"
+    "site-dev": "gulp site-dev"
   },
   "peerDependencies": {
     "svelte": "^3.5.0"

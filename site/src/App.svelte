@@ -1,29 +1,27 @@
 <script>
   import Repl from "@sveltejs/svelte-repl";
-  import { examples } from "./examples";
+  import { examples, mapFile } from "./examples";
   const svelteUrl = `https://unpkg.com/svelte@3.48.0`;
   let repl;
-  const clone = (file) => ({
-    name: file.name.replace(/.\w+$/, ""),
-    type: file.type,
-    source: file.content,
-  });
-
-  let idx = 0;
-  $: repl && repl.set({ components: examples[idx].files.map(clone) });
+  let selectedIdx = 0;
+  $: repl && repl.set({ components: examples[selectedIdx].files.map(mapFile) });
 </script>
 
-<div class="container">
-  <div class="sidebar">
-    <h1 class="title">Svelte Dialogs</h1>
+<main class="container">
+  <nav class="sidebar">
+    <h1 class="title">svelte-dialogs</h1>
     <ul class="toc">
-      {#each examples as { id, name }, i}
-        <li class="toc-item" class:toc-item__active={i === idx} on:click={() => (idx = i)}>
-          {i + 1}: {name}
+      {#each examples as { name }, idx}
+        <li
+          class="toc-item"
+          class:toc-item--active={idx === selectedIdx}
+          on:click={() => (selectedIdx = idx)}
+        >
+          {name}
         </li>
       {/each}
     </ul>
-  </div>
+  </nav>
   <Repl
     bind:this={repl}
     orientation="columns"
@@ -32,31 +30,33 @@
     relaxed
     workersUrl="/workers"
   />
-</div>
+</main>
 
 <style>
   .container {
-    height: 100%;
     width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: 300px auto;
   }
 
+  .sidebar {
+    max-height: 100vh;
+  }
+
   .toc {
     overflow-y: auto;
-    height: 100%;
-    border-right: 1px solid grey;
-    background-color: grey;
-    color: #fff;
-    padding: 3rem 3rem 0;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 1rem 3rem 0;
   }
 
   .title {
     margin: 0;
     padding: 1rem;
     text-align: center;
-    background-color: white;
-    color: grey;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
   }
 
   .toc-item {
@@ -71,9 +71,8 @@
     text-decoration: underline;
   }
 
-  .toc-item__active {
-    /* color: #f50; */
-    color: grey;
-    background-color: white;
+  .toc-item--active {
+    color: var(--secondary-color);
+    background-color: var(--accent-color);
   }
 </style>
