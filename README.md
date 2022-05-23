@@ -1,6 +1,6 @@
 # svelte-dialogs
 
-handy dialogs in/for svelte
+handy dialogs in/for svelte, see some [examples](https://bibizio.github.io/svelte-dialogs/)
 
 ## Install
 
@@ -44,19 +44,22 @@ the easiest way to use _svelte-dialog_ is
 ```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
-
-const htmlString =
-  `
-  <div>
-    <h1 id="my-title-id" class="my-title">all the html you want</h1>
-    <div class="body">
-      <p>now in text!</p>
-    </div>
-  </div>
-  `;
+    
+  /**
+   * When using custom modal content, use the default title id (dialog-title-id)
+   * or change the titleId options accordingly for accessibility reasons: 
+   * titleId is used in aria-labelledby attribute
+   */
+  const htmlString = `
+    <div>
+        <h1 id="dialog-title-id">all the html you want</h1>
+        <div style="text-align: center">
+            <p>now in text!</p>
+        </div>
+    </div>`;
 </script>
 
-<button on:click={() => dialogs.modal(htmlString)}>click me</button>
+<button on:click={() => dialogs.modal(htmlString)}>Click me!</button>
 ```
 
 `prompt()` accepts two parameters:
@@ -115,21 +118,22 @@ You can use options with all the methods (reference below) like so:
 
 _svelte-dialogs_ also exports a `DialogContent` component with three styled optional slots (_header_, _body_ and _footer_).
 
-To resolve in custom components, _svelte-dialogs_ export a `getClose()` function to be called at initialization to retrieve the close function from the context.
+To retrieve the close function and options from the context, _svelte-dialogs_ exports `getClose()` and `getOptions()` functions to be called at initialization.
 
 So for example:
 
 ```svelte
 // MyComponent.svelte
 <script>
-  import { DialogContent, getClose } from "svelte-dialogs";
+  import { DialogContent, getClose, getOptions } from "svelte-dialogs";
 
   const close = getClose();
+  const {titleId} = getOptions();
   export let name = "";
 </script>
 
 <DialogContent>
-  <h1 slot="header">MY COMPONENT</h1>
+  <h1 id={titleId} slot="header">My component</h1>
   <svelte:fragment slot="body">
     <p>hello {name}</p>
   </svelte:fragment>
@@ -191,7 +195,7 @@ So for example:
 
 If no prop is required, you can just pass the component as in `prompt(MyInput)`
 
-### Promise-based
+### Promise based
 
 All methods described return a promise that resolve on close:
 
@@ -219,11 +223,11 @@ so you can do something like this:
   }
 </script>
 
-<button on:click={() => persistent()}>persistent dialog</button>
+<button on:click={persistent}>persistent dialog</button>
 
 ```
 
-### In-component events-based
+### Template/Events based
 
 It's possible to define and use modals in-component using the `Dialog` component exported by _svelte-dialogs_ that accept an `options` props and emit:
 
@@ -244,9 +248,17 @@ The component also exports `close()` and `data()` methods to close and retrieve 
 
   let dialog;
 
-  function handler(event) {
+  const titleId = "my-dialog-title";
+  const options = {
+    titleId,
+    closeButton: false,
+    closeOnBg: false,
+    closeOnEsc: false,
+  };
+
+  function handler({ type, detail }) {
     // event.type 'hide' have event.detail === "my data"
-    console.log(event.type, event.detail);
+    console.log(type, detail);
   }
 </script>
 
@@ -259,8 +271,10 @@ The component also exports `close()` and `data()` methods to close and retrieve 
   on:hidden={handler}
   let:data
   let:close
+  {options}
+
 >
-  <p>In-component events-based dialog</p>
+  <h1 id={titleId}>In-component events-based dialog</h1>
   <p>{data}</p>
   <button on:click={() => close(data)}>close</button>
 </Dialog>

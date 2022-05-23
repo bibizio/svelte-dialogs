@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.1.1
+
+### Bug fixes
+
+- input type checkbox and file work properly
+- fixed input.props leak
+- styles fixes
+
 ## 1.1.0
 
 ### Improvements
