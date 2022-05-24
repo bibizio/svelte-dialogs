@@ -36,10 +36,10 @@
 "  cursor: pointer;\n" +
 "  background: transparent;\n" +
 "  border-radius: 1rem;\n" +
-"  background: rgb(204, 204, 204);\n" +
+"  background: #cccccc;\n" +
 "}\n" +
 ".dialog__close-button:after {\n" +
-"  color: white;\n" +
+"  color: #fff;\n" +
 "  content: \"✕\";\n" +
 "}\n" +
 ".dialog__close-button:hover {\n" +
@@ -61,7 +61,7 @@
 "}\n" +
 "\n" +
 ".dialog-content__divider {\n" +
-"  border: 1px solid grey;\n" +
+"  border: 1px solid #808080;\n" +
 "}\n" +
 "\n" +
 ".dialog__body {\n" +
@@ -81,7 +81,7 @@
 "}\n" +
 ".dialog__body::-webkit-scrollbar-thumb {\n" +
 "  border-radius: 10px;\n" +
-"  box-shadow: inset 0 0 5px rgb(204, 204, 204);\n" +
+"  box-shadow: inset 0 0 5px #cccccc;\n" +
 "}\n" +
 "\n" +
 ".dialog__footer {\n" +
@@ -102,7 +102,7 @@
 "  outline: 0;\n" +
 "}\n" +
 ".dialog__form.touched .dialog__input:invalid:focus, .dialog__form.touched .dialog__input:invalid:focus-visible {\n" +
-"  border: 2px solid rgb(202, 47, 63);\n" +
+"  border: 2px solid #ca2f3f;\n" +
 "  outline: 0;\n" +
 "}\n" +
 "\n" +
@@ -127,7 +127,7 @@
 "  width: 100%;\n" +
 "  padding: 1rem;\n" +
 "  background-color: #fff;\n" +
-"  border: 2px solid #ccc;\n" +
+"  border: 2px solid #cccccc;\n" +
 "  border-radius: 1rem;\n" +
 "}\n" +
 ".dialog__input[type=checkbox] {\n" +
@@ -179,13 +179,13 @@
 "}\n" +
 "\n" +
 ".dialog_button--primary {\n" +
-"  background-color: rgb(204, 204, 204);\n" +
+"  background-color: #cccccc;\n" +
 "}\n" +
 ".dialog_button--primary:hover {\n" +
 "  background-color: rgba(204, 204, 204, 0.8);\n" +
 "}\n" +
 ".dialog_button--primary:not(:disabled):active {\n" +
-"  background-color: rgb(204, 204, 204);\n" +
+"  background-color: #cccccc;\n" +
 "}\n" +
 ".dialog_button--primary:focus {\n" +
 "  box-shadow: 0 0 0 3px rgba(204, 204, 204, 0.5);\n" +
@@ -193,13 +193,13 @@
 "\n" +
 ".dialog_button--decline {\n" +
 "  color: #fff;\n" +
-"  background-color: rgb(202, 47, 63);\n" +
+"  background-color: #ca2f3f;\n" +
 "}\n" +
 ".dialog_button--decline:hover {\n" +
 "  background-color: rgba(202, 47, 63, 0.8);\n" +
 "}\n" +
 ".dialog_button--decline:not(:disabled):active {\n" +
-"  background-color: rgb(202, 47, 63);\n" +
+"  background-color: #ca2f3f;\n" +
 "}\n" +
 ".dialog_button--decline:focus {\n" +
 "  box-shadow: 0 0 0 3px rgba(202, 47, 63, 0.5);\n" +
