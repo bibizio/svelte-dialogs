@@ -2,8 +2,8 @@ $primary-color: #cccccc; // rgb(204, 204, 204);
 $secondary-color: #fff; //rgb(255, 255, 255)
 $background-color: #808080; //rgb(128, 128, 128);
 $error-color: #ca2f3f; //rgb(202, 47, 63);
-$success-color: #78b450; //rgb(120, 180, 80);
-$warning-color: #c8aa46; //rgb(200, 170, 70);
+$success-color: #6ea050; //rgb(110, 160, 80);
+$warning-color: #f0be00; //rgb(240, 190, 0);
 
 @mixin scroll-bar {
   &::-webkit-scrollbar {
@@ -53,6 +53,10 @@ $warning-color: #c8aa46; //rgb(200, 170, 70);
   background-color: $secondary-color;
 }
 
+.dialog__container--no-padding {
+  padding: 0;
+}
+
 .dialog__close-button {
   box-sizing: border-box;
   position: absolute;
@@ -87,11 +91,34 @@ $warning-color: #c8aa46; //rgb(200, 170, 70);
   text-align: center;
 }
 
+@mixin dialog__header--contextual($color) {
+  padding: 2rem 2rem 0 2rem;
+  border-radius: 1rem 1rem 0 0;
+  color: $secondary-color;
+  background-color: $color;
+}
+
+.dialog__header--error {
+  @include dialog__header--contextual($error-color);
+}
+
+.dialog__header--success {
+  @include dialog__header--contextual($success-color);
+}
+
+.dialog__header--warning {
+  @include dialog__header--contextual($warning-color);
+}
+
 .dialog__title {
   font-size: large;
   font-weight: bold;
   line-height: 1.5;
   margin: 0;
+}
+
+.dialog__title--xx-large {
+  font-size: xx-large;
 }
 
 .dialog-content__divider {
@@ -109,9 +136,17 @@ $warning-color: #c8aa46; //rgb(200, 170, 70);
   @include scroll-bar;
 }
 
+.dialog__body--contextual {
+  padding: 0 2rem;
+}
+
 .dialog__footer {
   margin-top: 1rem;
   display: flex;
+}
+
+.dialog__footer--contextual {
+  padding: 0 2rem 2rem 2rem;
 }
 
 .dialog__footer--space-evenly {
@@ -207,35 +242,42 @@ $warning-color: #c8aa46; //rgb(200, 170, 70);
   }
 }
 
-.dialog_button--primary {
-  background-color: rgba($primary-color, 1);
+@mixin button-modifier($color) {
+  background-color: rgba($color, 1);
 
   &:hover {
-    background-color: rgba($primary-color, 0.8);
+    background-color: rgba($color, 0.8);
   }
 
   &:not(:disabled):active {
-    background-color: rgba($primary-color, 1);
+    background-color: rgba($color, 1);
   }
 
   &:focus {
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.5);
+    box-shadow: 0 0 0 3px rgba($color, 0.5);
   }
 }
 
+.dialog_button--primary {
+  @include button-modifier($primary-color);
+}
+
 .dialog_button--decline {
+  @include button-modifier($error-color);
   color: $secondary-color;
-  background-color: rgba($error-color, 1);
+}
 
-  &:hover {
-    background-color: rgba($error-color, 0.8);
-  }
+.dialog_button--error {
+  @include button-modifier($error-color);
+  color: $secondary-color;
+}
 
-  &:not(:disabled):active {
-    background-color: rgba($error-color, 1);
-  }
+.dialog_button--success {
+  @include button-modifier($success-color);
+  color: $secondary-color;
+}
 
-  &:focus {
-    box-shadow: 0 0 0 3px rgba($error-color, 0.5);
-  }
+.dialog_button--warning {
+  @include button-modifier($warning-color);
+  color: $secondary-color;
 }

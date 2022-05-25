@@ -118,9 +118,43 @@ export const defaultPromptOptions = {
   resetButtonClass: "dialog_button dialog_button--primary",
 };
 
+const commonContextualOptions = {
+  dialogClass: "dialog__container dialog__container--no-padding",
+  titleClass: "dialog__title dialog__title--xx-large",
+  bodyClass: "dialog__body dialog__body--contextual",
+  footerClass: "dialog__footer dialog__footer--space-evenly dialog__footer--contextual",
+};
+
+export const defaultErrorOptions = {
+  ...defaultAlertOptions,
+  ...commonContextualOptions,
+  title: "Error!",
+  headerClass: "dialog__header dialog__header--error",
+  dismissButtonClass: "dialog_button dialog_button--error",
+};
+
+export const defaultSuccessOptions = {
+  ...defaultAlertOptions,
+  ...commonContextualOptions,
+  title: "Success!",
+  headerClass: "dialog__header dialog__header--success",
+  dismissButtonClass: "dialog_button dialog_button--success",
+};
+
+export const defaultWarningOptions = {
+  ...defaultAlertOptions,
+  ...commonContextualOptions,
+  title: "Warning!",
+  headerClass: "dialog__header dialog__header--warning",
+  dismissButtonClass: "dialog_button dialog_button--warning",
+};
+
 export const defaultDialogConfigOptions = {
   global: defaultDialogOptions,
   alert: defaultAlertOptions,
   confirm: defaultConfirmOptions,
   prompt: defaultPromptOptions,
+  error: defaultErrorOptions,
+  success: defaultSuccessOptions,
+  warning: defaultWarningOptions,
 };

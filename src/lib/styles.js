@@ -24,6 +24,10 @@
 "  background-color: #fff;\n" +
 "}\n" +
 "\n" +
+".dialog__container--no-padding {\n" +
+"  padding: 0;\n" +
+"}\n" +
+"\n" +
 ".dialog__close-button {\n" +
 "  box-sizing: border-box;\n" +
 "  position: absolute;\n" +
@@ -53,11 +57,36 @@
 "  text-align: center;\n" +
 "}\n" +
 "\n" +
+".dialog__header--error {\n" +
+"  padding: 2rem 2rem 0 2rem;\n" +
+"  border-radius: 1rem 1rem 0 0;\n" +
+"  color: #fff;\n" +
+"  background-color: #ca2f3f;\n" +
+"}\n" +
+"\n" +
+".dialog__header--success {\n" +
+"  padding: 2rem 2rem 0 2rem;\n" +
+"  border-radius: 1rem 1rem 0 0;\n" +
+"  color: #fff;\n" +
+"  background-color: #6ea050;\n" +
+"}\n" +
+"\n" +
+".dialog__header--warning {\n" +
+"  padding: 2rem 2rem 0 2rem;\n" +
+"  border-radius: 1rem 1rem 0 0;\n" +
+"  color: #fff;\n" +
+"  background-color: #f0be00;\n" +
+"}\n" +
+"\n" +
 ".dialog__title {\n" +
 "  font-size: large;\n" +
 "  font-weight: bold;\n" +
 "  line-height: 1.5;\n" +
 "  margin: 0;\n" +
+"}\n" +
+"\n" +
+".dialog__title--xx-large {\n" +
+"  font-size: xx-large;\n" +
 "}\n" +
 "\n" +
 ".dialog-content__divider {\n" +
@@ -84,9 +113,17 @@
 "  box-shadow: inset 0 0 5px #cccccc;\n" +
 "}\n" +
 "\n" +
+".dialog__body--contextual {\n" +
+"  padding: 0 2rem;\n" +
+"}\n" +
+"\n" +
 ".dialog__footer {\n" +
 "  margin-top: 1rem;\n" +
 "  display: flex;\n" +
+"}\n" +
+"\n" +
+".dialog__footer--contextual {\n" +
+"  padding: 0 2rem 2rem 2rem;\n" +
 "}\n" +
 "\n" +
 ".dialog__footer--space-evenly {\n" +
@@ -192,8 +229,8 @@
 "}\n" +
 "\n" +
 ".dialog_button--decline {\n" +
-"  color: #fff;\n" +
 "  background-color: #ca2f3f;\n" +
+"  color: #fff;\n" +
 "}\n" +
 ".dialog_button--decline:hover {\n" +
 "  background-color: rgba(202, 47, 63, 0.8);\n" +
@@ -203,4 +240,46 @@
 "}\n" +
 ".dialog_button--decline:focus {\n" +
 "  box-shadow: 0 0 0 3px rgba(202, 47, 63, 0.5);\n" +
+"}\n" +
+"\n" +
+".dialog_button--error {\n" +
+"  background-color: #ca2f3f;\n" +
+"  color: #fff;\n" +
+"}\n" +
+".dialog_button--error:hover {\n" +
+"  background-color: rgba(202, 47, 63, 0.8);\n" +
+"}\n" +
+".dialog_button--error:not(:disabled):active {\n" +
+"  background-color: #ca2f3f;\n" +
+"}\n" +
+".dialog_button--error:focus {\n" +
+"  box-shadow: 0 0 0 3px rgba(202, 47, 63, 0.5);\n" +
+"}\n" +
+"\n" +
+".dialog_button--success {\n" +
+"  background-color: #6ea050;\n" +
+"  color: #fff;\n" +
+"}\n" +
+".dialog_button--success:hover {\n" +
+"  background-color: rgba(110, 160, 80, 0.8);\n" +
+"}\n" +
+".dialog_button--success:not(:disabled):active {\n" +
+"  background-color: #6ea050;\n" +
+"}\n" +
+".dialog_button--success:focus {\n" +
+"  box-shadow: 0 0 0 3px rgba(110, 160, 80, 0.5);\n" +
+"}\n" +
+"\n" +
+".dialog_button--warning {\n" +
+"  background-color: #f0be00;\n" +
+"  color: #fff;\n" +
+"}\n" +
+".dialog_button--warning:hover {\n" +
+"  background-color: rgba(240, 190, 0, 0.8);\n" +
+"}\n" +
+".dialog_button--warning:not(:disabled):active {\n" +
+"  background-color: #f0be00;\n" +
+"}\n" +
+".dialog_button--warning:focus {\n" +
+"  box-shadow: 0 0 0 3px rgba(240, 190, 0, 0.5);\n" +
 "}");
