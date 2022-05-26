@@ -80,6 +80,7 @@
   in:bgIn
   out:bgOut
   on:click={handleBgClick}
+  use:focusTrap
 >
   <div
     class={opts.dialogClass}
@@ -94,7 +95,6 @@
     on:outrostart={hide}
     on:outroend={hidden}
     on:click={handleDialogClick}
-    use:focusTrap
   >
     {#if opts.closeButton}
       <button

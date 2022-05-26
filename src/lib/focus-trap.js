@@ -20,6 +20,10 @@ if (typeof window !== "undefined") {
     }
 
     const focusable = parentNode.querySelectorAll(focusableSelector);
+    if(!focusable.length){
+      event.preventDefault();
+      return;
+    }
 
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -37,9 +41,7 @@ if (typeof window !== "undefined") {
 
 export default (node) => {
   const firstFocusable = node.querySelector(focusableSelector);
-  firstFocusable?.focus();
-  firstFocusable?.blur();
-  // document.activeElement?.blur();
+  firstFocusable ? firstFocusable.focus() : node.focus();
 
   trapFocusList.push(node);
   return {
