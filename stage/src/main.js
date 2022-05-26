@@ -1,15 +1,14 @@
 import App from "./App.svelte";
-// import { dialogs } from "svelte-dialogs";
+import { dialogs, Confirm } from "svelte-dialogs";
 // dialogs.config({
-//   global: {
-//     overlayClass: "some-other-class",
-//     dialogClass: "some-other-class",
-//     closeButtonClass: "some-other-class",
-//     closeButtonText: "close me",
-//     headerClass: "some-other-class",
-//     titleClass: "some-other-class",
-//     bodyClass: "some-other-class",
-//     footerClass: "some-other-class",
+//   warning: {
+//     content: Confirm,
+//     title: "You're doing something really dangerous...",
+//     text: "Are you sure you want to continue?",
+//     confirmButtonText: "yes",
+//     declineButtonText: "no",
+//     confirmButtonClass: "dialog_button dialog_button--primary",
+//     declineButtonClass: "dialog_button dialog_button--decline",
 //   },
 // });
 
