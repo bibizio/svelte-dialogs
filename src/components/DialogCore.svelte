@@ -11,24 +11,27 @@
 
   const dispatch = createEventDispatcher();
 
-  function bgIn(node, _) {
-    const { transition, props } = opts.transitions.bgIn;
+  function resolveTransition(node, point) {
+    if (!point) return null;
+    const { transition, props } = point;
+    if (!transition) return null;
     return transition(node, props);
+  }
+
+  function bgIn(node, _) {
+    return resolveTransition(node, opts.transitions.bgIn);
   }
 
   function bgOut(node, _) {
-    const { transition, props } = opts.transitions.bgOut;
-    return transition(node, props);
+    return resolveTransition(node, opts.transitions.bgOut);
   }
 
   function dialogIn(node, _) {
-    const { transition, props } = opts.transitions.in;
-    return transition(node, props);
+    return resolveTransition(node, opts.transitions.in);
   }
 
   function dialogOut(node, _) {
-    const { transition, props } = opts.transitions.out;
-    return transition(node, props);
+    return resolveTransition(node, opts.transitions.out);
   }
 
   function show() {
@@ -77,6 +80,7 @@
   in:bgIn
   out:bgOut
   on:click={handleBgClick}
+  use:focusTrap
 >
   <div
     class={opts.dialogClass}
@@ -91,7 +95,6 @@
     on:outrostart={hide}
     on:outroend={hidden}
     on:click={handleDialogClick}
-    use:focusTrap
   >
     {#if opts.closeButton}
       <button

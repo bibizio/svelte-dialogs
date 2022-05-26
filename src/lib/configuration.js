@@ -1,4 +1,4 @@
-import { fade, blur, fly, slide, scale, draw, crossfade } from "svelte/transition";
+import * as svelteTransitions from "svelte/transition";
 import { defaultDialogConfigOptions } from "./defaults";
 
 let customConfig = {};
@@ -69,35 +69,18 @@ export const getPromptOptions = (inputs, options) => {
   return opts;
 };
 
+/**
+ * It modifies the transition in the configuration object if is a string,
+ * and that's ok: if so it needs to resolves only the first time
+ */
 export const resolveTransitions = (transitions) => {
   for (const key in transitions) {
-    const { transition } = transitions[key];
-    transitions[key].transition = resolveTransition(transition);
+    const point = transitions[key];
+    if (point && typeof point.transition === "string") {
+      const transition = svelteTransitions[transition];
+      if (!transition) throw new Error(`${point.transition} not an existing svelte transition`);
+      point.transition = transition;
+    }
   }
   return transitions;
-};
-
-const resolveTransition = (transition) => {
-  if (typeof transition !== "string") {
-    return transition;
-  }
-
-  switch (transition) {
-    case "fade":
-      return fade;
-    case "blur":
-      return blur;
-    case "fly":
-      return fly;
-    case "slide":
-      return slide;
-    case "scale":
-      return scale;
-    case "draw":
-      return draw;
-    case "crossfade":
-      return crossfade;
-    default:
-      throw new Error(`${transition} not an existing svelte transition`);
-  }
 };
