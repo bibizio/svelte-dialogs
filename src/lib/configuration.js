@@ -1,4 +1,3 @@
-import * as svelteTransitions from "svelte/transition";
 import { defaultDialogConfigOptions } from "./defaults";
 
 let customConfig = {};
@@ -50,18 +49,18 @@ export const getWarningOptions = (options) => getOpts("warning", options);
 
 export const getPromptOptions = (inputs, options) => {
   const opts = getOpts("prompt", options);
-
+  const { props, inputComponent, inputProps, formElementClass, inputLabelClass, inputClass } = opts;
   const defaltInput = {
-    component: opts.inputComponent,
-    props: opts.inputProps || {
+    component: inputComponent,
+    props: inputProps || {
       label: "",
-      formElementClass: opts.formElementClass,
-      inputLabelClass: opts.inputLabelClass,
-      inputClass: opts.inputClass,
+      formElementClass,
+      inputLabelClass,
+      inputClass,
     },
   };
 
-  opts.props.inputs = inputs.map((input) => ({
+  props.inputs = inputs.map((input) => ({
     ...defaltInput,
     ...input,
   }));
@@ -77,7 +76,7 @@ export const resolveTransitions = (transitions) => {
   for (const key in transitions) {
     const point = transitions[key];
     if (point && typeof point.transition === "string") {
-      const transition = svelteTransitions[transition];
+      const transition = svelteTransitions[point.transition];
       if (!transition) throw new Error(`${point.transition} not an existing svelte transition`);
       point.transition = transition;
     }
