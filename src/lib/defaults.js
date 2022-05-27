@@ -123,6 +123,11 @@ const commonContextualOptions = {
   titleClass: "dialog__title dialog__title--xx-large",
   bodyClass: "dialog__body dialog__body--contextual",
   footerClass: "dialog__footer dialog__footer--space-evenly dialog__footer--contextual",
+  //
+  confirmButtonText: "yes",
+  declineButtonText: "no",
+  confirmButtonClass: "dialog_button dialog_button--primary",
+  declineButtonClass: "dialog_button dialog_button--decline",
 };
 
 export const defaultErrorOptions = {
