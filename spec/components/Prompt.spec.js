@@ -18,16 +18,29 @@ describe("Prompt", () => {
   });
 
   it("should render with right options", async () => {
+    const {
+      formElementClass,
+      inputLabelClass,
+      inputClass,
+      formClass,
+      cancelButtonClass,
+      cancelButtonText,
+      resetButtonClass,
+      resetButtonText,
+      submitButtonClass,
+      submitButtonText,
+    } = defaultPromptOptions;
+    const inputProps = { formElementClass, inputLabelClass, inputClass };
     const inputs = [
-      { component: DialogInput, props: { label: "test input 1" } },
-      { component: DialogInput, props: { label: "test input 2" } },
+      { component: DialogInput, props: { ...inputProps, label: "test input 1" } },
+      { component: DialogInput, props: { ...inputProps, label: "test input 2" } },
     ];
     getOptions.mockReturnValue(defaultPromptOptions);
     const { queryByTestId, queryAllByTestId } = render(Prompt, { inputs });
 
     await tick();
     const form = queryByTestId("prompt__form");
-    expect(form).toHaveClass(defaultPromptOptions.formClass);
+    expect(form).toHaveClass(formClass);
 
     const formElements = queryAllByTestId("dialog-input__form-element");
     const labels = queryAllByTestId("dialog-input__label");
@@ -35,25 +48,25 @@ describe("Prompt", () => {
 
     console.log(formElements);
     inputs.forEach((input, idx) => {
-      expect(formElements[idx]).toHaveClass(defaultPromptOptions.formElementClass);
+      expect(formElements[idx]).toHaveClass(formElementClass);
 
-      expect(labels[idx]).toHaveClass(defaultPromptOptions.inputLabelClass);
+      expect(labels[idx]).toHaveClass(inputLabelClass);
       expect(labels[idx]).toHaveTextContent(input.props.label);
 
-      expect(inputElements[idx]).toHaveClass(defaultPromptOptions.inputClass);
+      expect(inputElements[idx]).toHaveClass(inputClass);
     });
 
     const cancelButton = queryByTestId("prompt__cancel-button");
-    expect(cancelButton).toHaveClass(defaultPromptOptions.cancelButtonClass);
-    expect(cancelButton).toHaveTextContent(defaultPromptOptions.cancelButtonText);
+    expect(cancelButton).toHaveClass(cancelButtonClass);
+    expect(cancelButton).toHaveTextContent(cancelButtonText);
 
     const resetButton = queryByTestId("prompt__reset-button");
-    expect(resetButton).toHaveClass(defaultPromptOptions.resetButtonClass);
-    expect(resetButton).toHaveTextContent(defaultPromptOptions.resetButtonText);
+    expect(resetButton).toHaveClass(resetButtonClass);
+    expect(resetButton).toHaveTextContent(resetButtonText);
 
     const submitButton = queryByTestId("prompt__submit-button");
-    expect(submitButton).toHaveClass(defaultPromptOptions.submitButtonClass);
-    expect(submitButton).toHaveTextContent(defaultPromptOptions.submitButtonText);
+    expect(submitButton).toHaveClass(submitButtonClass);
+    expect(submitButton).toHaveTextContent(submitButtonText);
   });
 
   it("should not render reset button when resetButton: false", async () => {
@@ -81,9 +94,10 @@ describe("Prompt", () => {
   });
 
   it("should render with html string buttons text", async () => {
-    const cancelButtonText = '<p data-testid="test-cancel-button-text">test string</p>';
-    const resetButtonText = '<p data-testid="test-reset-button-text">test string</p>';
-    const submitButtonText = '<p data-testid="test-submit-button-text">test string</p>';
+    const testString = "test string";
+    const cancelButtonText = `<p data-testid="test-cancel-button-text">${testString}</p>`;
+    const resetButtonText = `<p data-testid="test-reset-button-text">${testString}</p>`;
+    const submitButtonText = `<p data-testid="test-submit-button-text">${testString}ng</p>`;
     getOptions.mockReturnValue({
       ...defaultPromptOptions,
       cancelButtonText,
@@ -93,11 +107,11 @@ describe("Prompt", () => {
     const { queryByTestId } = render(Prompt);
 
     const cancelButtonParagraph = queryByTestId("test-cancel-button-text");
-    expect(cancelButtonParagraph).toHaveTextContent("test string");
+    expect(cancelButtonParagraph).toHaveTextContent(testString);
     const resetButtonParagraph = queryByTestId("test-reset-button-text");
-    expect(resetButtonParagraph).toHaveTextContent("test string");
+    expect(resetButtonParagraph).toHaveTextContent(testString);
     const submitButtonParagraph = queryByTestId("test-submit-button-text");
-    expect(submitButtonParagraph).toHaveTextContent("test string");
+    expect(submitButtonParagraph).toHaveTextContent(testString);
   });
 
   it("should render custom and default inputs", () => {
@@ -130,10 +144,41 @@ describe("Prompt", () => {
     expect(closeMock).toHaveBeenCalledWith(null);
   });
 
+  it("should handle input initial value", async () => {
+    const inputs = [
+      { component: DialogInput, props: { value: "text value" } },
+      { component: DialogInput, props: { type: "checkbox", value: true } },
+      {
+        component: DialogInput,
+        props: { type: "textarea", value: "textarea value" },
+      },
+      {
+        component: MockedInput,
+        props: { id: "custom-input-id", value: "custom input value" },
+      },
+    ];
+    const closeMock = jest.fn();
+    getClose.mockReturnValue(closeMock);
+    getOptions.mockReturnValue(defaultPromptOptions);
+    const { queryByTestId } = render(Prompt, { inputs });
+
+    const submitButton = queryByTestId("prompt__submit-button");
+    await fireEvent.click(submitButton);
+
+    expect(closeMock).toHaveBeenCalledTimes(1);
+    expect(closeMock).toHaveBeenCalledWith([
+      "text value",
+      true,
+      "textarea value",
+      "custom input value",
+    ]);
+  });
+
   it("should reset inputs on reset", async () => {
     const inputs = [
-      { component: DialogInput, props: { label: "test input 1" } },
-      { component: DialogInput, props: { label: "test input 2" } },
+      { component: DialogInput, props: { label: "text" } },
+      { component: DialogInput, props: { label: "checkbox", type: "checkbox" } },
+      { component: DialogInput, props: { label: "file", type: "file" } },
       { component: MockedInput, props: { label: "custom input", id: "custom-input-id" } },
     ];
     const closeMock = jest.fn();
@@ -145,6 +190,14 @@ describe("Prompt", () => {
     const customInput = queryByTestId("mocked-input__input");
 
     userEvent.type(defaultInputs[0], "test default input text");
+
+    userEvent.click(defaultInputs[1]);
+
+    const fileName = "a file.name";
+    const blob = new Blob([""]);
+    const file = new File([blob], fileName);
+    userEvent.upload(defaultInputs[2], file);
+
     userEvent.type(customInput, "test custom input text");
 
     const resetButton = queryByTestId("prompt__reset-button");
@@ -154,13 +207,14 @@ describe("Prompt", () => {
     await fireEvent.click(submitButton);
 
     expect(closeMock).toHaveBeenCalledTimes(1);
-    expect(closeMock).toHaveBeenCalledWith([undefined, undefined, undefined]);
+    expect(closeMock).toHaveBeenCalledWith([undefined, false, undefined, undefined]);
   });
 
   it("should call close with inputs values array on submit", async () => {
     const inputs = [
-      { component: DialogInput, props: { label: "test input 1" } },
-      { component: DialogInput, props: { label: "test input 2" } },
+      { component: DialogInput, props: { label: "text" } },
+      { component: DialogInput, props: { label: "checkbox", type: "checkbox" } },
+      { component: DialogInput, props: { label: "file", type: "file" } },
       { component: MockedInput, props: { label: "custom input", id: "custom-input-id" } },
     ];
     const closeMock = jest.fn();
@@ -172,6 +226,14 @@ describe("Prompt", () => {
     const customInput = queryByTestId("mocked-input__input");
 
     userEvent.type(defaultInputs[0], "test default input text");
+
+    userEvent.click(defaultInputs[1]);
+
+    const fileName = "a file.name";
+    const blob = new Blob([""]);
+    const file = new File([blob], fileName);
+    userEvent.upload(defaultInputs[2], file);
+
     userEvent.type(customInput, "test custom input text");
 
     const submitButton = queryByTestId("prompt__submit-button");
@@ -180,7 +242,8 @@ describe("Prompt", () => {
     expect(closeMock).toHaveBeenCalledTimes(1);
     expect(closeMock).toHaveBeenCalledWith([
       "test default input text",
-      undefined,
+      true,
+      expect.objectContaining({ 0: file }),
       "test custom input text",
     ]);
   });

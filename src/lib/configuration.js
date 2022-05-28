@@ -50,20 +50,26 @@ export const getWarningOptions = (options) => getOpts("warning", options);
 export const getPromptOptions = (inputs, options) => {
   const opts = getOpts("prompt", options);
   const { props, inputComponent, inputProps, formElementClass, inputLabelClass, inputClass } = opts;
-  const defaltInput = {
-    component: inputComponent,
-    props: inputProps || {
-      label: "",
-      formElementClass,
-      inputLabelClass,
-      inputClass,
-    },
+
+  const defaultProps = {
+    label: "",
+    formElementClass,
+    inputLabelClass,
+    inputClass,
+    ...inputProps,
   };
 
-  props.inputs = inputs.map((input) => ({
-    ...defaltInput,
-    ...input,
-  }));
+  props.inputs = inputs.map(({ component, props }) => {
+    if (component && component !== inputComponent) return { component, props };
+
+    return {
+      component: inputComponent,
+      props: {
+        ...defaultProps,
+        ...props,
+      },
+    };
+  });
 
   return opts;
 };

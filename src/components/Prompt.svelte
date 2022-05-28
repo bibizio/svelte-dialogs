@@ -13,7 +13,16 @@
   export let inputs = [];
   let touched = false;
   const close = getClose();
-  const opts = getOptions();
+  const {
+    formClass,
+    cancelButtonClass,
+    cancelButtonText,
+    resetButton,
+    resetButtonClass,
+    resetButtonText,
+    submitButtonClass,
+    submitButtonText,
+  } = getOptions();
   const form$ = writable(inputs.map(mapInitialValue));
 
   function handleSubmit() {
@@ -28,43 +37,43 @@
 
 <form
   data-testid="prompt__form"
-  class={opts.formClass}
+  class={formClass}
   on:submit|preventDefault={handleSubmit}
   class:touched
 >
   <DialogContent>
     <svelte:fragment slot="body">
-      {#each inputs as input, idx}
-        <svelte:component this={input.component} {...input.props} bind:value={$form$[idx]} />
+      {#each inputs as { component, props }, idx}
+        <svelte:component this={component} {...props} bind:value={$form$[idx]} />
       {/each}
     </svelte:fragment>
     <svelte:fragment slot="footer">
       <span>
         <button
           type="button"
-          class={opts.cancelButtonClass}
+          class={cancelButtonClass}
           aria-label="Cancel"
           data-testid={"prompt__cancel-button"}
-          on:click={() => close(null)}>{@html opts.cancelButtonText}</button
+          on:click={() => close(null)}>{@html cancelButtonText}</button
         >
-        {#if opts.resetButton}
+        {#if resetButton}
           <button
             type="button"
-            class={opts.resetButtonClass}
+            class={resetButtonClass}
             aria-label="Reset form"
             data-testid={"prompt__reset-button"}
-            on:click={handleReset}>{@html opts.resetButtonText}</button
+            on:click={handleReset}>{@html resetButtonText}</button
           >
         {/if}</span
       >
       <button
         type="submit"
-        class={opts.submitButtonClass}
+        class={submitButtonClass}
         aria-label="Submit"
         data-testid={"prompt__submit-button"}
         on:click={() => {
           touched = true;
-        }}>{@html opts.submitButtonText}</button
+        }}>{@html submitButtonText}</button
       >
     </svelte:fragment>
   </DialogContent>
