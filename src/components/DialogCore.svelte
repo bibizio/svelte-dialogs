@@ -6,6 +6,24 @@
   export let close;
   export let opts;
 
+  let {
+    transitions,
+    onShow,
+    onShown,
+    onHide,
+    onHidden,
+    closeOnEsc,
+    closeOnBg,
+    overlayClass,
+    dialogClass,
+    titleId,
+    closeButton,
+    closeButtonClass,
+    closeButtonText,
+    content,
+    props,
+  } = opts;
+
   setClose(close);
   setOptions(opts);
 
@@ -18,51 +36,51 @@
     return transition(node, props);
   }
 
-  function bgIn(node, _) {
-    return resolveTransition(node, opts.transitions.bgIn);
+  function bgInTransition(node, _) {
+    return resolveTransition(node, transitions.bgIn);
   }
 
-  function bgOut(node, _) {
-    return resolveTransition(node, opts.transitions.bgOut);
+  function bgOutTransition(node, _) {
+    return resolveTransition(node, transitions.bgOut);
   }
 
-  function dialogIn(node, _) {
-    return resolveTransition(node, opts.transitions.in);
+  function dialogInTransition(node, _) {
+    return resolveTransition(node, transitions.in);
   }
 
-  function dialogOut(node, _) {
-    return resolveTransition(node, opts.transitions.out);
+  function dialogOutTransition(node, _) {
+    return resolveTransition(node, transitions.out);
   }
 
   function show() {
-    opts.onShow();
+    onShow();
     dispatch("show");
   }
 
   function shown() {
-    opts.onShown();
+    onShown();
     dispatch("shown");
   }
 
   function hide() {
-    opts.onHide();
+    onHide();
     dispatch("hide");
   }
 
   function hidden() {
-    opts.onHidden();
+    onHidden();
     dispatch("hidden");
   }
 
   function handleKeydown(event) {
-    if (opts.closeOnEsc && event.key === "Escape") {
+    if (closeOnEsc && event.key === "Escape") {
       event.preventDefault();
       close();
     }
   }
 
   function handleBgClick() {
-    if (opts.closeOnBg) {
+    if (closeOnBg) {
       close();
     }
   }
@@ -74,43 +92,43 @@
 
 <svelte:window on:keydown={handleKeydown} />
 <div
-  class={opts.overlayClass}
+  class={overlayClass}
   data-testid="dialog-core__overlay"
   tabindex="-1"
-  in:bgIn
-  out:bgOut
+  in:bgInTransition
+  out:bgOutTransition
   on:click={handleBgClick}
   use:focusTrap
 >
   <div
-    class={opts.dialogClass}
+    class={dialogClass}
     role="dialog"
     aria-modal="true"
-    aria-labelledby={opts.titleId}
+    aria-labelledby={titleId}
     data-testid="dialog-core__dialog"
-    in:dialogIn
-    out:dialogOut
+    in:dialogInTransition
+    out:dialogOutTransition
     on:introstart={show}
     on:introend={shown}
     on:outrostart={hide}
     on:outroend={hidden}
     on:click={handleDialogClick}
   >
-    {#if opts.closeButton}
+    {#if closeButton}
       <button
-        class={opts.closeButtonClass}
+        class={closeButtonClass}
         aria-label="Close dialog"
         data-testid="dialog-core__close-button"
-        on:click={() => close()}>{@html opts.closeButtonText}</button
+        on:click={() => close()}>{@html closeButtonText}</button
       >
     {/if}
 
     {#if $$slots.default}
       <slot />
-    {:else if typeof opts.content === "string"}
-      {@html opts.content}
+    {:else if typeof content === "string"}
+      {@html content}
     {:else}
-      <svelte:component this={opts.content} {...opts.props} />
+      <svelte:component this={content} {...props} />
     {/if}
   </div>
 </div>

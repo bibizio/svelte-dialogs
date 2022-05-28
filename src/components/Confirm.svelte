@@ -3,22 +3,23 @@
   import { getClose, getOptions } from "../lib/ctx-manager";
 
   const close = getClose();
-  const opts = getOptions();
+  const { declineButtonClass, declineButtonText, confirmButtonClass, confirmButtonText } =
+    getOptions();
 </script>
 
 <DialogContent>
   <svelte:fragment slot="footer">
     <button
-      class={opts.declineButtonClass}
+      class={declineButtonClass}
       aria-label="Decline"
       data-testid="confirm__decline-button"
-      on:click={() => close(false)}>{@html opts.declineButtonText}</button
+      on:click={() => close(false)}>{@html declineButtonText}</button
     >
     <button
-      class={opts.confirmButtonClass}
+      class={confirmButtonClass}
       aria-label="Confirm"
       data-testid="confirm__confirm-button"
-      on:click={() => close(true)}>{@html opts.confirmButtonText}</button
+      on:click={() => close(true)}>{@html confirmButtonText}</button
     >
   </svelte:fragment>
 </DialogContent>
