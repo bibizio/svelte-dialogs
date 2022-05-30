@@ -1,21 +1,51 @@
-import { config, getOpts } from "src/lib/configuration";
+import { config, getOpts, resolveTransitions } from "src/lib/configuration";
 import { fade, blur, fly, slide, scale, draw, crossfade } from "svelte/transition";
 
-config({
-  global: {
-    props: { prop: 'custom global prop' },
-    text: "custom global title",
-    transitions: {
-      out: {
-        transition: scale,
-        props: { prop: "custom global out prop" },
+jest.mock("src/lib/defaults", () => ({
+  defaultDialogConfigOptions: {
+    testType: {
+      props: { prop: "default prop" },
+      title: "default title",
+      text: "default title",
+      overlayClass: "default overlay class",
+      dialogClass: "default dialog class",
+      transitions: {
+        bgIn: {
+          transition: "blur",
+          props: {
+            prop: "default bgIn prop",
+          },
+        },
+        bgOut: {
+          transition: "fly",
+          props: { prop: "default bgOut prop" },
+        },
+        in: {
+          transition: "slide",
+          props: { prop: "default in prop" },
+        },
+        out: {
+          transition: "fade",
+          props: { prop: "default out prop" },
+        },
       },
     },
   },
-});
+}));
 
-const custom = {
-  props: { prop: 'custom prop' },
+const global = {
+  props: { prop: "custom global prop" },
+  text: "custom global title",
+  transitions: {
+    out: {
+      transition: scale,
+      props: { prop: "custom global out prop" },
+    },
+  },
+};
+
+const testType = {
+  props: { prop: "custom prop" },
   overlayClass: "custom overlay class",
   transitions: {
     in: {
@@ -25,8 +55,12 @@ const custom = {
   },
 };
 
+config({
+  global,
+});
+
 const options = {
-  props: { prop: 'option prop' },
+  props: { prop: "option prop" },
   dialogClass: "options dialog class",
   transitions: {
     bgOut: {
@@ -36,39 +70,11 @@ const options = {
   },
 };
 
-const defaults = {
-  props: { prop: 'default prop' },
-  title: "default title",
-  text: "default title",
-  overlayClass: "default overlay class",
-  dialogClass: "default dialog class",
-  transitions: {
-    bgIn: {
-      transition: blur,
-      props: {
-        prop: "default bgIn prop",
-      },
-    },
-    bgOut: {
-      transition: "fly",
-      props: { prop: "default bgOut prop" },
-    },
-    in: {
-      transition: "slide",
-      props: { prop: "default in prop" },
-    },
-    out: {
-      transition: fade,
-      props: { prop: "default out prop" },
-    },
-  },
-};
-
 describe("configuration", () => {
   it("custom global should overwrite defaults", () => {
-    const opts = getOpts(defaults, {}, {});
+    const opts = getOpts("testType", {});
     expect(opts).toStrictEqual({
-      props: { prop: 'custom global prop' },
+      props: { prop: "custom global prop" },
       title: "default title",
       text: "custom global title",
       overlayClass: "default overlay class",
@@ -97,9 +103,14 @@ describe("configuration", () => {
   });
 
   it("custom should overwrite custom global", () => {
-    const opts = getOpts(defaults, custom, {});
+    config({
+      global,
+      testType,
+    });
+
+    const opts = getOpts("testType", {});
     expect(opts).toStrictEqual({
-      props: { prop: 'custom prop' },
+      props: { prop: "custom prop" },
       title: "default title",
       text: "custom global title",
       overlayClass: "custom overlay class",
@@ -128,9 +139,9 @@ describe("configuration", () => {
   });
 
   it("options should overwrite custom", () => {
-    const opts = getOpts(defaults, custom, options);
+    const opts = getOpts("testType", options);
     expect(opts).toStrictEqual({
-      props: { prop: 'option prop' },
+      props: { prop: "option prop" },
       title: "default title",
       text: "custom global title",
       overlayClass: "custom overlay class",
@@ -158,18 +169,19 @@ describe("configuration", () => {
     });
   });
 
-  it("options should throw when can't resolve transactions", () => {
-    const brokenConfig = {
-      transitions: {
-        in: {
-          transition: "not a transaction",
-          props: { prop: "prop" },
-        },
-      },
-    };
+  // todo: move in utils
+  // it("options should throw when can't resolve transitions", () => {
+  //   const transitions = {
+  //     bgIn: {
+  //       transition: "piroette",
+  //       props: {
+  //         prop: "default bgIn prop",
+  //       },
+  //     },
+  //   };
 
-    expect(() => {
-      getOpts(defaults, brokenConfig, {});
-    }).toThrow("not a transaction not an existing svelte transition");
-  });
+  //   expect(() => {
+  //     resolveTransitions(transitions);
+  //   }).toThrow("piroette not an existing svelte transition");
+  // });
 });
