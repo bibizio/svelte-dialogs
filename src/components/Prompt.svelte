@@ -1,14 +1,8 @@
 <script>
   import { default as DialogContent } from "./DialogContent.svelte";
   import { getClose, getOptions } from "../lib/ctx-manager";
+  import { inputInitialValueMapping } from "../lib/utils";
   import { writable, get } from "svelte/store";
-
-  const mapInitialValue = ({ props }) => {
-    const { type, value } = props;
-    if (value) return value;
-    if (type === "checkbox") return false;
-    return undefined;
-  };
 
   export let inputs = [];
   let touched = false;
@@ -23,14 +17,14 @@
     submitButtonClass,
     submitButtonText,
   } = getOptions();
-  const form$ = writable(inputs.map(mapInitialValue));
+  const form$ = writable(inputs.map(inputInitialValueMapping));
 
   function handleSubmit() {
     close(get(form$));
   }
 
   function handleReset() {
-    form$.set(inputs.map(mapInitialValue));
+    form$.set(inputs.map(inputInitialValueMapping));
     touched = false;
   }
 </script>

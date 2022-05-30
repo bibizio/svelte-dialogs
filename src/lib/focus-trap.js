@@ -20,7 +20,7 @@ if (typeof window !== "undefined") {
     }
 
     const focusable = parentNode.querySelectorAll(focusableSelector);
-    if(!focusable.length){
+    if (!focusable.length) {
       event.preventDefault();
       return;
     }
@@ -39,13 +39,15 @@ if (typeof window !== "undefined") {
   document.addEventListener("keydown", trapFocusListener);
 }
 
-export default (node) => {
+export const focusTrap = (node) => {
+  node.setAttribute("tabindex", "-1");
   const firstFocusable = node.querySelector(focusableSelector);
   firstFocusable ? firstFocusable.focus() : node.focus();
 
   trapFocusList.push(node);
   return {
     destroy() {
+      node.removeAttribute("tabindex")
       trapFocusList = trapFocusList.filter((element) => element !== node);
     },
   };

@@ -1,7 +1,8 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import focusTrap from "../lib/focus-trap";
+  import { focusTrap } from "../lib/focus-trap";
   import { setClose, setOptions } from "../lib/ctx-manager";
+  import { applyTransition } from "../lib/utils";
 
   export let close;
   export let opts;
@@ -29,27 +30,20 @@
 
   const dispatch = createEventDispatcher();
 
-  function resolveTransition(node, point) {
-    if (!point) return null;
-    const { transition, props } = point;
-    if (!transition) return null;
-    return transition(node, props);
-  }
-
   function bgInTransition(node, _) {
-    return resolveTransition(node, transitions.bgIn);
+    return applyTransition(node, transitions.bgIn);
   }
 
   function bgOutTransition(node, _) {
-    return resolveTransition(node, transitions.bgOut);
+    return applyTransition(node, transitions.bgOut);
   }
 
   function dialogInTransition(node, _) {
-    return resolveTransition(node, transitions.in);
+    return applyTransition(node, transitions.in);
   }
 
   function dialogOutTransition(node, _) {
-    return resolveTransition(node, transitions.out);
+    return applyTransition(node, transitions.out);
   }
 
   function show() {

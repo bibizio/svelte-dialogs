@@ -1,5 +1,5 @@
 import { check_outros, group_outros, transition_out } from "svelte/internal";
-import { DialogCore } from "../components";
+import * as svelteTransitions from "svelte/transition";
 
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
 export const outroAndDestroy = (instance) => {
@@ -14,25 +14,30 @@ export const outroAndDestroy = (instance) => {
   }
 };
 
-export const createDialog = (opts) => {
-  let close;
-  const promise = new Promise((resolve) => {
-    close = resolve;
-  });
-  const dialog = new DialogCore({
-    target: document.body,
-    intro: true,
-    props: {
-      close,
-      opts,
-    },
-  });
-  return promise.finally(() => {
-    outroAndDestroy(dialog);
-  });
+/**
+ * It modifies the transition in the configuration object if is a string,
+ * and that's ok: if so it needs to resolves only the first time
+ */
+export const resolveConfigTransitions = (transitions) => {
+  for (const key in transitions) {
+    const point = transitions[key];
+    if (point && typeof point.transition === "string") {
+      const transition = svelteTransitions[point.transition];
+      if (!transition) throw new Error(`${point.transition} not an existing svelte transition`);
+      point.transition = transition;
+    }
+  }
+  return transitions;
 };
 
-export const mapInput = (input) => {
+export const applyTransition = (node, point) => {
+  if (!point) return null;
+  const { transition, props } = point;
+  if (!transition) return null;
+  return transition(node, props);
+};
+
+export const promptInputMapping = (input) => {
   if (typeof input === "string") {
     return { props: { label: input } };
   } else if (typeof input === "function") {
@@ -42,4 +47,11 @@ export const mapInput = (input) => {
   } else {
     return input;
   }
+};
+
+export const inputInitialValueMapping = ({ props }) => {
+  const { type, value } = props;
+  if (value) return value;
+  if (type === "checkbox") return false;
+  return undefined;
 };

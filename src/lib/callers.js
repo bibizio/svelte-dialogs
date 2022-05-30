@@ -5,9 +5,10 @@ import {
   getPromptOptions,
   getErrorOptions,
   getSuccessOptions,
-  getWarningOptions
+  getWarningOptions,
 } from "./configuration";
-import { createDialog, mapInput } from "./utils";
+import { createDialog } from "./create-dialog";
+import { promptInputMapping } from "./utils";
 
 export const modal = (options, props) => {
   let opts;
@@ -52,11 +53,10 @@ export const confirm = (options) => {
 };
 
 export const prompt = (input, options) => {
-
-  const inputs = (Array.isArray(input) ? input : [input]).map(mapInput);
+  const inputs = (Array.isArray(input) ? input : [input]).map(promptInputMapping);
 
   const opts = getPromptOptions(inputs, options);
-  
+
   return createDialog(opts);
 };
 

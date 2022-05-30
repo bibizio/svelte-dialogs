@@ -1,4 +1,5 @@
 import { defaultDialogConfigOptions } from "./defaults";
+import { resolveConfigTransitions } from "./utils";
 
 let customConfig = {};
 
@@ -18,7 +19,7 @@ export const getOpts = (type, options = {}) => {
     ...options.props,
   };
 
-  const transitions = resolveTransitions({
+  const transitions = resolveConfigTransitions({
     ...defaults.transitions,
     ...customGlobal.transitions,
     ...custom.transitions,
@@ -72,20 +73,4 @@ export const getPromptOptions = (inputs, options) => {
   });
 
   return opts;
-};
-
-/**
- * It modifies the transition in the configuration object if is a string,
- * and that's ok: if so it needs to resolves only the first time
- */
-export const resolveTransitions = (transitions) => {
-  for (const key in transitions) {
-    const point = transitions[key];
-    if (point && typeof point.transition === "string") {
-      const transition = svelteTransitions[point.transition];
-      if (!transition) throw new Error(`${point.transition} not an existing svelte transition`);
-      point.transition = transition;
-    }
-  }
-  return transitions;
 };
