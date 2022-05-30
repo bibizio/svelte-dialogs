@@ -1,8 +1,13 @@
 <script>
-    import { defaultDialogOptions as opts } from "src/lib/defaults";
-    import DialogCore from "src/components/DialogCore.svelte";
-    const close = () => {}
+  import { focusTrap } from "src/lib/focus-trap";
+  export let targets = [];
 </script>
 
-<button data-testid="focus-trap-fixture__button"></button>
-<DialogCore {close} {opts}/>
+<div>
+  <button data-testid="focus-trap-fixture__button" />
+  <div data-testid="focus-trap-fixture__container" use:focusTrap>
+    {#each targets as target}
+      {@html target}
+    {/each}
+  </div>
+</div>

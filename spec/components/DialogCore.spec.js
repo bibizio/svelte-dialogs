@@ -1,7 +1,7 @@
 import { fireEvent, render } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import DialogCoreDefaultSlotFixture from "spec/__fixtures__/DialogCoreDefaultSlotFixture.svelte";
-import FocusTrapFixture from "spec/__fixtures__/FocusTrapFixture.svelte";
+import DialogCoreFocusTrapFixture from "spec/__fixtures__/DialogCoreFocusTrapFixture.svelte";
 import MockedComponent from "spec/__mocks__/MockedComponent.svelte";
 import DialogCore from "src/components/DialogCore.svelte";
 import { defaultDialogOptions } from "src/lib/defaults";
@@ -156,7 +156,7 @@ describe("DialogCore", () => {
   });
 
   it("should trap focus", async () => {
-    const { getByTestId } = render(FocusTrapFixture);
+    const { getByTestId } = render(DialogCoreFocusTrapFixture);
 
     const closeButton = getByTestId("dialog-core__close-button");
     const fixtureButton = getByTestId("focus-trap-fixture__button");
