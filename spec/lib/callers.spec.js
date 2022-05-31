@@ -1,62 +1,48 @@
 import MockedComponent from "spec/__mocks__/MockedComponent.svelte";
-import { DialogInput } from "src/components";
-import { alert, confirm, modal, prompt } from "src/lib/callers";
+import { alert, confirm, modal, prompt, success, error, warning } from "src/lib/callers";
 import { createDialog } from "src/lib/create-dialog";
-import {
-  getAlertOptions,
-  getConfirmOptions,
-  getModalOptions,
-  getPromptOptions,
-  getErrorOptions,
-  getSuccessOptions,
-  getWarningOptions,
-} from "src/lib/configuration";
+import { getOpts } from "src/lib/configuration";
+import { getInputsWithProps, promptInputMapping } from "src/lib/utils";
 
 jest.mock("src/lib/create-dialog", () => ({
   __esModule: true,
   createDialog: jest.fn(),
-  // mapInput: jest.requireActual("src/lib/utils").mapInput,
 }));
 
-// jest.mock("src/lib/utils", () => ({
-//   __esModule: true,
-//   createDialog: jest.fn(),
-//   mapInput: jest.requireActual("src/lib/utils").mapInput,
-// }));
+const inputWithProps = "inputs with props";
+jest.mock("src/lib/utils", () => ({
+  __esModule: true,
+  promptInputMapping: jest.fn((_) => _),
+  getInputsWithProps: jest.fn(() => "inputs with props"),
+}));
 
-// jest.mock("src/lib/configuration", () => ({
-//   __esModule: true,
-//   getAlertOptions: jest.fn().mockReturnValue({}),
-//   getConfirmOptions: jest.fn().mockReturnValue({}),
-//   getModalOptions: jest.fn().mockReturnValue({}),
-//   getPromptOptions: jest.fn().mockReturnValue({}),
-//   getErrorOptions: jest.fn().mockReturnValue({}),
-//   getSuccessOptions: jest.fn().mockReturnValue({}),
-//   getWarningOptions: jest.fn().mockReturnValue({}),
-// }));
+const props = {};
+jest.mock("src/lib/configuration", () => ({
+  __esModule: true,
+  getOpts: jest.fn((_, options) => ({ props, ...options })),
+}));
 
 describe("callers", () => {
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
-  //todo: fix
-  describe.skip("modal", () => {
+  describe("modal", () => {
     it("should set content with string options", () => {
       modal("test content");
 
-      expect(getModalOptions).toHaveBeenCalledTimes(1);
-      expect(getModalOptions).toHaveBeenCalledWith();
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("global");
 
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith({ content: "test content" });
+      expect(createDialog).toHaveBeenCalledWith({ props, content: "test content" });
     });
 
     it("should set content and props with SvelteComponent options with props", () => {
       modal(MockedComponent, { string: "test string" });
 
-      expect(getModalOptions).toHaveBeenCalledTimes(1);
-      expect(getModalOptions).toHaveBeenCalledWith();
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("global");
 
       expect(createDialog).toHaveBeenCalledTimes(1);
       expect(createDialog).toHaveBeenCalledWith({
@@ -66,138 +52,201 @@ describe("callers", () => {
     });
 
     it("should set string content via options", () => {
-      modal({ content: "test content" });
+      const options = { content: "test content" };
+      modal(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("global", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({ content: "test content" })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, ...options });
     });
 
     it("should set SvelteCompnent content and props via options", () => {
-      modal({ content: MockedComponent, props: { string: "test string" } });
+      const options = { content: MockedComponent, props: { string: "test string" } };
+      modal(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("global", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({ content: MockedComponent, props: { string: "test string" } })
-      );
+      expect(createDialog).toHaveBeenCalledWith({
+        content: MockedComponent,
+        props: { string: "test string" },
+      });
     });
   });
 
   describe("alert", () => {
     it("should set title with string options", () => {
       alert("test string");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("alert");
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(expect.objectContaining({ title: "test string" }));
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test string" });
     });
 
     it("should set content via options", () => {
-      alert({ title: "test title", text: "test text" });
+      const options = { title: "test title", text: "test text" };
+      alert(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("alert", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({ title: "test title", text: "test text" })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test title", text: "test text" });
     });
   });
 
   describe("confirm", () => {
     it("should set title with string options", () => {
       confirm("test string");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("confirm");
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(expect.objectContaining({ title: "test string" }));
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test string" });
     });
 
     it("should set content via options", () => {
-      confirm({ title: "test title", text: "test text" });
+      const options = { title: "test title", text: "test text" };
+      confirm(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("confirm", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({ title: "test title", text: "test text" })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test title", text: "test text" });
     });
   });
 
-  //todo: fix
-  describe.skip("prompt", () => {
-    it("should set props with string input", () => {
-      prompt("test string");
-      expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          props: { inputs: [{ component: DialogInput, props: { label: "test string" } }] },
-        })
-      );
+  describe("error", () => {
+    it("should set text with string options", () => {
+      error("test string");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("error");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith({ props, text: "test string" });
     });
 
-    it("should set props with props input", () => {
-      prompt({ label: "test string" });
+    it("should set content via options", () => {
+      const options = { title: "test title", text: "test text" };
+      error(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("error", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          props: { inputs: [{ component: DialogInput, props: { label: "test string" } }] },
-        })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test title", text: "test text" });
+    });
+  });
+
+  describe("success", () => {
+    it("should set text with string options", () => {
+      success("test string");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("success");
+
+      expect(createDialog).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith({ props, text: "test string" });
     });
 
-    it("should set props with SvelteComponent input", () => {
-      prompt(MockedComponent);
+    it("should set content via options", () => {
+      const options = { title: "test title", text: "test text" };
+      success(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("success", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          props: { inputs: [{ component: MockedComponent, props: {} }] },
-        })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test title", text: "test text" });
+    });
+  });
+
+  describe("warning", () => {
+    it("should set text with string options", () => {
+      warning("test string");
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("warning");
+
+      expect(createDialog).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith({ props, text: "test string" });
     });
 
-    it("should set props with SvelteComponent and props input", () => {
-      prompt({ component: MockedComponent, props: { label: "test string" } });
+    it("should set content via options", () => {
+      const options = { title: "test title", text: "test text" };
+      warning(options);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("warning", options);
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          props: { inputs: [{ component: MockedComponent, props: { label: "test string" } }] },
-        })
-      );
+      expect(createDialog).toHaveBeenCalledWith({ props, title: "test title", text: "test text" });
+    });
+  });
+
+  describe("prompt", () => {
+    it("should map single input to array", () => {
+      const input = "test string";
+      prompt(input);
+
+      expect(promptInputMapping).toHaveBeenCalledTimes(1);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("prompt", undefined);
+
+      expect(getInputsWithProps).toHaveBeenCalledTimes(1);
+      expect(getInputsWithProps).toHaveBeenCalledWith([input], { props });
+
+      expect(createDialog).toHaveBeenCalledTimes(1);
+      expect(createDialog).toHaveBeenCalledWith({
+        props: { inputs: inputWithProps },
+      });
     });
 
-    it("should set props with string and SvelteComponent with props input array", () => {
-      prompt([
-        "test string",
-        { component: MockedComponent, props: { label: "test string" } },
-        "test string",
-      ]);
+    it("should map multiple inputs to array", () => {
+      const input = "test string";
+      prompt([input, input]);
+
+      expect(promptInputMapping).toHaveBeenCalledTimes(2);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("prompt", undefined);
+
+      expect(getInputsWithProps).toHaveBeenCalledTimes(1);
+      expect(getInputsWithProps).toHaveBeenCalledWith([input, input], { props });
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          props: {
-            inputs: [
-              { component: DialogInput, props: { label: "test string" } },
-              { component: MockedComponent, props: { label: "test string" } },
-              { component: DialogInput, props: { label: "test string" } },
-            ],
-          },
-        })
-      );
+      expect(createDialog).toHaveBeenCalledWith({
+        props: { inputs: inputWithProps },
+      });
     });
 
-    it("should set content with options", () => {
-      prompt(
-        [
-          "test string",
-          { component: MockedComponent, props: { label: "test string" } },
-          "test string",
-        ],
-        { title: "test title" }
-      );
+    it("should use additional options", () => {
+      const input = "test string";
+      const options = { input };
+      prompt(input, options);
+
+      expect(promptInputMapping).toHaveBeenCalledTimes(1);
+
+      expect(getOpts).toHaveBeenCalledTimes(1);
+      expect(getOpts).toHaveBeenCalledWith("prompt", options);
+
+      expect(getInputsWithProps).toHaveBeenCalledTimes(1);
+      expect(getInputsWithProps).toHaveBeenCalledWith([input], { props, input });
+
       expect(createDialog).toHaveBeenCalledTimes(1);
-      expect(createDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          title: "test title",
-          props: {
-            inputs: [
-              { component: DialogInput, props: { label: "test string" } },
-              { component: MockedComponent, props: { label: "test string" } },
-              { component: DialogInput, props: { label: "test string" } },
-            ],
-          },
-        })
-      );
+      expect(createDialog).toHaveBeenCalledWith({
+        input,
+        props: { inputs: inputWithProps },
+      });
     });
   });
 });
