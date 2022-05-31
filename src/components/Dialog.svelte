@@ -1,6 +1,6 @@
 <script>
   import DialogCore from "./DialogCore.svelte";
-  import { getModalOptions } from "../lib/configuration";
+  import { getOpts } from "../lib/configuration";
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
@@ -8,7 +8,7 @@
   let visible = false;
   let _data = null;
 
-  $: opts = { ...getModalOptions(), ...options };
+  $: opts = getOpts("global", options);
 
   export function open(data) {
     _data = data;

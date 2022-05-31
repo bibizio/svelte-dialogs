@@ -1,16 +1,57 @@
 import { fade } from "svelte/transition";
+import * as svelteInternal from "svelte/internal";
 import {
   applyTransition,
-  getPromptOptionsInput,
+  getInputsWithProps,
   inputInitialValueMapping,
+  outroAndDestroy,
   promptInputMapping,
   resolveConfigTransitions,
 } from "../../src/lib/utils";
 import MockedInput from "spec/__mocks__/MockedInput.svelte";
 
 describe("utils", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe("outroAndDestroy", () => {
-    it.todo("should ");
+    const checkOutrosSpy = jest.spyOn(svelteInternal, "check_outros").mockImplementation();
+    const groupOutrosSpy = jest.spyOn(svelteInternal, "group_outros").mockImplementation();
+    const transitionOutSpy = jest.spyOn(svelteInternal, "transition_out").mockImplementation();
+
+    const instance = {
+      $$: {},
+      $destroy: jest.fn(),
+    };
+
+    it("should call instance destroy immediatly if no fragment in instance", () => {
+      outroAndDestroy(instance);
+      expect(groupOutrosSpy).not.toHaveBeenCalled();
+      expect(transitionOutSpy).not.toHaveBeenCalled();
+      expect(checkOutrosSpy).not.toHaveBeenCalled();
+      expect(instance.$destroy).toHaveBeenCalledTimes(1);
+    });
+
+    it("should call instance destroy immediatly if no o in instance fragment", () => {
+      instance.$$.fragment = {};
+      outroAndDestroy(instance);
+      expect(groupOutrosSpy).not.toHaveBeenCalled();
+      expect(transitionOutSpy).not.toHaveBeenCalled();
+      expect(checkOutrosSpy).not.toHaveBeenCalled();
+      expect(instance.$destroy).toHaveBeenCalledTimes(1);
+    });
+
+    it("should pass instance fragment and $destroy to transition_out if o in instance fragment", () => {
+      const fragment = { o: "o" };
+      instance.$$.fragment = fragment;
+      outroAndDestroy(instance);
+      expect(groupOutrosSpy).toHaveBeenCalledTimes(1);
+      expect(transitionOutSpy).toHaveBeenCalledTimes(1);
+      expect(transitionOutSpy).toHaveBeenCalledWith(fragment, 0, 0, expect.anything());
+      expect(checkOutrosSpy).toHaveBeenCalledTimes(1);
+      expect(instance.$destroy).not.toHaveBeenCalled();
+    });
   });
 
   describe("resolveConfigTransitions", () => {
@@ -137,7 +178,7 @@ describe("utils", () => {
     it("should map input to component and props if component differrent from opts inputComponent", () => {
       const input = { component: "component", props: { prop } };
 
-      const actual = getPromptOptionsInput([input], opts);
+      const actual = getInputsWithProps([input], opts);
 
       expect(actual).toEqual([input]);
     });
@@ -155,7 +196,7 @@ describe("utils", () => {
           prop,
         },
       };
-      const actual = getPromptOptionsInput([input], opts);
+      const actual = getInputsWithProps([input], opts);
 
       expect(actual).toEqual([expected]);
     });
@@ -173,7 +214,7 @@ describe("utils", () => {
           prop,
         },
       };
-      const actual = getPromptOptionsInput([input], opts);
+      const actual = getInputsWithProps([input], opts);
 
       expect(actual).toEqual([expected]);
     });

@@ -46,7 +46,6 @@ describe("Prompt", () => {
     const labels = queryAllByTestId("dialog-input__label");
     const inputElements = queryAllByTestId("dialog-input__input");
 
-    console.log(formElements);
     inputs.forEach((input, idx) => {
       expect(formElements[idx]).toHaveClass(formElementClass);
 

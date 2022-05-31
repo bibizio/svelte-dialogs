@@ -3,6 +3,10 @@
 
   let dialog;
 
+  const options = {
+    closeButton: false
+  }
+
   function handler(event) {
     // event.type 'hide' have event.detail === "my data"
     console.log(event.type, event.detail);
@@ -19,6 +23,7 @@
   on:hidden={handler}
   let:data
   let:close
+  {options}
 >
   <p>template based dialog</p>
   <p>{data}</p>

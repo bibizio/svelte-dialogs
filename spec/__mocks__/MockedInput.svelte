@@ -1,6 +1,6 @@
 <script>
   export let value = "";
-  export let label;
+  export let label ="";
   export let id;
 </script>
 
