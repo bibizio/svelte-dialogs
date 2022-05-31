@@ -1,26 +1,18 @@
-import {
-  getAlertOptions,
-  getConfirmOptions,
-  getModalOptions,
-  getPromptOptions,
-  getErrorOptions,
-  getSuccessOptions,
-  getWarningOptions,
-} from "./configuration";
+import { getOpts } from "./configuration";
 import { createDialog } from "./create-dialog";
-import { promptInputMapping } from "./utils";
+import { getInputsWithProps, promptInputMapping } from "./utils";
 
 export const modal = (options, props) => {
   let opts;
 
   if (typeof options === "string" || typeof options === "function") {
-    opts = getModalOptions();
+    opts = getOpts("global");
     opts.content = options;
     if (props) {
       opts.props = props;
     }
   } else {
-    opts = getModalOptions(options);
+    opts = getOpts("global", options);
   }
 
   return createDialog(opts);
@@ -30,10 +22,10 @@ export const alert = (options) => {
   let opts;
 
   if (typeof options === "string") {
-    opts = getAlertOptions();
+    opts = getOpts("alert");
     opts.title = options;
   } else {
-    opts = getAlertOptions(options);
+    opts = getOpts("alert", options);
   }
 
   return createDialog(opts);
@@ -43,10 +35,10 @@ export const confirm = (options) => {
   let opts;
 
   if (typeof options === "string") {
-    opts = getConfirmOptions();
+    opts = getOpts("confirm");
     opts.title = options;
   } else {
-    opts = getConfirmOptions(options);
+    opts = getOpts("confirm", options);
   }
 
   return createDialog(opts);
@@ -54,8 +46,9 @@ export const confirm = (options) => {
 
 export const prompt = (input, options) => {
   const inputs = (Array.isArray(input) ? input : [input]).map(promptInputMapping);
+  const opts = getOpts("prompt", options);
 
-  const opts = getPromptOptions(inputs, options);
+  opts.props.inputs = getInputsWithProps(inputs, opts);
 
   return createDialog(opts);
 };
@@ -64,10 +57,10 @@ export const error = (options) => {
   let opts;
 
   if (typeof options === "string") {
-    opts = getErrorOptions();
+    opts = getOpts("error");
     opts.text = options;
   } else {
-    opts = getErrorOptions(options);
+    opts = getOpts("error", options);
   }
 
   return createDialog(opts);
@@ -77,10 +70,10 @@ export const success = (options) => {
   let opts;
 
   if (typeof options === "string") {
-    opts = getSuccessOptions();
+    opts = getOpts("success");
     opts.text = options;
   } else {
-    opts = getSuccessOptions(options);
+    opts = getOpts("success", options);
   }
 
   return createDialog(opts);
@@ -89,10 +82,10 @@ export const warning = (options) => {
   let opts;
 
   if (typeof options === "string") {
-    opts = getWarningOptions();
+    opts = getOpts("warning");
     opts.text = options;
   } else {
-    opts = getWarningOptions(options);
+    opts = getOpts("warning", options);
   }
 
   return createDialog(opts);

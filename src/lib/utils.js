@@ -37,6 +37,13 @@ export const applyTransition = (node, point) => {
   return transition(node, props);
 };
 
+export const inputInitialValueMapping = ({ props }) => {
+  const { type, value } = props;
+  if (value) return value;
+  if (type === "checkbox") return false;
+  return undefined;
+};
+
 export const promptInputMapping = (input) => {
   if (typeof input === "string") {
     return { props: { label: input } };
@@ -49,9 +56,26 @@ export const promptInputMapping = (input) => {
   }
 };
 
-export const inputInitialValueMapping = ({ props }) => {
-  const { type, value } = props;
-  if (value) return value;
-  if (type === "checkbox") return false;
-  return undefined;
+export const getInputsWithProps = (inputs, opts) => {
+  const { inputComponent, inputProps, formElementClass, inputLabelClass, inputClass } = opts;
+
+  const defaultProps = {
+    label: "",
+    formElementClass,
+    inputLabelClass,
+    inputClass,
+    ...inputProps,
+  };
+
+  return inputs.map(({ component, props }) => {
+    if (component && component !== inputComponent) return { component, props };
+
+    return {
+      component: inputComponent,
+      props: {
+        ...defaultProps,
+        ...props,
+      },
+    };
+  });
 };
