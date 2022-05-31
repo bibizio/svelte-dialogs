@@ -4,9 +4,16 @@
   import { inputInitialValueMapping } from "../lib/utils";
   import { writable, get } from "svelte/store";
 
+  /** inputs to render */
   export let inputs = [];
+
+  /** flag touched class on submit to show errors in inputs */
   let touched = false;
+
+  /** retrieve close function from context */
   const close = getClose();
+
+  /** retrieve options from context */
   const {
     formClass,
     cancelButtonClass,
@@ -17,18 +24,33 @@
     submitButtonClass,
     submitButtonText,
   } = getOptions();
+
+  /** maps inputs and create form observable */
   const form$ = writable(inputs.map(inputInitialValueMapping));
 
+  /**
+   * Calls close with form values
+   */
   function handleSubmit() {
     close(get(form$));
   }
 
+  /**
+   * Reset the form values to the initial mapping and reset touched to false
+   */
   function handleReset() {
     form$.set(inputs.map(inputInitialValueMapping));
     touched = false;
   }
 </script>
 
+<!-- 
+  @component
+  Default content of prompt().
+  Wrap DialogContent in a form element, renders inputs in body slot and adds
+  cancel, reset and submit buttons in footer slot.
+  Call close with form values on submit, null on cancel.
+ -->
 <form
   data-testid="prompt__form"
   class={formClass}

@@ -148,6 +148,7 @@ export const defaultWarningOptions = {
   dismissButtonClass: "dialog_button dialog_button--warning",
 };
 
+/** default options for each dialog type */
 export const defaultDialogConfigOptions = {
   global: defaultDialogOptions,
   alert: defaultAlertOptions,

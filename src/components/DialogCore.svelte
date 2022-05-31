@@ -3,8 +3,12 @@
   import { focusTrap } from "../lib/focus-trap";
   import { setClose, setOptions } from "../lib/ctx-manager";
   import { applyTransition } from "../lib/utils";
+  const dispatch = createEventDispatcher();
 
+  /** close function */
   export let close;
+
+  /** options */
   export let opts;
 
   let {
@@ -25,47 +29,60 @@
     props,
   } = opts;
 
+  /** puts the close function in the context*/
   setClose(close);
+
+  /** puts the options in the context*/
   setOptions(opts);
 
-  const dispatch = createEventDispatcher();
-
+  /** apply background in transition */
   function bgInTransition(node, _) {
     return applyTransition(node, transitions.bgIn);
   }
 
+  /** apply background out transition */
   function bgOutTransition(node, _) {
     return applyTransition(node, transitions.bgOut);
   }
 
+  /** apply dialog in transition */
   function dialogInTransition(node, _) {
     return applyTransition(node, transitions.in);
   }
 
+  /** apply dialog out transition */
   function dialogOutTransition(node, _) {
     return applyTransition(node, transitions.out);
   }
 
+  /** call onShow callback and dispatch show event */
   function show() {
     onShow();
     dispatch("show");
   }
 
+  /** call onShown callback and dispatch shown event */
   function shown() {
     onShown();
     dispatch("shown");
   }
 
+  /** call onHide callback and dispatch hide event */
   function hide() {
     onHide();
     dispatch("hide");
   }
 
+  /** call onHidden callback and dispatch hidden event */
   function hidden() {
     onHidden();
     dispatch("hidden");
   }
 
+  /**
+   * if closeOnEsc option is true, close the dialog on Escape keydown
+   * @param event
+   */
   function handleKeydown(event) {
     if (closeOnEsc && event.key === "Escape") {
       event.preventDefault();
@@ -73,17 +90,31 @@
     }
   }
 
+  /**
+   * if closeOnBg option is true, close the dialog on background click
+   * @param event
+   */
   function handleBgClick() {
     if (closeOnBg) {
       close();
     }
   }
 
+  /**
+   * stop the propagation of the events on the dialog
+   * @param event
+   */
   function handleDialogClick(event) {
     event.stopPropagation();
   }
 </script>
 
+<!-- 
+  @component
+  Core component for dialogs.
+  Render the overlay and the dialog with given options, 
+  sets option and close function in context.
+ -->
 <svelte:window on:keydown={handleKeydown} />
 <div
   class={overlayClass}
