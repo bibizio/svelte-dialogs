@@ -52,6 +52,13 @@ const commonDefaultOptions = {
   footerClass: "dialog__footer dialog__footer--space-evenly",
   title: "",
   text: "",
+  //
+  dismissButtonText: "ok",
+  confirmButtonText: "yes",
+  declineButtonText: "no",
+  dismissButtonClass: "dialog_button dialog_button--primary",
+  confirmButtonClass: "dialog_button dialog_button--primary",
+  declineButtonClass: "dialog_button dialog_button--decline",
 };
 
 export const defaultDialogOptions = {
@@ -72,9 +79,6 @@ export const defaultAlertOptions = {
   closeButton: false,
   closeOnBg: false,
   closeOnEsc: false,
-  //
-  dismissButtonText: "ok",
-  dismissButtonClass: "dialog_button dialog_button--primary",
 };
 
 export const defaultConfirmOptions = {
@@ -86,11 +90,6 @@ export const defaultConfirmOptions = {
   closeOnBg: false,
   closeOnEsc: false,
   title: "are you sure you want to continue?",
-  //
-  confirmButtonText: "yes",
-  declineButtonText: "no",
-  confirmButtonClass: "dialog_button dialog_button--primary",
-  declineButtonClass: "dialog_button dialog_button--decline",
 };
 
 export const defaultPromptOptions = {
@@ -123,11 +122,6 @@ const commonContextualOptions = {
   titleClass: "dialog__title dialog__title--xx-large",
   bodyClass: "dialog__body dialog__body--contextual",
   footerClass: "dialog__footer dialog__footer--space-evenly dialog__footer--contextual",
-  //
-  confirmButtonText: "yes",
-  declineButtonText: "no",
-  confirmButtonClass: "dialog_button dialog_button--primary",
-  declineButtonClass: "dialog_button dialog_button--decline",
 };
 
 export const defaultErrorOptions = {
