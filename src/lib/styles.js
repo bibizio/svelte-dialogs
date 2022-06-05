@@ -206,7 +206,6 @@
 "}\n" +
 "\n" +
 ".dialog__input {\n" +
-"  max-width: 25vw;\n" +
 "  box-sizing: border-box;\n" +
 "  margin: 0;\n" +
 "}\n" +

@@ -10,7 +10,7 @@ const appContent = `<script>
 
 <button on:click={() => dialogs.error("An error occurred")}>error</button>
 <button on:click={() => dialogs.success("Operation completed")}>success</button>
-<button on:click={() => dialogs.warning("That's dangerous!")}.then(console.log)>warning</button>`;
+<button on:click={() => dialogs.warning("That's dangerous!").then(console.log)}>warning</button>`;
 
 const configContent = `import { dialogs, Confirm } from "svelte-dialogs";
 
