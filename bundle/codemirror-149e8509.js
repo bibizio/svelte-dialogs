@@ -1,4 +1,4 @@
-import { _ as _typeof } from './main-d975bfaf.js';
+import { _ as _typeof } from './main-4ab3b2b2.js';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -27,7 +27,8 @@ var codemirror = {exports: {}};
     var ie_version = ie && (ie_upto10 ? document.documentMode || 6 : +(edge || ie_11up)[1]);
     var webkit = !edge && /WebKit\//.test(userAgent);
     var qtwebkit = webkit && /Qt\/\d+\.\d+/.test(userAgent);
-    var chrome = !edge && /Chrome\//.test(userAgent);
+    var chrome = !edge && /Chrome\/(\d+)/.exec(userAgent);
+    var chrome_version = chrome && +chrome[1];
     var presto = /Opera\//.test(userAgent);
     var safari = /Apple Computer/.test(navigator.vendor);
     var mac_geMountainLion = /Mac OS X 1\d\D([8-9]|\d\d)\D/.test(userAgent);
@@ -6729,6 +6730,22 @@ var codemirror = {exports: {}};
     }
 
     function onScrollWheel(cm, e) {
+      // On Chrome 102, viewport updates somehow stop wheel-based
+      // scrolling. Turning off pointer events during the scroll seems
+      // to avoid the issue.
+      if (chrome && chrome_version >= 102) {
+        if (cm.display.chromeScrollHack == null) {
+          cm.display.sizer.style.pointerEvents = "none";
+        } else {
+          clearTimeout(cm.display.chromeScrollHack);
+        }
+
+        cm.display.chromeScrollHack = setTimeout(function () {
+          cm.display.chromeScrollHack = null;
+          cm.display.sizer.style.pointerEvents = "";
+        }, 100);
+      }
+
       var delta = wheelEventDelta(e),
           dx = delta.x,
           dy = delta.y;
@@ -14718,7 +14735,7 @@ var codemirror = {exports: {}};
 
     CodeMirror.fromTextArea = fromTextArea;
     addLegacyProps(CodeMirror);
-    CodeMirror.version = "5.65.4";
+    CodeMirror.version = "5.65.5";
     return CodeMirror;
   });
 })(codemirror);
@@ -20408,7 +20425,7 @@ var xmlFold = {exports: {}};
 
           for (var i = from.line; i < end; ++i) {
             var line = self.getLine(i);
-            var whitespace = line.slice(0, firstNonWS(line));
+            var whitespace = line.search(nonWS) === -1 ? line : line.slice(0, firstNonWS(line));
 
             if (baseString == null || baseString.length > whitespace.length) {
               baseString = whitespace;
@@ -21202,4 +21219,4 @@ var foldcode = {exports: {}};
 })();
 
 export { CodeMirror as default };
-//# sourceMappingURL=codemirror-56336b8d.js.map
+//# sourceMappingURL=codemirror-149e8509.js.map

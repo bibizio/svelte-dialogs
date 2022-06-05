@@ -32,11 +32,10 @@ function _assertThisInitialized(self) {
 }
 
 function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
-
   return _setPrototypeOf(o, p);
 }
 
@@ -79,7 +78,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
@@ -1174,7 +1173,7 @@ function _asyncToGenerator(fn) {
   };
 }
 
-var regeneratorRuntime = {exports: {}};
+var regeneratorRuntime$1 = {exports: {}};
 
 var _typeof = {exports: {}};
 
@@ -1546,9 +1545,23 @@ function _regeneratorRuntime() {
 }
 
 module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
-}(regeneratorRuntime));
+}(regeneratorRuntime$1));
 
-var regenerator = regeneratorRuntime.exports();
+// TODO(Babel 8): Remove this file.
+
+var runtime = regeneratorRuntime$1.exports();
+var regenerator = runtime;
+
+// Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+}
 
 function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
@@ -3553,7 +3566,7 @@ function instance$m($$self, $$props, $$invalidate) {
               }
 
               _context.next = 3;
-              return import('./codemirror-56336b8d.js');
+              return import('./codemirror-149e8509.js');
 
             case 3:
               mod = _context.sent;
@@ -17044,14 +17057,14 @@ var htmlString = {
   }]
 };
 
-var appContent$2 = "<script>\n  import { dialogs } from \"svelte-dialogs\";\n  import MyComponent from \"./MyComponent.svelte\";\n\n  const props = { name: \"Ghostbusters!\" }\n</script>\n\n<button on:click={() => dialogs.modal(MyComponent, props).then(dialogs.modal)}>Click me!</button>";
+var appContent$3 = "<script>\n  import { dialogs } from \"svelte-dialogs\";\n  import MyComponent from \"./MyComponent.svelte\";\n\n  const props = { name: \"Ghostbusters!\" }\n</script>\n\n<button on:click={() => dialogs.modal(MyComponent, props).then(dialogs.modal)}>Click me!</button>";
 var myComponentContent = "<script>\n  import { DialogContent, getClose } from \"svelte-dialogs\";\n\n  const close = getClose();\n  export let name = \"\";\n\n  const message = \"see you on the other side, Ray\";\n</script>\n\n<DialogContent>\n  <svelte:fragment slot=\"body\">\n    <p>Who you gonna call?</p>\n  </svelte:fragment>\n  <svelte:fragment slot=\"footer\">\n    <button class=\"name-btn\" on:click={() => close(message)}>{name}</button>\n  </svelte:fragment>\n</DialogContent>\n\n<style>\n\t.name-btn{\n\t\tbackground-color: red;\n\t\tcolor: white;\n\t\tborder-radius: 200px;\n    cursor: pointer;\n\t}\n</style>";
 var customComponents = {
   name: "Custom Components",
   files: [{
     name: "App.svelte",
     type: "svelte",
-    content: appContent$2
+    content: appContent$3
   }, {
     name: "MyComponent.svelte",
     type: "svelte",
@@ -17059,14 +17072,14 @@ var customComponents = {
   }]
 };
 
-var appContent$1 = "<script>\n  import { dialogs } from \"svelte-dialogs\";\n  import MyInput from \"./MyInput.svelte\";\n\n  const inputs = [\n      \"text\",\n      { label: \"password\", type: \"password\", required: true },\n      { label: \"email\", type: \"email\" },\n      { label: \"checkbox\", type: \"checkbox\" },\n      { label: \"date\", type: \"date\" },\n      { label: \"textarea\", type: \"textarea\" },\n      { label: \"number\", type: \"number\" },\n      { label: \"color\", type: \"color\" },\n      { label: \"file\", type: \"file\" },\n      { label: \"range\", type: \"range\" },\n      {\n          component: MyInput,\n          props: {\n              placeholder: \"a placeholder\",\n              label: \"custom component\",\n              name: \"my-input\",\n              id: \"my-input-id\",\n            },\n        },\n    ]\n\n  const options = {\n        title: \"Different input types\"\n    }\n</script>\n\n<button on:click={() => dialogs.prompt(inputs, options).then(console.log)}>Click me!</button>";
+var appContent$2 = "<script>\n  import { dialogs } from \"svelte-dialogs\";\n  import MyInput from \"./MyInput.svelte\";\n\n  const options = [\"string 1\", \"string 2\", \"string 3\"];\n\n  const inputs = [\n      \"text\",\n      { label: \"password\", type: \"password\", required: true },\n      { label: \"email\", type: \"email\" },\n      { label: \"checkbox\", type: \"checkbox\" },\n      { label: \"date\", type: \"date\" },\n      { label: \"textarea\", type: \"textarea\" },\n      { label: \"number\", type: \"number\" },\n      { label: \"color\", type: \"color\" },\n      { label: \"file\", type: \"file\" },\n      { label: \"range\", type: \"range\" },\n      { label: \"select\", type: \"select\", options },\n      { label: \"radio\", type: \"radio\", options },\n      { label: \"select multiple\", type: \"select\", options, multiple: true },\n      {\n          component: MyInput,\n          props: {\n              placeholder: \"a placeholder\",\n              label: \"custom component\",\n              name: \"my-input\",\n              id: \"my-input-id\",\n            },\n        },\n    ]\n\n  const promptOptions = {\n        title: \"Different input types\"\n    }\n</script>\n\n<button on:click={() => dialogs.prompt(inputs, promptOptions).then(console.log)}>Click me!</button>";
 var myInputContent = "<script>\n    export let value = undefined;\n    export let placeholder;\n    export let label;\n    export let name;\n    export let id;\n</script>\n\n<label for={id}>{label}</label>\n<input bind:value {placeholder} {id} {name} type=\"text\" />";
 var promptInputTypes = {
   name: "Prompt input types",
   files: [{
     name: "App.svelte",
     type: "svelte",
-    content: appContent$1
+    content: appContent$2
   }, {
     name: "MyInput.svelte",
     type: "svelte",
@@ -17074,11 +17087,30 @@ var promptInputTypes = {
   }]
 };
 
-var appContent = "<script>\n    import { dialogs } from \"svelte-dialogs\";\n\n    /** \n     * configuration should be imported in root main.js\n     * this import is here just for the REPL to work \n     */\n    import './svelte-dialogs-config.js'\n</script>\n\n<button on:click={\n    () => dialogs.confirm(\"are you sure?\").then((confirm) => dialogs.alert({ confirm }))}\n>Click me!</button>";
-var configContent = "import { dialogs } from \"svelte-dialogs\";\nimport { fade } from \"svelte/transition\";\nimport CustomAlert from \"./CustomAlert.svelte\";\n\nconst global = {\n  transitions: {\n    in: {\n      transition: fade,\n      props: {\n        duration: 2000,\n      },\n    },\n    out: {\n      transition: 'slide',\n      props: {\n        duration: 2000,\n      },\n    },\n  },\n};\n\nconst alert = {\n  content: CustomAlert,\n  closeButton: true,\n};\n\nconst confirm = {\n  confirmButtonText: \"aye\",\n  declineButtonText: \"nay\",\n};\n\ndialogs.config({\n  global,\n  alert,\n  confirm,\n});";
+var appContent$1 = "<script>\n    import { dialogs } from \"svelte-dialogs\";\n\n    /** \n     * configuration should be imported in root main.js\n     * this import is here just for the REPL to work \n     */\n    import './svelte-dialogs-config.js'\n</script>\n\n<button on:click={\n    () => dialogs.confirm(\"are you sure?\").then((confirm) => dialogs.alert({ confirm }))}\n>Click me!</button>";
+var configContent$1 = "import { dialogs } from \"svelte-dialogs\";\nimport { fade } from \"svelte/transition\";\nimport CustomAlert from \"./CustomAlert.svelte\";\n\nconst global = {\n  transitions: {\n    in: {\n      transition: fade,\n      props: {\n        duration: 2000,\n      },\n    },\n    out: {\n      transition: 'slide',\n      props: {\n        duration: 2000,\n      },\n    },\n  },\n};\n\nconst alert = {\n  content: CustomAlert,\n  closeButton: true,\n};\n\nconst confirm = {\n  confirmButtonText: \"aye\",\n  declineButtonText: \"nay\",\n};\n\ndialogs.config({\n  global,\n  alert,\n  confirm,\n});";
 var customAlertContent = "<script>\n    import {getOptions} from 'svelte-dialogs'\n    \n    const {confirm} = getOptions();\n    const text = confirm ? \"let's do it\" : \"nevermind\"\n</script>\n\n<div>{text}</div>";
 var configuration = {
   name: "Configuration",
+  files: [{
+    name: "App.svelte",
+    type: "svelte",
+    content: appContent$1
+  }, {
+    name: "svelte-dialogs-config.js",
+    type: "js",
+    content: configContent$1
+  }, {
+    name: "CustomAlert.svelte",
+    type: "svelte",
+    content: customAlertContent
+  }]
+};
+
+var appContent = "<script>\n    import { dialogs } from \"svelte-dialogs\";\n\n    /** \n     * configuration should be imported in root main.js\n     * this import is here just for the REPL to work \n     */\n    import './svelte-dialogs-config.js'\n</script>\n\n<button on:click={() => dialogs.error(\"An error occurred\")}>error</button>\n<button on:click={() => dialogs.success(\"Operation completed\")}>success</button>\n<button on:click={() => dialogs.warning(\"That's dangerous!\")}.then(console.log)>warning</button>";
+var configContent = "import { dialogs, Confirm } from \"svelte-dialogs\";\n\ndialogs.config({\n    warning: {\n        content: Confirm,\n        text: \"Are you sure you want to continue?\",\n      },\n});";
+var contextualModals = {
+  name: "Contextual modals",
   files: [{
     name: "App.svelte",
     type: "svelte",
@@ -17087,14 +17119,10 @@ var configuration = {
     name: "svelte-dialogs-config.js",
     type: "js",
     content: configContent
-  }, {
-    name: "CustomAlert.svelte",
-    type: "svelte",
-    content: customAlertContent
   }]
 };
 
-var examples = [helloWorld, options, promiseBased, templateEventsBased, htmlString, customComponents, promptInputTypes, configuration];
+var examples = [helloWorld, options, promiseBased, templateEventsBased, htmlString, customComponents, promptInputTypes, configuration, contextualModals];
 var mapFile = function mapFile(_ref) {
   var name = _ref.name,
       type = _ref.type,
@@ -17354,4 +17382,4 @@ var app = new App({
 });
 
 export { _typeof$1 as _, app as a };
-//# sourceMappingURL=main-d975bfaf.js.map
+//# sourceMappingURL=main-4ab3b2b2.js.map
