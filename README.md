@@ -30,24 +30,27 @@ the easiest way to use _svelte-dialog_ is
 <button on:click={() => dialogs.alert('this is an alert')}>click me</button>
 ```
 
-`dialogs` has (as for now....) four methods for rendering a dialog:
+`dialogs` methods for rendering a dialog are:
 
 - `alert()` shows a dialog with a dismiss button
 - `confirm()` shows a dialog with a confirm and decline button
 - `prompt()` shows a dialog with inputs, a cancel, submit and an optional reset button
 - `modal()` shows a modal with..... well, everything you want in it (or nothing, if called empty)
+- `error()`, `success()` and `warning()` show accordingly styled alert. These are handy methods meant to be customized in configuration (or used as they are, if you like the default styles....)
 
-`alert()`, `confirm()` and `modal()` can be called with an options parameter (see below) or with a string parameter (rendered as html).
+all exepts for `prompt()` can be called with an options parameter ([see below](#options)) or with a string parameter (rendered as html):
 
-`alert()` and `confirm()` will use that as a title, while `modal()` will use it as the whole content.
+- `alert()` and `confirm()` will use that as a title
+- `error()`, `success()` and `warning()` will use that as text (title is meant to be the same for all of them)
+- `modal()` will use it as the whole content.
 
 ```svelte
 <script>
   import { dialogs } from "svelte-dialogs";
-    
+
   /**
    * When using custom modal content, use the default title id (dialog-title-id)
-   * or change the titleId options accordingly for accessibility reasons: 
+   * or change the titleId options accordingly for accessibility reasons:
    * titleId is used in aria-labelledby attribute
    */
   const htmlString = `
@@ -81,7 +84,7 @@ If you pass only props, the default input is used.
 
 ### With options
 
-You can use options with all the methods (reference below) like so:
+You can use options with all the methods ([see below](#options)) like so:
 
 ```svelte
 <script>
@@ -200,8 +203,8 @@ If no prop is required, you can just pass the component as in `prompt(MyInput)`
 All methods described return a promise that resolve on close:
 
 - `alert()` resolve `undefined` on dismiss
-- `confirm()` resolve `true` on confirm, `false` on decline and `undefined` on dismiss
-- `prompt()` resolve `undefined` on dismiss, while on submit resolves with an array of the inputs values
+- `confirm()` resolves `true` on confirm, `false` on decline and `undefined` on dismiss
+- `prompt()` resolves `undefined` on dismiss, while on submit resolves with an array of the inputs values
 
 so you can do something like this:
 
@@ -331,7 +334,7 @@ const app = new App({
 export default app;
 ```
 
-config accept an object with the following properties: `global`, `alert`, `confirm` and `prompt` to fine-tuning the defaults at the beginning and then forget about it.
+config accept an object with the following properties: `global`, `alert`, `confirm`, `error`, `success`, `warning`,and `prompt` to fine-tuning the defaults at the beginning and then forget about it.
 
 Every property is a config object as the one below.
 

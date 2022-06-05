@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 1.2.0
+
+### New Features
+
+- `error()`
+- `success()`
+- `warning()`
+
+### Bug fixes
+
+- allow null transitions
+- focus trap on empty dialogs
+- prompt inputs custom props mapping
+
+### Improvements
+
+- added default components in exports
+- added types radio and select in DialogInput
+
 ## 1.1.1
 
 ### Bug fixes
