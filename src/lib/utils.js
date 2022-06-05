@@ -67,11 +67,12 @@ export const applyTransition = (node, point) => {
  * @returns {any} - the input initial value
  */
 export const inputInitialValueMapping = ({ props }) => {
-  const { type, value } = props;
+  const { type, value, multiple } = props;
   /** if there is an initial value, use that */
   if (value) return value;
   /** if not, use the type default */
   if (type === "checkbox") return false;
+  if (type === "select" && multiple) return [];
   return undefined;
 };
 
@@ -131,3 +132,36 @@ export const getInputsWithProps = (inputs, opts) => {
     };
   });
 };
+
+/**
+ * Utility function to get the description from an option in DialogInput
+ * @param {(string|object)} option - the option
+ * @returns {string} - the description
+ */
+export const optionDescription = (option) =>
+  typeof option === "string" ? option : option.description ?? "";
+
+/**
+ * Utility function to check if an option is the selected
+ * @param {(string|object)} selected - the selected option
+ * @param {(string|object)} option - the option to check
+ * @returns {boolean} - if the option is the selected one
+ */
+export const optionCompare = (selected, option) =>
+  typeof option === "string" ? selected === option : selected.value === option.value;
+
+/**
+ * Utility function to check if an option is among the selected
+ * @param {(string|object)} selected - the selected option
+ * @param {(string|object)} option - the option to check
+ * @returns {boolean} - if the option is the selected one
+ */
+export const optionCompareMultiple = (value, option) =>
+  !!value.find((selected) => optionCompare(selected, option));
+
+/**
+ * Utility function to retrieve the compare function based on the multiple attribute
+ * @param {boolean} multiple - the multiple attribute value
+ * @returns {function} - the function to check an option against the DialogInput value
+ */
+export const getOptionCompare = (multiple) => (multiple ? optionCompareMultiple : optionCompare);

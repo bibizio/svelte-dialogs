@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
+import { wait } from "@testing-library/user-event/dist/utils";
 import DialogCoreDefaultSlotFixture from "spec/__fixtures__/DialogCoreDefaultSlotFixture.svelte";
 import DialogCoreFocusTrapFixture from "spec/__fixtures__/DialogCoreFocusTrapFixture.svelte";
 import MockedComponent from "spec/__mocks__/MockedComponent.svelte";
@@ -108,10 +109,10 @@ describe("DialogCore", () => {
     listen(component, ["show", "shown", "hide", "hidden"]);
 
     await tick();
-    await testutils.wait(600);
+    await wait(600);
     outroAndDestroy(component);
     await tick();
-    await testutils.wait(600);
+    await wait(600);
     await tick();
 
     // expect(component).toHaveFiredEventTimes("show", 1);
@@ -143,10 +144,10 @@ describe("DialogCore", () => {
     });
 
     await tick();
-    await testutils.wait(600);
+    await wait(600);
     outroAndDestroy(component);
     await tick();
-    await testutils.wait(600);
+    await wait(600);
     await tick();
 
     expect(onShowSpy).toHaveBeenCalledTimes(1);

@@ -3,6 +3,7 @@ import Dialog from "src/components/Dialog.svelte";
 import { defaultDialogOptions } from "src/lib/defaults";
 import { tick } from "svelte";
 import DialogSlotFixture from "spec/__fixtures__/DialogSlotFixture.svelte";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 describe("Dialog", () => {
   const testData = "test data";
@@ -17,7 +18,7 @@ describe("Dialog", () => {
     dialog = queryByTestId("dialog-core__dialog");
     expect(dialog).toBeInTheDocument();
     component.close();
-    await testutils.wait(600);
+    await wait(600);
     dialog = queryByTestId("dialog-core__dialog");
     expect(dialog).not.toBeInTheDocument();
   });
@@ -50,9 +51,9 @@ describe("Dialog", () => {
     listen(component, ["show", "shown", "hide", "hidden"]);
 
     component.open();
-    await testutils.wait(600);
+    await wait(600);
     component.close();
-    await testutils.wait(600);
+    await wait(600);
 
     expect(component).toHaveFiredEventTimes("show", 1);
     expect(component).toHaveFiredEventTimes("shown", 1);

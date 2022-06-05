@@ -2,6 +2,8 @@ const appContent = `<script>
   import { dialogs } from "svelte-dialogs";
   import MyInput from "./MyInput.svelte";
 
+  const options = ["string 1", "string 2", "string 3"];
+
   const inputs = [
       "text",
       { label: "password", type: "password", required: true },
@@ -13,6 +15,9 @@ const appContent = `<script>
       { label: "color", type: "color" },
       { label: "file", type: "file" },
       { label: "range", type: "range" },
+      { label: "select", type: "select", options },
+      { label: "radio", type: "radio", options },
+      { label: "select multiple", type: "select", options, multiple: true },
       {
           component: MyInput,
           props: {
@@ -24,12 +29,12 @@ const appContent = `<script>
         },
     ]
 
-  const options = {
+  const promptOptions = {
         title: "Different input types"
     }
 </script>
 
-<button on:click={() => dialogs.prompt(inputs, options).then(console.log)}>Click me!</button>`;
+<button on:click={() => dialogs.prompt(inputs, promptOptions).then(console.log)}>Click me!</button>`;
 
 const myInputContent = `<script>
     export let value = undefined;

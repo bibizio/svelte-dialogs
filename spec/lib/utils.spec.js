@@ -3,7 +3,11 @@ import * as svelteInternal from "svelte/internal";
 import {
   applyTransition,
   getInputsWithProps,
+  getOptionCompare,
   inputInitialValueMapping,
+  optionCompare,
+  optionCompareMultiple,
+  optionDescription,
   outroAndDestroy,
   promptInputMapping,
   resolveConfigTransitions,
@@ -117,6 +121,15 @@ describe("utils", () => {
       expect(actual).toBe(false);
     });
 
+    it("should return empty array if no value and type select with multiple attribute", () => {
+      const type = "select";
+      const input = { props: { type, multiple: true } };
+
+      const actual = inputInitialValueMapping(input);
+
+      expect(actual).toEqual([]);
+    });
+
     it("should return undefined if no value and type not checkbox", () => {
       const type = "not checkbox";
       const input = { props: { type } };
@@ -217,6 +230,85 @@ describe("utils", () => {
       const actual = getInputsWithProps([input], opts);
 
       expect(actual).toEqual([expected]);
+    });
+  });
+
+  describe("optionDescription", () => {
+    it("should return the option if type is string", () => {
+      const option = "test option";
+      const actual = optionDescription(option);
+      expect(actual).toBe(option);
+    });
+
+    it("should return option.description if type is not string", () => {
+      const description = "test option";
+      const option = { description };
+      const actual = optionDescription(option);
+      expect(actual).toBe(description);
+    });
+
+    it("should return empty string if no option.description", () => {
+      const option = {};
+      const actual = optionDescription(option);
+      expect(actual).toBe("");
+    });
+  });
+
+  describe("optionCompare", () => {
+    it("should compare option with value if type string", () => {
+      const selected = "selected";
+
+      const same = optionCompare(selected, "selected");
+      const notSame = optionCompare(selected, "not selected");
+
+      expect(same).toBe(true);
+      expect(notSame).toBe(false);
+    });
+
+    it("should compare arguments'' value if type not string", () => {
+      const selected = { value: "selected" };
+
+      const same = optionCompare(selected, { value: "selected" });
+      const notSame = optionCompare(selected, { value: "not selected" });
+
+      expect(same).toBe(true);
+      expect(notSame).toBe(false);
+    });
+  });
+
+  describe("optionCompareMultiple", () => {
+    it("should search for option in values if type string", () => {
+      const value = ["selected1", "selected2"];
+
+      const same = optionCompareMultiple(value, "selected1");
+      const notSame = optionCompareMultiple(value, "not selected");
+
+      expect(same).toBe(true);
+      expect(notSame).toBe(false);
+    });
+
+    it("should search for option.value in values if type not string", () => {
+      const value = [{ value: "selected1" }, { value: "selected2" }];
+
+      const same = optionCompareMultiple(value, { value: "selected1" });
+      const notSame = optionCompareMultiple(value, { value: "not selected" });
+
+      expect(same).toBe(true);
+      expect(notSame).toBe(false);
+    });
+  });
+
+  describe("getOptionCompare", () => {
+    it("should return optionCompareMultiple if multiple", () => {
+      const actual = getOptionCompare(true);
+
+      expect(actual).toEqual(optionCompareMultiple);
+    });
+
+    it("should return optionCompare if not multiple", () => {
+      const actual = getOptionCompare(false);
+
+      expect(actual).toEqual(optionCompare);
     });
   });
 });

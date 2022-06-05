@@ -109,8 +109,8 @@
 "  border-radius: 10px;\n" +
 "}\n" +
 ".dialog__body::-webkit-scrollbar-thumb {\n" +
-"  border-radius: 10px;\n" +
 "  box-shadow: inset 0 0 5px #cccccc;\n" +
+"  border-radius: 10px;\n" +
 "}\n" +
 "\n" +
 ".dialog__body--contextual {\n" +
@@ -143,6 +143,26 @@
 "  outline: 0;\n" +
 "}\n" +
 "\n" +
+".dialog__form-element fieldset {\n" +
+"  box-sizing: border-box;\n" +
+"  margin: 8px 0 0 0;\n" +
+"  width: 100%;\n" +
+"  padding: 1rem;\n" +
+"  background-color: #fff;\n" +
+"  border: 2px solid #cccccc;\n" +
+"  border-radius: 1rem;\n" +
+"}\n" +
+".dialog__form-element fieldset legend {\n" +
+"  display: block;\n" +
+"  width: -webkit-fit-content;\n" +
+"  width: -moz-fit-content;\n" +
+"  width: fit-content;\n" +
+"  text-align: left;\n" +
+"  position: relative;\n" +
+"  padding: 0 5px;\n" +
+"  background: #fff;\n" +
+"}\n" +
+"\n" +
 ".dialog__input-label {\n" +
 "  display: block;\n" +
 "  width: -webkit-fit-content;\n" +
@@ -156,18 +176,48 @@
 "  background: #fff;\n" +
 "}\n" +
 "\n" +
+"select.dialog__input[multiple],\n" +
+"textarea.dialog__input {\n" +
+"  overflow-y: auto;\n" +
+"  direction: rtl;\n" +
+"  text-align: left;\n" +
+"}\n" +
+"select.dialog__input[multiple]::-webkit-scrollbar,\n" +
+"textarea.dialog__input::-webkit-scrollbar {\n" +
+"  width: 5px;\n" +
+"}\n" +
+"select.dialog__input[multiple]::-webkit-scrollbar-track,\n" +
+"textarea.dialog__input::-webkit-scrollbar-track {\n" +
+"  box-shadow: inset 0 0 5px rgba(204, 204, 204, 0.8);\n" +
+"  border-radius: 10px;\n" +
+"}\n" +
+"select.dialog__input[multiple]::-webkit-scrollbar-thumb,\n" +
+"textarea.dialog__input::-webkit-scrollbar-thumb {\n" +
+"  box-shadow: inset 0 0 5px #cccccc;\n" +
+"  border-radius: 10px;\n" +
+"}\n" +
+"select.dialog__input[multiple]::-webkit-scrollbar-track,\n" +
+"textarea.dialog__input::-webkit-scrollbar-track {\n" +
+"  margin: 5px;\n" +
+"}\n" +
+"select.dialog__input[multiple] option,\n" +
+"textarea.dialog__input option {\n" +
+"  direction: ltr;\n" +
+"}\n" +
+"\n" +
 ".dialog__input {\n" +
+"  max-width: 25vw;\n" +
 "  box-sizing: border-box;\n" +
 "  margin: 0;\n" +
 "}\n" +
-".dialog__input:not([type=checkbox]) {\n" +
+".dialog__input:not([type=checkbox]):not([type=radio]) {\n" +
 "  width: 100%;\n" +
 "  padding: 1rem;\n" +
 "  background-color: #fff;\n" +
 "  border: 2px solid #cccccc;\n" +
 "  border-radius: 1rem;\n" +
 "}\n" +
-".dialog__input[type=checkbox] {\n" +
+".dialog__input[type=checkbox], .dialog__input[type=radio] {\n" +
 "  width: auto;\n" +
 "  display: block;\n" +
 "  margin-top: -7px;\n" +
