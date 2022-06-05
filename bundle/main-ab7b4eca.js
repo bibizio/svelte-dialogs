@@ -3566,7 +3566,7 @@ function instance$m($$self, $$props, $$invalidate) {
               }
 
               _context.next = 3;
-              return import('./codemirror-149e8509.js');
+              return import('./codemirror-208a598c.js');
 
             case 3:
               mod = _context.sent;
@@ -17107,7 +17107,7 @@ var configuration = {
   }]
 };
 
-var appContent = "<script>\n    import { dialogs } from \"svelte-dialogs\";\n\n    /** \n     * configuration should be imported in root main.js\n     * this import is here just for the REPL to work \n     */\n    import './svelte-dialogs-config.js'\n</script>\n\n<button on:click={() => dialogs.error(\"An error occurred\")}>error</button>\n<button on:click={() => dialogs.success(\"Operation completed\")}>success</button>\n<button on:click={() => dialogs.warning(\"That's dangerous!\")}.then(console.log)>warning</button>";
+var appContent = "<script>\n    import { dialogs } from \"svelte-dialogs\";\n\n    /** \n     * configuration should be imported in root main.js\n     * this import is here just for the REPL to work \n     */\n    import './svelte-dialogs-config.js'\n</script>\n\n<button on:click={() => dialogs.error(\"An error occurred\")}>error</button>\n<button on:click={() => dialogs.success(\"Operation completed\")}>success</button>\n<button on:click={() => dialogs.warning(\"That's dangerous!\").then(console.log)}>warning</button>";
 var configContent = "import { dialogs, Confirm } from \"svelte-dialogs\";\n\ndialogs.config({\n    warning: {\n        content: Confirm,\n        text: \"Are you sure you want to continue?\",\n      },\n});";
 var contextualModals = {
   name: "Contextual modals",
@@ -17382,4 +17382,4 @@ var app = new App({
 });
 
 export { _typeof$1 as _, app as a };
-//# sourceMappingURL=main-4ab3b2b2.js.map
+//# sourceMappingURL=main-ab7b4eca.js.map
