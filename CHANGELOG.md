@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.2.2
+
+### Bug fixes
+
+- reviewd types ([issue](https://github.com/bibizio/svelte-dialogs/issues/1))
+
+### Improvements
+
+- removed crypto.randomUUID ([issue](https://github.com/bibizio/svelte-dialogs/issues/2))
+- mobile friendly prompt buttons ([issue](https://github.com/bibizio/svelte-dialogs/issues/3))
+
 ## 1.2.1
 
 ### Bug fixes
