@@ -1,5 +1,5 @@
 <script>
-  import { inputInitialValueMapping, optionDescription, getOptionCompare } from "../lib/utils";
+  import { inputInitialValueMapping, optionDescription, getOptionCompare, randomId } from "../lib/utils";
 
   /** input value */
   export let value = inputInitialValueMapping({ props: $$props });
@@ -8,7 +8,7 @@
   export let label = "";
 
   /** input id, used in label for attribute */
-  export let id = crypto.randomUUID();
+  export let id = randomId();
 
   /** form element class*/
   export let formElementClass = "";

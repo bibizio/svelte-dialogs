@@ -165,3 +165,9 @@ export const optionCompareMultiple = (value, option) =>
  * @returns {function} - the function to check an option against the DialogInput value
  */
 export const getOptionCompare = (multiple) => (multiple ? optionCompareMultiple : optionCompare);
+
+/**
+ * Utility function to create random ids
+ * @returns {string} - the id
+ */
+export const randomId = () => Math.random().toString(36).substring(2) + Date.now().toString(36);

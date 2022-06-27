@@ -10,6 +10,7 @@ import {
   optionDescription,
   outroAndDestroy,
   promptInputMapping,
+  randomId,
   resolveConfigTransitions,
 } from "../../src/lib/utils";
 import MockedInput from "spec/__mocks__/MockedInput.svelte";
@@ -309,6 +310,17 @@ describe("utils", () => {
       const actual = getOptionCompare(false);
 
       expect(actual).toEqual(optionCompare);
+    });
+  });
+
+  describe("randomId", () => {
+    it("should create unique ids", () => {
+      const SIZE = 10000;
+      const set = new Set();
+      for (let i = 0; i < SIZE; i++) {
+        set.add(randomId());
+      }
+      expect(set.size).toBe(SIZE);
     });
   });
 });
