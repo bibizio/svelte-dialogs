@@ -1,9 +1,16 @@
 import { SvelteComponent, SvelteComponentTyped } from "svelte/types/runtime";
 import { TransitionConfig } from "svelte/types/runtime/transition";
 
+export type Close = (data: any) => void;
+
+export interface ComponentAndProps {
+  component: typeof SvelteComponent;
+  props?: object;
+}
+
 export interface ModalOptions {
-  content?: string | SvelteComponent;
-  props?: {};
+  content?: string | typeof SvelteComponent;
+  props?: object;
   //
   closeButton?: boolean;
   closeOnBg?: boolean;
@@ -38,10 +45,10 @@ export interface ModalOptions {
       props?: TransitionConfig;
     };
   };
-  onHide: () => void;
-  onHidden: () => void;
-  onShow: () => void;
-  onShown: () => void;
+  onHide?: () => void;
+  onHidden?: () => void;
+  onShow?: () => void;
+  onShown?: () => void;
   overlayClass?: string;
   dialogClass?: string;
   closeButtonClass?: string;
@@ -70,7 +77,7 @@ export interface ConfirmOptions extends ModalOptions {
 }
 
 export interface PromptOptions extends ModalOptions {
-  inputComponent?: SvelteComponent;
+  inputComponent?: typeof SvelteComponent;
   inputProps?: {};
   resetButton?: boolean;
   formClass?: string;
@@ -114,7 +121,7 @@ export class Dialog extends SvelteComponentTyped<
   {
     default: {
       data: any;
-      close: (data: any) => void;
+      close: Close;
     };
   }
 > {
@@ -123,20 +130,42 @@ export class Dialog extends SvelteComponentTyped<
   data: () => any;
 }
 
-export function getClose(): (data: any) => void;
+export class Alert extends SvelteComponentTyped<{}, {}, {}> {}
+
+export class Confirm extends SvelteComponentTyped<{}, {}, {}> {}
+
+export class Prompt extends SvelteComponentTyped<{ inputs?: Array<ComponentAndProps> }, {}, {}> {}
+
+export class DialogInput extends SvelteComponentTyped<
+  {
+    value?: any;
+    label?: string;
+    id?: string;
+    formElementClass?: string;
+    inputLabelClass?: string;
+    inputClass?: string;
+    options?: Array<string | object>;
+  },
+  {},
+  {}
+> {}
+
+export function getClose(): Close;
 export function getOptions(): DialogsOptions;
 
 declare namespace dialogs {
   function config(options: DialogsConfigOptions): void;
-  function modal(options: string | SvelteComponent | ModalOptions, props: {}): Promise<any>;
-  function alert(options: string | AlertOptions): Promise<undefined>;
-  function confirm(options: string | ConfirmOptions): Promise<undefined | boolean>;
+  function modal(
+    options?: string | typeof SvelteComponent | ModalOptions,
+    props?: object
+  ): Promise<any>;
+  function alert(options?: string | AlertOptions): Promise<undefined>;
+  function confirm(options?: string | ConfirmOptions): Promise<undefined | boolean>;
   function prompt(
-    input:
-      | string
-      | { component: SvelteComponent; props: {} }
-      | {}
-      | Array<string | { component: SvelteComponent; props: {} } | {}>,
-    options: PromptOptions
+    input?: string | ComponentAndProps | object | Array<string | ComponentAndProps | object>,
+    options?: PromptOptions
   ): Promise<null | undefined | Array<any>>;
+  function error(options?: string | DialogsOptions): Promise<any>;
+  function success(options?: string | DialogsOptions): Promise<any>;
+  function warning(options?: string | DialogsOptions): Promise<any>;
 }
