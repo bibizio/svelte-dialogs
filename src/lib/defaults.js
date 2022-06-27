@@ -56,9 +56,9 @@ const commonDefaultOptions = {
   dismissButtonText: "ok",
   confirmButtonText: "yes",
   declineButtonText: "no",
-  dismissButtonClass: "dialog_button dialog_button--primary",
-  confirmButtonClass: "dialog_button dialog_button--primary",
-  declineButtonClass: "dialog_button dialog_button--decline",
+  dismissButtonClass: "dialog__button dialog__button--primary",
+  confirmButtonClass: "dialog__button dialog__button--primary",
+  declineButtonClass: "dialog__button dialog__button--decline",
 };
 
 export const defaultDialogOptions = {
@@ -100,7 +100,7 @@ export const defaultPromptOptions = {
   closeButton: false,
   closeOnBg: false,
   closeOnEsc: false,
-  footerClass: "dialog__footer dialog__footer--space-between",
+  footerClass: "dialog__footer dialog__footer--space-between dialog__footer--mobile-responsive",
   //
   inputComponent: DialogInput,
   inputProps: null,
@@ -112,9 +112,9 @@ export const defaultPromptOptions = {
   submitButtonText: "submit",
   cancelButtonText: "cancel",
   resetButtonText: "reset",
-  submitButtonClass: "dialog_button dialog_button--primary",
-  cancelButtonClass: "dialog_button dialog_button--decline",
-  resetButtonClass: "dialog_button dialog_button--primary",
+  submitButtonClass: "dialog__button dialog__button--primary",
+  cancelButtonClass: "dialog__button dialog__button--decline",
+  resetButtonClass: "dialog__button dialog__button--primary",
 };
 
 const commonContextualOptions = {
@@ -129,7 +129,7 @@ export const defaultErrorOptions = {
   ...commonContextualOptions,
   title: "Error!",
   headerClass: "dialog__header dialog__header--error",
-  dismissButtonClass: "dialog_button dialog_button--error",
+  dismissButtonClass: "dialog__button dialog__button--error",
 };
 
 export const defaultSuccessOptions = {
@@ -137,7 +137,7 @@ export const defaultSuccessOptions = {
   ...commonContextualOptions,
   title: "Success!",
   headerClass: "dialog__header dialog__header--success",
-  dismissButtonClass: "dialog_button dialog_button--success",
+  dismissButtonClass: "dialog__button dialog__button--success",
 };
 
 export const defaultWarningOptions = {
@@ -145,7 +145,7 @@ export const defaultWarningOptions = {
   ...commonContextualOptions,
   title: "Warning!",
   headerClass: "dialog__header dialog__header--warning",
-  dismissButtonClass: "dialog_button dialog_button--warning",
+  dismissButtonClass: "dialog__button dialog__button--warning",
 };
 
 /** default options for each dialog type */
