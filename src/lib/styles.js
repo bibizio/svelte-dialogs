@@ -272,7 +272,6 @@
 "  vertical-align: middle;\n" +
 "  -webkit-user-select: none;\n" +
 "     -moz-user-select: none;\n" +
-"      -ms-user-select: none;\n" +
 "          user-select: none;\n" +
 "  border: 0.1rem solid transparent;\n" +
 "  border-radius: 0.5rem;\n" +
