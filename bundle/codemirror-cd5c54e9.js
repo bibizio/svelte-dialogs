@@ -1,4 +1,4 @@
-import { _ as _typeof } from './main-ab7b4eca.js';
+import { _ as _typeof } from './main-13f0a576.js';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -6,8 +6,8 @@ var codemirror = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
-  // This is CodeMirror (https://codemirror.net), a code editor
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
+  // This is CodeMirror (https://codemirror.net/5), a code editor
   // implemented in JavaScript on top of the browser's DOM.
   //
   // You can find some technical background for some of the code below
@@ -5612,13 +5612,13 @@ var codemirror = {exports: {}};
     NativeScrollbars.prototype.zeroWidthHack = function () {
       var w = mac && !mac_geMountainLion ? "12px" : "18px";
       this.horiz.style.height = this.vert.style.width = w;
-      this.horiz.style.pointerEvents = this.vert.style.pointerEvents = "none";
+      this.horiz.style.visibility = this.vert.style.visibility = "hidden";
       this.disableHoriz = new Delayed();
       this.disableVert = new Delayed();
     };
 
     NativeScrollbars.prototype.enableZeroWidthBar = function (bar, delay, type) {
-      bar.style.pointerEvents = "auto";
+      bar.style.visibility = "";
 
       function maybeDisable() {
         // To find out whether the scrollbar is still visible, we
@@ -5631,7 +5631,7 @@ var codemirror = {exports: {}};
         var elt = type == "vert" ? document.elementFromPoint(box.right - 1, (box.top + box.bottom) / 2) : document.elementFromPoint((box.right + box.left) / 2, box.bottom - 1);
 
         if (elt != bar) {
-          bar.style.pointerEvents = "none";
+          bar.style.visibility = "hidden";
         } else {
           delay.set(1000, maybeDisable);
         }
@@ -7662,7 +7662,7 @@ var codemirror = {exports: {}};
         var range = sel.ranges[i];
         var old = sel.ranges.length == doc.sel.ranges.length && doc.sel.ranges[i];
         var newAnchor = skipAtomic(doc, range.anchor, old && old.anchor, bias, mayClear);
-        var newHead = skipAtomic(doc, range.head, old && old.head, bias, mayClear);
+        var newHead = range.head == range.anchor ? newAnchor : skipAtomic(doc, range.head, old && old.head, bias, mayClear);
 
         if (out || newAnchor != range.anchor || newHead != range.head) {
           if (!out) {
@@ -14735,7 +14735,7 @@ var codemirror = {exports: {}};
 
     CodeMirror.fromTextArea = fromTextArea;
     addLegacyProps(CodeMirror);
-    CodeMirror.version = "5.65.5";
+    CodeMirror.version = "5.65.6";
     return CodeMirror;
   });
 })(codemirror);
@@ -14746,7 +14746,7 @@ var javascript = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -15986,7 +15986,7 @@ var simple = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -16252,7 +16252,7 @@ var multiplex = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -16393,7 +16393,7 @@ var multiplex = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports, simple.exports, multiplex.exports);
   })(function (CodeMirror) {
@@ -16492,7 +16492,7 @@ var xml = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -17024,7 +17024,7 @@ var css = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -17598,7 +17598,7 @@ var css = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports, xml.exports, javascript.exports, css.exports);
   })(function (CodeMirror) {
@@ -17756,7 +17756,7 @@ var meta = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -18620,7 +18620,7 @@ var meta = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports, xml.exports, meta.exports);
   })(function (CodeMirror) {
@@ -19537,7 +19537,7 @@ var meta = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -19757,7 +19757,7 @@ var xmlFold = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -20033,7 +20033,7 @@ var xmlFold = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
 
   /**
    * Tag-closer extension for CodeMirror.
@@ -20236,7 +20236,7 @@ var xmlFold = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -20344,7 +20344,7 @@ var xmlFold = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -20565,7 +20565,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -20736,7 +20736,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports, foldcode.exports);
   })(function (CodeMirror) {
@@ -20905,7 +20905,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -21060,7 +21060,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -21102,7 +21102,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -21148,7 +21148,7 @@ var foldcode = {exports: {}};
 
 (function (module, exports) {
   // CodeMirror, copyright (c) by Marijn Haverbeke and others
-  // Distributed under an MIT license: https://codemirror.net/LICENSE
+  // Distributed under an MIT license: https://codemirror.net/5/LICENSE
   (function (mod) {
     mod(codemirror.exports);
   })(function (CodeMirror) {
@@ -21219,4 +21219,4 @@ var foldcode = {exports: {}};
 })();
 
 export { CodeMirror as default };
-//# sourceMappingURL=codemirror-208a598c.js.map
+//# sourceMappingURL=codemirror-cd5c54e9.js.map

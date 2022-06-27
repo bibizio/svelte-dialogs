@@ -3566,7 +3566,7 @@ function instance$m($$self, $$props, $$invalidate) {
               }
 
               _context.next = 3;
-              return import('./codemirror-208a598c.js');
+              return import('./codemirror-cd5c54e9.js');
 
             case 3:
               mod = _context.sent;
@@ -4912,7 +4912,8 @@ var Tokenizer = /*#__PURE__*/function () {
 
           if (!endEarly) {
             var nextBulletRegex = new RegExp("^ {0,".concat(Math.min(3, indent - 1), "}(?:[*+-]|\\d{1,9}[.)])((?: [^\\n]*)?(?:\\n|$))"));
-            var hrRegex = new RegExp("^ {0,".concat(Math.min(3, indent - 1), "}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)")); // Check if following lines should be included in List Item
+            var hrRegex = new RegExp("^ {0,".concat(Math.min(3, indent - 1), "}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)"));
+            var fencesBeginRegex = new RegExp("^( {0,".concat(Math.min(3, indent - 1), "})(```|~~~)")); // Check if following lines should be included in List Item
 
             while (src) {
               rawLine = src.split('\n', 1)[0];
@@ -4920,6 +4921,16 @@ var Tokenizer = /*#__PURE__*/function () {
 
               if (this.options.pedantic) {
                 line = line.replace(/^ {1,4}(?=( {4})*[^ ])/g, '  ');
+              } // End list item if found code fences
+
+
+              if (fencesBeginRegex.test(line)) {
+                break;
+              } // End list item if found start of new heading
+
+
+              if (this.rules.block.heading.test(line)) {
+                break;
               } // End list item if found start of new bullet
 
 
@@ -17382,4 +17393,4 @@ var app = new App({
 });
 
 export { _typeof$1 as _, app as a };
-//# sourceMappingURL=main-ab7b4eca.js.map
+//# sourceMappingURL=main-13f0a576.js.map
