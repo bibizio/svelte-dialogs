@@ -64,7 +64,7 @@
       {/each}
     </svelte:fragment>
     <svelte:fragment slot="footer">
-      <span>
+      <div class="dialog__button-container">
         <button
           type="button"
           class={cancelButtonClass}
@@ -80,17 +80,19 @@
             data-testid={"prompt__reset-button"}
             on:click={handleReset}>{@html resetButtonText}</button
           >
-        {/if}</span
-      >
-      <button
-        type="submit"
-        class={submitButtonClass}
-        aria-label="Submit"
-        data-testid={"prompt__submit-button"}
-        on:click={() => {
-          touched = true;
-        }}>{@html submitButtonText}</button
-      >
+        {/if}
+      </div>
+      <div class="dialog__button-container">
+        <button
+          type="submit"
+          class={submitButtonClass}
+          aria-label="Submit"
+          data-testid={"prompt__submit-button"}
+          on:click={() => {
+            touched = true;
+          }}>{@html submitButtonText}</button
+        >
+      </div>
     </svelte:fragment>
   </DialogContent>
 </form>

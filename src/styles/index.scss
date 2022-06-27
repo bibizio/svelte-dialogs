@@ -5,6 +5,8 @@ $error-color: #ca2f3f; //rgb(202, 47, 63);
 $success-color: #6ea050; //rgb(110, 160, 80);
 $warning-color: #f0be00; //rgb(240, 190, 0);
 
+$mobile-max-width: 640px;
+
 @mixin scroll-bar {
   &::-webkit-scrollbar {
     width: 5px;
@@ -44,9 +46,13 @@ $warning-color: #f0be00; //rgb(240, 190, 0);
   position: fixed;
   box-sizing: border-box;
 
+  max-height: 100vh;
   min-width: 25vw;
   max-width: 50vw;
-  max-height: 100vh;
+
+  @media (max-width: $mobile-max-width) {
+    max-width: 75vw;
+  }
 
   padding: 2rem;
   border-radius: 1rem;
@@ -130,7 +136,7 @@ $warning-color: #f0be00; //rgb(240, 190, 0);
   text-align: center;
   padding-top: 1rem;
   min-height: 10vh;
-  max-height: calc(100vh - 10rem);
+  max-height: calc(100vh - 13rem);
   overflow-y: auto;
 
   @include scroll-bar;
@@ -155,6 +161,23 @@ $warning-color: #f0be00; //rgb(240, 190, 0);
 
 .dialog__footer--space-between {
   justify-content: space-between;
+}
+
+.dialog__footer--mobile-responsive {
+  flex-direction: row;
+
+  @media (max-width: $mobile-max-width) {
+    flex-direction: column;
+
+    .dialog__button-container {
+      display: flex;
+      justify-content: space-between;
+
+      .dialog__button {
+        flex-grow: 1;
+      }
+    }
+  }
 }
 
 .dialog__form {
@@ -254,13 +277,13 @@ textarea.dialog__input {
   }
 }
 
-.dialog_button {
+.dialog__button {
   box-sizing: border-box;
   display: inline-block;
   cursor: pointer;
   font-size: 1rem;
   padding: 0.5rem;
-  margin: 0 0.5rem;
+  margin: 2px;
   min-width: 6rem;
   text-align: center;
   white-space: nowrap;
@@ -295,26 +318,26 @@ textarea.dialog__input {
   }
 }
 
-.dialog_button--primary {
+.dialog__button--primary {
   @include button-modifier($primary-color);
 }
 
-.dialog_button--decline {
+.dialog__button--decline {
   @include button-modifier($error-color);
   color: $secondary-color;
 }
 
-.dialog_button--error {
+.dialog__button--error {
   @include button-modifier($error-color);
   color: $secondary-color;
 }
 
-.dialog_button--success {
+.dialog__button--success {
   @include button-modifier($success-color);
   color: $secondary-color;
 }
 
-.dialog_button--warning {
+.dialog__button--warning {
   @include button-modifier($warning-color);
   color: $secondary-color;
 }
