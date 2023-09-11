@@ -24,7 +24,7 @@
     "site-dev": "gulp site-dev"
   },
   "peerDependencies": {
-    "svelte": "^3.5.0"
+    "svelte": ">=3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
