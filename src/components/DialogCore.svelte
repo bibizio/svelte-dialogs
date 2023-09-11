@@ -86,13 +86,13 @@
   function handleKeydown(event) {
     if (closeOnEsc && event.key === "Escape") {
       event.preventDefault();
+      event.stopPropagation();
       close();
     }
   }
 
   /**
    * if closeOnBg option is true, close the dialog on background click
-   * @param event
    */
   function handleBgClick() {
     if (closeOnBg) {
@@ -123,6 +123,7 @@
   in:bgInTransition
   out:bgOutTransition
   on:click={handleBgClick}
+  on:keydown={handleKeydown}
   use:focusTrap
 >
   <div
@@ -138,6 +139,7 @@
     on:outrostart={hide}
     on:outroend={hidden}
     on:click={handleDialogClick}
+    on:keydown={handleKeydown}
   >
     {#if closeButton}
       <button
